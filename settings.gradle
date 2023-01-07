@@ -1,1 +1,3 @@
 rootProject.name = 'healther'
+include 'user-api'
+
