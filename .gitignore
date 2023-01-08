@@ -35,6 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### application-oauth.yml
-user-api/src/main/resources/application-oauth.yml
