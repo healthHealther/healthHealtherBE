@@ -62,4 +62,11 @@ public class Member extends BaseEntity {
 		this.oauthId = oauthId;
 		this.loginType = loginType;
 	}
+
+	public void signUp(String name, String nickName, String phone) {
+		this.name = name;
+		this.nickName = nickName;
+		this.phone = phone;
+		this.memberStatus = MemberStatus.ACTIVE;
+	}
 }
