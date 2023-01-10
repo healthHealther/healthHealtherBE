@@ -1,0 +1,4 @@
+# profile name = dev, prod
+spring:
+  profiles:
+    active: oauth, dev
