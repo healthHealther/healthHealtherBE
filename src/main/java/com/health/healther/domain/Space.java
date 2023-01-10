@@ -28,7 +28,7 @@ public class Space {
 	@Column(name = "SPACE_ID")
 	private Long id;
 
-	// @ManyToOne
+	// @ManyToOne(fetch = FetchType.LAZY)
 	// @JoinColumn(name = "MEMBER_ID")
 	// private Member member;
 
