@@ -13,11 +13,14 @@ import lombok.Getter;
 
 @Getter
 @MappedSuperclass
-@EntityListeners(value = {AuditingEntityListener.class})
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
 	@CreatedDate
 	private LocalDateTime createdAt;
+
 	@LastModifiedDate
 	private LocalDateTime modifiedAt;
+
+	private LocalDateTime deletedAt;
 }

@@ -1,5 +1,5 @@
 package com.health.healther.member.domain.type;
 
-public enum LoginType {
+public enum LoginMethod {
 	KAKAO, GOOGLE
 }
