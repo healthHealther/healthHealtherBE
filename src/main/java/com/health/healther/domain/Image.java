@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "DELETED_AT is null")
-@SQLDelete(sql = "UPDATE SPACE SET SAPCE.DELETED_AT = CURRENT_TIMESTAMP WHERE SPACE.SAPCE_ID = ?")
+@SQLDelete(sql = "UPDATE IMAGE SET IMAGE.DELETED_AT = CURRENT_TIMESTAMP WHERE IMAGE.IMAGE_ID = ?")
 @Getter
 public class Image {
 	@Id

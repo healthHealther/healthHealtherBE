@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "DELETED_AT is null")
-@SQLDelete(sql = "UPDATE SPACE SET SAPCE.DELETED_AT = CURRENT_TIMESTAMP WHERE SPACE.SAPCE_ID = ?")
+@SQLDelete(sql = "UPDATE SPACE_TIME SET SPACE_TIME.DELETED_AT = CURRENT_TIMESTAMP WHERE SPACE_TIME.SPACE_TIME_ID = ?")
 @Getter
 public class SpaceTime {
 
