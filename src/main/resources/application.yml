@@ -1,4 +1,9 @@
 # profile name = dev, prod
 spring:
   profiles:
-    active: oauth, dev
+    group:
+      "test": "test, datasource"
+      "local": "local, datasource, oauth"
+      "dev": "dev, datasource, oauth"
+      "prod": "dev, datasource, oauth"
+    active: dev

@@ -1,0 +1,44 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test
+    hikari:
+      username: sa
+      password:
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/healthHealther
+    hikari:
+      username: sa
+      password:
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL}
+    hikari:
+      username: ${MYSQL_USERNAME}
+      password: ${MYSQL_PASSWORD}
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL}
+    hikari:
+      username: ${MYSQL_USERNAME}
+      password: ${MYSQL_PASSWORD}
+
