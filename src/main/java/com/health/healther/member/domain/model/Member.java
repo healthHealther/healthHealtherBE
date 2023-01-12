@@ -12,7 +12,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.AuditOverride;
 
-import com.health.healther.member.domain.type.LoginMethod;
+import com.health.healther.contant.LoginType;
 import com.health.healther.member.domain.type.MemberStatus;
 
 import lombok.AccessLevel;
@@ -44,17 +44,17 @@ public class Member extends BaseEntity {
 	private String oauthId;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "LOGIN_METHOD")
-	private LoginMethod loginMethod;
+	private LoginType loginType;
 
 	@Builder
 	public Member(String name, String nickName, String phone, MemberStatus memberStatus, String oauthId,
-		LoginMethod loginMethod) {
+		LoginType loginType) {
 		this.name = name;
 		this.nickName = nickName;
 		this.phone = phone;
 		this.memberStatus = memberStatus;
 		this.oauthId = oauthId;
-		this.loginMethod = loginMethod;
+		this.loginType = loginType;
 	}
 
 	public void signUp(String name, String nickName, String phone) {
