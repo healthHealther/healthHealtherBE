@@ -21,5 +21,4 @@ public class BaseEntity {
 
     private LocalDateTime deletedAt;
 
-
 }
