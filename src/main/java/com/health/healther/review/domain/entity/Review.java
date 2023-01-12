@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -15,7 +17,9 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "review")
+@Table(name = "REVIEW")
+@Where(clause = "isDeleted = false")
+@SQLDelete(sql = "UPDATE REVIEW SET is_deleted = true where id = ?")
 @Entity
 
 public class Review {
@@ -44,7 +48,7 @@ public class Review {
     private Rating rating;
 
     @Column(name = "IS_DELETED")
-    private boolean isDeleted;
+    private boolean isDeleted = Boolean.FALSE;
 
 
 }
