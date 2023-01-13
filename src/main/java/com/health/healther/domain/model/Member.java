@@ -49,4 +49,33 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "LOGIN_TYPE")
 	private LoginType loginType;
+
+	private Member(String name, String nickName, String phone, MemberStatus memberStatus, String oauthId,
+		LoginType loginType) {
+		this.name = name;
+		this.nickName = nickName;
+		this.phone = phone;
+		this.memberStatus = memberStatus;
+		this.oauthId = oauthId;
+		this.loginType = loginType;
+	}
+
+
+	public static Member getByKakaoUserInfo(String nickName, MemberStatus memberStatus, String oauthId, LoginType loginType) {
+		return new Member(
+			null,
+			nickName,
+			null,
+			memberStatus,
+			oauthId,
+			loginType
+		);
+	}
+
+	public void signUp(String name, String nickName, String phone) {
+		this.name = name;
+		this.nickName = nickName;
+		this.phone = phone;
+		this.memberStatus = MemberStatus.ACTIVE;
+	}
 }
