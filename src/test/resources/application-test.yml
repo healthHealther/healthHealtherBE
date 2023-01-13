@@ -1,0 +1,20 @@
+spring:
+  config:
+    activate:
+      on-profile: "test"
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/Healther-test
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+  redis:
+    host: localhost
+    port: 63790
+    password:
