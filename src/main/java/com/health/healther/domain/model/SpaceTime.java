@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import com.health.healther.dto.space.CreateSpaceRequestDto;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,4 +39,25 @@ public class SpaceTime extends BaseEntity {
 
 	@Column(name = "CLOSE_TIME")
 	private int closeTime;
+
+	private SpaceTime(
+			Space space,
+			int openTime,
+			int closeTime
+	) {
+		this.space = space;
+		this.openTime = openTime;
+		this.closeTime = closeTime;
+	}
+
+	public static SpaceTime of(
+			Space space,
+			CreateSpaceRequestDto createSpaceRequestDto
+	) {
+		return new SpaceTime(
+				space,
+				createSpaceRequestDto.getOpenTime(),
+				createSpaceRequestDto.getCloseTime()
+		);
+	}
 }
