@@ -1,13 +1,6 @@
 package com.health.healther.review.domain.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import com.health.healther.domain.model.BaseEntity;
 import com.health.healther.domain.model.Member;
@@ -42,6 +35,7 @@ public class Review extends BaseEntity {
 	@Column(name = "TITLE")
 	private String title;
 
+	@Lob
 	@Column(name = "CONTENT")
 	private String content;
 
