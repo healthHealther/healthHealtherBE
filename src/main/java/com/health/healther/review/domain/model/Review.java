@@ -1,4 +1,4 @@
-package com.health.healther.domain.model;
+package com.health.healther.review.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.health.healther.domain.model.BaseEntity;
+import com.health.healther.domain.model.Member;
+import com.health.healther.domain.model.Space;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -16,11 +19,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE REVIEW SET REVIEW.DELETED_AT = CURRENT_TIMESTAMP WHERE REVIEW.REVIEW_ID = ?")
 @Getter
+@Entity
 public class Review extends BaseEntity {
 
 	@Id
