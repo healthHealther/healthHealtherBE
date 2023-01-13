@@ -34,4 +34,22 @@ public class Image extends BaseEntity {
 
 	@Column(name = "IMAGE_URL")
 	private String imageUrl;
+
+	private Image(
+			Space space,
+			String imageUrl
+	) {
+		this.space = space;
+		this.imageUrl = imageUrl;
+	}
+
+	public static Image of(
+			Space space,
+			String imageUrl
+	) {
+		return new Image(
+				space,
+				imageUrl
+		);
+	}
 }
