@@ -4,6 +4,8 @@ import com.health.healther.review.domain.dto.ReviewCreateRequestDto;
 import com.health.healther.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +21,12 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("")
-    public void createReview(
+    @PostMapping
+    public ResponseEntity<?> createReview(
             @RequestBody @Valid ReviewCreateRequestDto request
     ) {
+
         reviewService.createReview(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

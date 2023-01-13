@@ -7,12 +7,10 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@Setter
 @Builder
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class ReviewCreateRequestDto {
 
     @NotBlank
