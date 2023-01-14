@@ -18,8 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class JwtAuthenticationProvider {
-
+public class JwtTokenProvider {
 	@Value("${jwt.access-token.expire-length}")
 	private long accessTokenValidityInMilliseconds;
 
@@ -40,14 +39,13 @@ public class JwtAuthenticationProvider {
 		return createToken(generatedString, refreshTokenValidityInMilliseconds);
 	}
 
-	public String createToken(String payload, long expireLength) {
+	private String createToken(String payload, long expiredLength) {
 		Claims claims = Jwts.claims().setSubject(payload);
 		Date now = new Date();
-		Date validity = new Date(now.getTime() + expireLength);
 		return Jwts.builder()
 			.setClaims(claims)
 			.setIssuedAt(now)
-			.setExpiration(validity)
+			.setExpiration(new Date(now.getTime() + expiredLength))
 			.signWith(SignatureAlgorithm.HS256, secretKey)
 			.compact();
 	}
@@ -68,9 +66,7 @@ public class JwtAuthenticationProvider {
 
 	public boolean validateToken(String token) {
 		try {
-			Jws<Claims> claimsJws = Jwts.parser()
-				.setSigningKey(secretKey)
-				.parseClaimsJws(token);
+			Jws<Claims> claimsJws = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 			return !claimsJws.getBody().getExpiration().before(new Date());
 		} catch (ExpiredJwtException e) {
 			log.warn("만료된 JWT 토큰입니다.");
