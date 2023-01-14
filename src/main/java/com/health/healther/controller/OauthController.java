@@ -1,20 +1,17 @@
 package com.health.healther.controller;
 
-import static com.health.healther.constant.MemberStatus.*;
-
 import java.net.URI;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.health.healther.dto.member.LoginResponseDto;
+import com.health.healther.dto.member.LoginResponse;
 import com.health.healther.dto.member.SignUpForm;
 import com.health.healther.service.OauthService;
 
@@ -27,25 +24,25 @@ import lombok.extern.slf4j.Slf4j;
 public class OauthController {
 	private final OauthService oauthService;
 
-	@GetMapping("/login/oauth2/code/{provider}")
-	public ResponseEntity<LoginResponseDto> login(@PathVariable String provider, @RequestParam String code) {
-		LoginResponseDto response = oauthService.createJwtAuth(provider, code);
-		return getResponseEntity(provider, code, response);
+	@PostMapping("/login/callback/{provider}")
+	public ResponseEntity<LoginResponse> oauthLogin(@PathVariable String provider, @RequestParam String code) {
+		LoginResponse response = oauthService.getOauth(provider, code);
+		return getResponseEntity(response);
 	}
 
 	@PostMapping("/login/oauth2/signUp")
-	public ResponseEntity<LoginResponseDto> signUp(@RequestParam String oauthId, @RequestBody SignUpForm form) {
+	public ResponseEntity<LoginResponse> signUp(@RequestParam String oauthId, @RequestBody SignUpForm form) {
 		return ResponseEntity.ok(oauthService.signUpAndCreateJwtAuth(oauthId, form));
 	}
 
-	private ResponseEntity<LoginResponseDto> getResponseEntity(String provider, String code,
-		LoginResponseDto response) {
-		if (response.getMemberStatus().equals(NEED_DATA)) {
+	private static ResponseEntity<LoginResponse> getResponseEntity(LoginResponse response) {
+		if (response.getTokenType() == null) {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setLocation(
 				URI.create("http://localhost:8080/login/oauth2/signUp?oauthId=" + response.getOauthId()));
-			return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+			return new ResponseEntity<>(response, headers, HttpStatus.MOVED_PERMANENTLY);
+		} else {
+			return ResponseEntity.ok(response);
 		}
-		return ResponseEntity.ok().body(oauthService.createJwtAuth(provider, code));
 	}
 }
