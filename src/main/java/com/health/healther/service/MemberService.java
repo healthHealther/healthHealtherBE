@@ -12,7 +12,9 @@ import com.health.healther.exception.member.MemberCustomException;
 import com.health.healther.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
