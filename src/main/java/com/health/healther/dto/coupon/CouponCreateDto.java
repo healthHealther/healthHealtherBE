@@ -2,6 +2,7 @@ package com.health.healther.dto.coupon;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.health.healther.domain.model.Space;
@@ -27,7 +28,7 @@ public class CouponCreateDto {
 	@NotNull
 	private LocalDate expiredDate;
 
-	@NotNull
+	@NotBlank
 	private String couponNumber;
 
 	@NotNull
