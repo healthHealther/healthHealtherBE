@@ -69,7 +69,7 @@ public class OauthService {
 	public LoginResponse signUpAndCreateJwtAuth(String oauthId, SignUpForm form) {
 		Member member = memberRepository.findByOauthId(oauthId)
 			.orElseThrow(() -> new MemberCustomException(NOT_FOUND_MEMBER));
-		member.updateMember(form.getName(), form.getNickName(), form.getPhone());
+		member.updateFromSignUpForm(form.getName(), form.getNickName(), form.getPhone());
 		String accessToken = jwtAuthenticationProvider.createAccessToken(String.valueOf(member.getId()));
 		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
 		return LoginResponse.builder()
