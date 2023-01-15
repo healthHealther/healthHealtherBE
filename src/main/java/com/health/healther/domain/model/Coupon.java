@@ -15,14 +15,18 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE COUPON SET COUPON.DELETED_AT = CURRENT_TIMESTAMP WHERE COUPON.COUPON_ID = ?")
-@Getter
+@AllArgsConstructor
+@Entity
 public class Coupon extends BaseEntity {
 
 	@Id
@@ -55,4 +59,14 @@ public class Coupon extends BaseEntity {
 
 	@Column(name = "IS_USED")
 	private boolean isUsed;
+
+	public Coupon(Space space, int discountAmount, LocalDate openDate, LocalDate expiredDate, String couponNumber,
+		int amount) {
+		this.space = space;
+		this.discountAmount = discountAmount;
+		this.openDate = openDate;
+		this.expiredDate = expiredDate;
+		this.couponNumber = couponNumber;
+		this.amount = amount;
+	}
 }
