@@ -36,7 +36,7 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("{spaceId}")
+    @GetMapping("/{spaceId}")
     public ResponseEntity<?> getReviewList(
             @PathVariable("spaceId") Long spaceId
     ) {
