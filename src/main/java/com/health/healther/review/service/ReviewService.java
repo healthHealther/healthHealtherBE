@@ -6,4 +6,5 @@ import org.springframework.http.ResponseEntity;
 public interface ReviewService {
     void createReview(ReviewCreateRequestDto request);
 
+    void deleteReview(Long reviewId);
 }
