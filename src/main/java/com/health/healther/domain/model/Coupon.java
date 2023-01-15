@@ -60,13 +60,4 @@ public class Coupon extends BaseEntity {
 	@Column(name = "IS_USED")
 	private boolean isUsed;
 
-	public Coupon(Space space, int discountAmount, LocalDate openDate, LocalDate expiredDate, String couponNumber,
-		int amount) {
-		this.space = space;
-		this.discountAmount = discountAmount;
-		this.openDate = openDate;
-		this.expiredDate = expiredDate;
-		this.couponNumber = couponNumber;
-		this.amount = amount;
-	}
 }
