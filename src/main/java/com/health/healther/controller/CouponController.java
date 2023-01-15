@@ -2,6 +2,7 @@ package com.health.healther.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +21,8 @@ public class CouponController {
 	private final CouponService couponService;
 
 	@PostMapping
-	public Long addCoupon(@RequestBody @Valid CouponCreateDto createDto) {
-		return couponService.addCoupon(createDto);
+	public ResponseEntity<String> addCoupon(@RequestBody @Valid CouponCreateDto createDto) {
+		return ResponseEntity.ok(couponService.addCoupon(createDto));
 	}
 
 }
