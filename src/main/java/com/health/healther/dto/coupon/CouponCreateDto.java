@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.health.healther.domain.model.Space;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,7 +15,7 @@ import lombok.ToString;
 public class CouponCreateDto {
 
 	@NotNull
-	private Space space;
+	private Long spaceId;
 
 	@NotNull
 	private int discountAmount;
