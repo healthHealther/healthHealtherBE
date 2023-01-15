@@ -2,6 +2,8 @@ package com.health.healther.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,7 @@ public class OauthController {
 	}
 
 	@PostMapping("/login/oauth2/signUp")
-	public ResponseEntity<LoginResponse> signUp(@RequestParam String oauthId, @RequestBody SignUpForm form) {
+	public ResponseEntity<LoginResponse> signUp(@RequestParam String oauthId, @RequestBody @Valid SignUpForm form) {
 		return ResponseEntity.ok(oauthService.signUpAndCreateJwtAuth(oauthId, form));
 	}
 

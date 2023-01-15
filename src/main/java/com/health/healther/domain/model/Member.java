@@ -53,7 +53,7 @@ public class Member extends BaseEntity {
 	@Column(name = "LOGIN_TYPE")
 	private LoginType loginType;
 
-	public void updateMember(String name, String nickName, String phone) {
+	public void updateFromSignUpForm(String name, String nickName, String phone) {
 		this.name = name;
 		this.nickName = nickName;
 		this.phone = phone;
