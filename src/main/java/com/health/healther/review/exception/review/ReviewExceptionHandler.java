@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ReviewExceptionHandler {
 
     @ExceptionHandler(NoFoundMemberException.class)
-    public ResponseEntity<ErrorMessage> NoSpaceExceptionHandler(
+    public ResponseEntity<ErrorMessage> NoFoundMemberExceptionHandler(
             NoFoundMemberException exception
     ) {
         return ResponseEntity.badRequest()
@@ -22,10 +22,18 @@ public class ReviewExceptionHandler {
 
 
     @ExceptionHandler(NoFoundSpaceException.class)
-    public ResponseEntity<ErrorMessage> NoMemberExceptionHandler(
+    public ResponseEntity<ErrorMessage> NoFoundSpaceExceptionHandler(
             NoFoundSpaceException exception
     ) {
        return ResponseEntity.badRequest()
                .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(NoFoundReviewException.class)
+    public ResponseEntity<ErrorMessage> NoFoundReviewExceptionHandler(
+            NoFoundReviewException exception
+    ) {
+        return ResponseEntity.badRequest()
+                .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
 }

@@ -1,8 +1,9 @@
 package com.health.healther.review.exception.review;
 
 public class NoFoundReviewException extends RuntimeException {
-    public NoFoundReviewException(String s) {
+    public NoFoundReviewException(String message) {
 
-        super(s);
+        super(message);
+
     }
 }
