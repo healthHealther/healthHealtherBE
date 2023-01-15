@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @ControllerAdvice
 @Slf4j
-public class CouponExceptionController {
+public class CouponExceptionHandler {
 
 	@ExceptionHandler({CouponCustomException.class})
 	public ResponseEntity<ExceptionResponse> customRequestException(final CouponCustomException customException) {
