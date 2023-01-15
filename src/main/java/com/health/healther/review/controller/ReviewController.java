@@ -1,6 +1,7 @@
 package com.health.healther.review.controller;
 
 import com.health.healther.review.domain.dto.ReviewCreateRequestDto;
+import com.health.healther.review.domain.dto.ReviewUpdateDto;
 import com.health.healther.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,12 +49,11 @@ public class ReviewController {
 
     @PutMapping("/{reviewId}")
     public ResponseEntity<?> updateReview(
+            @RequestBody @Valid ReviewUpdateDto request,
             @PathVariable("reviewId") Long reviewId
     ) {
 
-        reviewService.updateReview(reviewId);
+        reviewService.updateReview(request, reviewId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }
