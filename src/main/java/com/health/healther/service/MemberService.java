@@ -27,6 +27,7 @@ public class MemberService {
 			.orElseThrow(() -> new MemberCustomException(NOT_FOUND_MEMBER));
 	}
 
+	@Transactional
 	public Member searchMember(Long memberId) {
 		Member member = findUserFromToken();
 		if (!member.getId().equals(memberId)) {
@@ -42,5 +43,14 @@ public class MemberService {
 			throw new MemberCustomException(NOT_FOUND_MEMBER);
 		}
 		member.updateFromSignUpForm(form.getName(), form.getNickName(), form.getPhone());
+	}
+
+	@Transactional
+	public void deleteMember(Long memberId) {
+		Member member = findUserFromToken();
+		if (!member.getId().equals(memberId)) {
+			throw new MemberCustomException(NOT_FOUND_MEMBER);
+		}
+		memberRepository.delete(member);
 	}
 }
