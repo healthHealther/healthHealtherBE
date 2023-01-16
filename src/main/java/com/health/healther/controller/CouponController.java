@@ -21,8 +21,9 @@ public class CouponController {
 	private final CouponService couponService;
 
 	@PostMapping
-	public ResponseEntity<String> addCoupon(@RequestBody @Valid CouponCreateRequestDto createDto) {
-		return ResponseEntity.ok(couponService.addCoupon(createDto));
+	public ResponseEntity addCoupon(@RequestBody @Valid CouponCreateRequestDto createDto) {
+		couponService.addCoupon(createDto);
+		return ResponseEntity.ok().build();
 	}
 
 }

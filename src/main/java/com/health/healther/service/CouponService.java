@@ -23,7 +23,7 @@ public class CouponService {
 
 	private final SpaceRepository spaceRepository;
 
-	public String addCoupon(CouponCreateRequestDto createDto) {
+	public void addCoupon(CouponCreateRequestDto createDto) {
 
 		Space space = spaceRepository.findById(createDto.getSpaceId())
 			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_SPACE));
@@ -37,8 +37,6 @@ public class CouponService {
 			.amount(createDto.getAmount())
 			.build();
 		couponRepository.save(coupon);
-
-		return coupon.getSpace().getTitle();
 
 	}
 }
