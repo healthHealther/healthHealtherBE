@@ -35,7 +35,7 @@ public class SpaceService {
 	private final ImageRepository imageRepository;
 
 	@Transactional
-	public void saveSpaceInfo(CreateSpaceRequestDto createSpaceRequestDto) {
+	public Long saveSpaceInfo(CreateSpaceRequestDto createSpaceRequestDto) {
 		// 1. 공간 등록
 		Space space = Space.builder()
 				// .member()
@@ -84,14 +84,15 @@ public class SpaceService {
 						).collect(Collectors.toList())
 		);
 
+		return space.getId();
 	}
 
-	public void createSpace(CreateSpaceRequestDto createSpaceRequestDto) {
+	public Long createSpace(CreateSpaceRequestDto createSpaceRequestDto) {
 		validationSpaceType(createSpaceRequestDto.getSpaceTypes());
 		validationConvenienceType(createSpaceRequestDto.getConvenienceTypes());
 
 		// TODO Find the member and set it up.
-		saveSpaceInfo(createSpaceRequestDto);
+		return saveSpaceInfo(createSpaceRequestDto);
 	}
 
 	private void validationConvenienceType(Set<ConvenienceType> convenienceTypes) {
