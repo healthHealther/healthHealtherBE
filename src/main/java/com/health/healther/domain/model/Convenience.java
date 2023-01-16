@@ -39,4 +39,22 @@ public class Convenience extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "CONVENIENCE_TYPE")
 	private ConvenienceType convenienceType;
+
+	private Convenience(
+			Space space,
+			ConvenienceType convenienceType
+	) {
+		this.space = space;
+		this.convenienceType = convenienceType;
+	}
+
+	public static Convenience of(
+			Space space,
+			ConvenienceType convenienceType
+	) {
+		return new Convenience(
+				space,
+				convenienceType
+		);
+	}
 }
