@@ -2,8 +2,7 @@ package com.health.healther.review.service;
 
 import com.health.healther.review.domain.dto.ReviewCreateRequestDto;
 import com.health.healther.review.domain.dto.ReviewDto;
-import com.health.healther.review.domain.dto.ReviewUpdateDto;
-import org.springframework.http.ResponseEntity;
+import com.health.healther.review.domain.dto.ReviewRequestUpdateDto;
 
 import java.util.List;
 
@@ -14,5 +13,5 @@ public interface ReviewService {
 
     List<ReviewDto> getReviewList(Long spaceId);
 
-    void updateReview(ReviewUpdateDto dto, Long reviewId);
+    void updateReview(ReviewRequestUpdateDto dto, Long reviewId);
 }

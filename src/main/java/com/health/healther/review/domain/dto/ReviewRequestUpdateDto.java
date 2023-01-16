@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ReviewUpdateDto {
+public class ReviewRequestUpdateDto {
 
     @NotBlank
     private String content;
