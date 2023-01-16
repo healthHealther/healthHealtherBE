@@ -21,11 +21,7 @@ import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.domain.repository.SpaceTimeRepository;
 import com.health.healther.dto.space.CreateSpaceRequestDto;
 import com.health.healther.dto.space.SpaceDetailResponseDto;
-import com.health.healther.exception.space.NotFoundConvenienceTypeException;
-import com.health.healther.exception.space.NotFoundImageException;
 import com.health.healther.exception.space.NotFoundSpaceException;
-import com.health.healther.exception.space.NotFoundSpaceKindException;
-import com.health.healther.exception.space.NotFoundSpaceTimeException;
 import com.health.healther.exception.space.NotMatchSpaceTypeException;
 
 import lombok.RequiredArgsConstructor;
@@ -116,30 +112,24 @@ public class SpaceService {
 
 	@Transactional(readOnly = true)
 	public SpaceDetailResponseDto getSpaceDetail(Long spaceId) {
-		Space space = spaceRepository.findById(spaceId)
+		Space space = spaceRepository.findByIdUseFetchJoin(spaceId)
 				.orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
-		SpaceTime spaceTime = spaceTimeRepository.findBySpaceId(spaceId)
-				.orElseThrow(() -> new NotFoundSpaceTimeException("공간 예약 가능 시간 정보를 찾을 수 없습니다."));
-
 		Set<SpaceType> spaceKinds = new HashSet<>(
-				spaceKindRepository.findAllBySpaceId(spaceId)
-						.orElseThrow(() -> new NotFoundSpaceKindException("공간 유형을 찾을 수 없습니다."))
-						.stream().map(spaceKind -> spaceKind.getSpaceType())
+				space.getSpaceKinds().stream()
+						.map(spaceKind -> spaceKind.getSpaceType())
 						.collect(Collectors.toList())
 		);
 
 		Set<ConvenienceType> conveniences = new HashSet<>(
-				convenienceRepository.findAllBySpaceId(spaceId)
-						.orElseThrow(() -> new NotFoundConvenienceTypeException("편의사항 정보를 찾을 수 없습니다."))
-						.stream().map(convenience -> convenience.getConvenienceType())
+				space.getConveniences().stream()
+						.map(convenience -> convenience.getConvenienceType())
 						.collect(Collectors.toList())
 		);
 
 		Set<String> images = new HashSet<>(
-				imageRepository.findAllBySpaceId(spaceId)
-						.orElseThrow(() -> new NotFoundImageException("이미지 정보를 찾을 수 없습니다."))
-						.stream().map(image -> image.getImageUrl())
+				space.getImages().stream()
+						.map(image -> image.getImageUrl())
 						.collect(Collectors.toList())
 		);
 
@@ -154,8 +144,8 @@ public class SpaceService {
 				.rule(space.getRule())
 				.price(space.getPrice())
 				.images(images)
-				.openTime(spaceTime.getOpenTime())
-				.closeTime(spaceTime.getCloseTime())
+				.openTime(space.getSpaceTime().getOpenTime())
+				.closeTime(space.getSpaceTime().getCloseTime())
 				.spaceTypes(spaceKinds)
 				.build();
 	}

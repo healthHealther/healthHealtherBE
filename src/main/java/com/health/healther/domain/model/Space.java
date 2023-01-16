@@ -1,5 +1,8 @@
 package com.health.healther.domain.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -56,4 +61,16 @@ public class Space extends BaseEntity {
 
 	@Column(name = "PRICE")
 	private int price;
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "space")
+	private SpaceTime spaceTime;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "space")
+	private Set<SpaceKind> spaceKinds = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "space")
+	private Set<Convenience> conveniences = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "space")
+	private Set<Image> images = new HashSet<>();
 }
