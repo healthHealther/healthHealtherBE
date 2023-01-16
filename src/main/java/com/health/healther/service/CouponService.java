@@ -38,6 +38,7 @@ public class CouponService {
 			.expiredDate(createDto.getExpiredDate())
 			.couponNumber(UUID.randomUUID().toString())
 			.amount(createDto.getAmount())
+			.isUsed(false)
 			.build();
 		couponRepository.save(coupon);
 
