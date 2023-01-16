@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-public class CouponCreateDto {
+public class CouponCreateRequestDto {
 
 	@NotNull
 	private Long spaceId;

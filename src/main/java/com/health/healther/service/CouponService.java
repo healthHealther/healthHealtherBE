@@ -8,7 +8,7 @@ import com.health.healther.domain.model.Coupon;
 import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.CouponRepository;
 import com.health.healther.domain.repository.SpaceRepository;
-import com.health.healther.dto.coupon.CouponCreateDto;
+import com.health.healther.dto.coupon.CouponCreateRequestDto;
 import com.health.healther.exception.coupon.CouponCustomException;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class CouponService {
 
 	private final SpaceRepository spaceRepository;
 
-	public String addCoupon(CouponCreateDto createDto) {
+	public String addCoupon(CouponCreateRequestDto createDto) {
 
 		Space space = spaceRepository.findById(createDto.getSpaceId())
 			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_SPACE));
