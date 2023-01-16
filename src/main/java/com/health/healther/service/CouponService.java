@@ -2,6 +2,8 @@ package com.health.healther.service;
 
 import static com.health.healther.exception.coupon.CouponErrorCode.*;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import com.health.healther.domain.model.Coupon;
@@ -31,7 +33,7 @@ public class CouponService {
 			.discountAmount(createDto.getDiscountAmount())
 			.openDate(createDto.getOpenDate())
 			.expiredDate(createDto.getExpiredDate())
-			.couponNumber(createDto.getCouponNumber())
+			.couponNumber(UUID.randomUUID().toString())
 			.amount(createDto.getAmount())
 			.build();
 		couponRepository.save(coupon);
