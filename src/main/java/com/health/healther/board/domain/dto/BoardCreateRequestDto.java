@@ -17,7 +17,7 @@ public class BoardCreateRequestDto {
     private String title;
 
 
-    @Size(max = 500)
+    @Size(min = 1, max = 500)
     @NotBlank
     private String content;
 
