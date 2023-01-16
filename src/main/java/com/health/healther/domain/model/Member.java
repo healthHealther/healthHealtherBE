@@ -15,16 +15,19 @@ import com.health.healther.constant.LoginType;
 import com.health.healther.constant.MemberStatus;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE MEMBER SET MEMBER.DELETED_AT = CURRENT_TIMESTAMP WHERE MEMBER.MEMBER_ID = ?")
-@Getter
+@Entity
 public class Member extends BaseEntity {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "MEMBER_ID")
@@ -33,7 +36,7 @@ public class Member extends BaseEntity {
 	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "NICKNAME")
+	@Column(name = "NICK_NAME")
 	private String nickName;
 
 	@Column(name = "PHONE")
@@ -49,4 +52,11 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "LOGIN_TYPE")
 	private LoginType loginType;
+
+	public void updateFromSignUpForm(String name, String nickName, String phone) {
+		this.name = name;
+		this.nickName = nickName;
+		this.phone = phone;
+		this.memberStatus = MemberStatus.ACTIVE;
+	}
 }
