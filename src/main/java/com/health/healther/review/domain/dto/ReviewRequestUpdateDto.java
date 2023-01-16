@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class ReviewRequestUpdateDto {
 
     @NotBlank
