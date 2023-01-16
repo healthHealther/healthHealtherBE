@@ -1,4 +1,4 @@
-package com.health.healther.domain.model;
+package com.health.healther.board.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.health.healther.domain.model.BaseEntity;
+import com.health.healther.domain.model.Member;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 

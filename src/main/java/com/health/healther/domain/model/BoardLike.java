@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.health.healther.board.domain.model.Board;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
