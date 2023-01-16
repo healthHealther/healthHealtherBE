@@ -28,6 +28,7 @@ public class BoardServiceImpl implements BoardService {
                               .member(member)
                               .title(request.getTitle())
                               .content(request.getContent())
+                              .likeCount(0)
                               .build()
         );
     }
