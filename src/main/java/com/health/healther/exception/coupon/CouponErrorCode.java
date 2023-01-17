@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 public enum CouponErrorCode {
 
 	NOT_FOUND_SPACE(HttpStatus.BAD_REQUEST, "일치하는 공간이 없습니다."),
-	NOT_FOUND_COUPON(HttpStatus.BAD_REQUEST, "일치하는 쿠폰이 없습니다.");
+	NOT_FOUND_COUPON(HttpStatus.BAD_REQUEST, "일치하는 쿠폰이 없습니다."),
+	NOT_FOUND_MEMBER(HttpStatus.BAD_REQUEST, "일치하는 회원이 없습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String detail;

@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.health.healther.domain.model.Coupon;
+import com.health.healther.domain.model.Member;
 import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.CouponRepository;
+import com.health.healther.domain.repository.MemberRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
+import com.health.healther.dto.coupon.CouponGiftRequestDto;
 import com.health.healther.dto.coupon.CouponResponseDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
 import com.health.healther.exception.coupon.CouponCustomException;
@@ -26,6 +29,8 @@ public class CouponService {
 	private final CouponRepository couponRepository;
 
 	private final SpaceRepository spaceRepository;
+
+	private final MemberRepository memberRepository;
 
 	public void addCoupon(CouponCreateRequestDto createDto) {
 
@@ -84,5 +89,25 @@ public class CouponService {
 		coupon.updateCoupon(couponUpdateRequestDto.getDiscountAmount(),
 			couponUpdateRequestDto.getOpenDate(),
 			couponUpdateRequestDto.getExpiredDate());
+	}
+
+	public void giftCoupon(CouponGiftRequestDto couponGiftRequestDto) {
+		Coupon coupon = couponRepository.findById(couponGiftRequestDto.getCouponId())
+			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_SPACE));
+
+		Member member = memberRepository.findById(couponGiftRequestDto.getMemberId())
+			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_MEMBER));
+
+		// 해당 부분 코드 수정 필요
+		// Coupon coupon = Coupon.builder()
+		// 	.space(space)
+		// 	.discountAmount(createDto.getDiscountAmount())
+		// 	.openDate(createDto.getOpenDate())
+		// 	.expiredDate(createDto.getExpiredDate())
+		// 	.couponNumber(UUID.randomUUID().toString())
+		// 	.amount(createDto.getAmount())
+		// 	.isUsed(false)
+		// 	.build();
+		couponRepository.save(coupon);
 	}
 }

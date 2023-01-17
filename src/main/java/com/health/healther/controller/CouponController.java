@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
+import com.health.healther.dto.coupon.CouponGiftRequestDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
 import com.health.healther.service.CouponService;
 
@@ -48,5 +49,11 @@ public class CouponController {
 		@RequestBody @Valid CouponUpdateRequestDto couponUpdateRequestDto) {
 		couponService.updateCoupon(couponId, couponUpdateRequestDto);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@PostMapping("/gift")
+	public ResponseEntity giftCoupon(@RequestBody @Valid CouponGiftRequestDto couponGiftRequestDto) {
+		couponService.giftCoupon(couponGiftRequestDto);
+		return ResponseEntity.ok().build();
 	}
 }
