@@ -28,4 +28,12 @@ public class ReviewExceptionHandler {
        return ResponseEntity.badRequest()
                .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(NoFoundReviewException.class)
+    public ResponseEntity<ErrorMessage> NoFoundReviewExceptionHandler(
+            NoFoundReviewException exception
+    ) {
+        return ResponseEntity.badRequest()
+                             .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
 }

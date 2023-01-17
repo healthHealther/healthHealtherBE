@@ -6,14 +6,20 @@ import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.MemberRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.review.domain.dto.ReviewCreateRequestDto;
+import com.health.healther.review.domain.dto.ReviewDto;
+import com.health.healther.review.domain.dto.ReviewRequestUpdateDto;
 import com.health.healther.review.domain.model.Review;
 import com.health.healther.review.domain.repository.ReviewRepository;
 import com.health.healther.review.exception.review.NoFoundMemberException;
+import com.health.healther.review.exception.review.NoFoundReviewException;
 import com.health.healther.review.exception.review.NoFoundSpaceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -47,4 +53,36 @@ public class ReviewService {
 
     }
 
+    @Transactional
+    public void deleteReview(Long reviewId) {
+
+        Review review = reviewRepository.findById(reviewId)
+                    .orElseThrow(() -> new NoFoundReviewException("일치하는 후기 정보가 존재하지 않습니다."));
+
+        reviewRepository.delete(review);
+
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<ReviewDto> getReviewList(Long spaceId) {
+
+        Space space = spaceRepository.findById(spaceId)
+                                     .orElseThrow(() -> new NoFoundSpaceException("일치하는 후기 정보가 존재하지 않습니다."));
+
+
+        return space.getReviews().stream()
+                    .map(ReviewDto::fromEntity)
+                    .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateReview(ReviewRequestUpdateDto dto, Long reviewId) {
+
+        Review review = reviewRepository.findById(reviewId)
+                                        .orElseThrow(() -> new NoFoundReviewException("일치하는 후기 정보가 존재하지 않습니다."));
+
+        review.updateReview(dto.getContent(), dto.getGrade());
+
+    }
 }

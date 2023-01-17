@@ -43,5 +43,11 @@ public class Review extends BaseEntity {
 	@Column(name = "GRADE")
 	private int grade;
 
+	public void updateReview(String content, int grade) {
+
+		this.content = content;
+		this.grade = grade;
+	}
+
 
 }
