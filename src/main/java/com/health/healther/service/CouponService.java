@@ -14,6 +14,7 @@ import com.health.healther.domain.repository.CouponRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
 import com.health.healther.dto.coupon.CouponResponseDto;
+import com.health.healther.dto.coupon.CouponUpdateRequestDto;
 import com.health.healther.exception.coupon.CouponCustomException;
 
 import lombok.RequiredArgsConstructor;
@@ -72,5 +73,16 @@ public class CouponService {
 			.amount(coupon.get().getAmount())
 			.isUsed(coupon.get().isUsed())
 			.build();
+	}
+
+	@Transactional
+	public void updateCoupon(Long couponId, CouponUpdateRequestDto couponUpdateRequestDto) {
+
+		Coupon coupon = couponRepository.findById(couponId)
+			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_COUPON));
+
+		coupon.updateCoupon(couponUpdateRequestDto.getDiscountAmount(),
+			couponUpdateRequestDto.getOpenDate(),
+			couponUpdateRequestDto.getExpiredDate());
 	}
 }
