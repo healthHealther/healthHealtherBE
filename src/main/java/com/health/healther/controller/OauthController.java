@@ -37,7 +37,8 @@ public class OauthController {
 
 	@PostMapping("/login/oauth2/signUp")
 	public ResponseEntity<LoginResponse> signUp(@RequestParam String oauthId, @RequestBody @Valid SignUpForm form) {
-		return ResponseEntity.ok(oauthService.signUpAndCreateJwtAuth(oauthId, form));
+		LoginResponse response = oauthService.signUpAndCreateJwtAuth(oauthId, form);
+		return  new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	private ResponseEntity<LoginResponse> getResponseEntity(LoginResponse response) {
