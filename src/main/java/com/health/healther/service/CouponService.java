@@ -57,20 +57,21 @@ public class CouponService {
 	@Transactional(readOnly = true)
 	public CouponResponseDto getCoupon(Long spaceId) {
 
-		Optional<Coupon> coupon = couponRepository.findBySpace_Id(spaceId);
-		if (!coupon.isPresent()) {
+		Optional<Coupon> optionalCoupon = couponRepository.findBySpace_Id(spaceId);
+		if (!optionalCoupon.isPresent()) {
 			throw new CouponCustomException(NOT_FOUND_SPACE);
 		}
+		Coupon coupon = optionalCoupon.get();
 
 		return CouponResponseDto.builder()
-			.couponId(coupon.get().getId())
-			.memberName(coupon.get().getMember().getName())
-			.discountAmount(coupon.get().getDiscountAmount())
-			.openDate(coupon.get().getOpenDate())
-			.expiredDate(coupon.get().getExpiredDate())
-			.couponNumber(coupon.get().getCouponNumber())
-			.amount(coupon.get().getAmount())
-			.isUsed(coupon.get().isUsed())
+			.couponId(coupon.getId())
+			.memberName(coupon.getMember().getName())
+			.discountAmount(coupon.getDiscountAmount())
+			.openDate(coupon.getOpenDate())
+			.expiredDate(coupon.getExpiredDate())
+			.couponNumber(coupon.getCouponNumber())
+			.amount(coupon.getAmount())
+			.isUsed(coupon.isUsed())
 			.build();
 	}
 }
