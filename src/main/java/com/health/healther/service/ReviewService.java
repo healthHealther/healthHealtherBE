@@ -10,6 +10,7 @@ import com.health.healther.dto.review.ReviewDto;
 import com.health.healther.dto.review.ReviewRequestUpdateDto;
 import com.health.healther.domain.model.Review;
 import com.health.healther.domain.repository.ReviewRepository;
+import com.health.healther.exception.review.NoFoundMemberException;
 import com.health.healther.exception.review.NoFoundReviewException;
 import com.health.healther.exception.review.NoFoundSpaceException;
 import com.health.healther.service.MemberService;
@@ -43,6 +44,13 @@ public class ReviewService {
 
 
         Member member = memberService.findUserFromToken();
+
+
+        if(memberRepository.findById(member.getId()).isEmpty()) {
+
+            throw new NoFoundMemberException("일치하는 회원 정보가 존재하지 않습니다.");
+
+        }
 
         reviewRepository.save(Review.builder()
                                     .member(member)
