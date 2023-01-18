@@ -17,11 +17,15 @@ import org.hibernate.annotations.Where;
 import com.health.healther.constant.ConvenienceType;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE CONVENIENCE SET CONVENIENCE.DELETED_AT = CURRENT_TIMESTAMP WHERE CONVENIENCE.CONVENIENCE_ID = ?")
 @Getter

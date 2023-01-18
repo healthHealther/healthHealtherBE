@@ -7,10 +7,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import com.health.healther.dto.space.CreateSpaceRequestDto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,7 +30,7 @@ public class SpaceTime extends BaseEntity {
 	@Column(name = "SPACE_TIME_ID")
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SPACE_ID")
 	private Space space;
 
@@ -37,4 +39,25 @@ public class SpaceTime extends BaseEntity {
 
 	@Column(name = "CLOSE_TIME")
 	private int closeTime;
+
+	private SpaceTime(
+			Space space,
+			int openTime,
+			int closeTime
+	) {
+		this.space = space;
+		this.openTime = openTime;
+		this.closeTime = closeTime;
+	}
+
+	public static SpaceTime of(
+			Space space,
+			CreateSpaceRequestDto createSpaceRequestDto
+	) {
+		return new SpaceTime(
+				space,
+				createSpaceRequestDto.getOpenTime(),
+				createSpaceRequestDto.getCloseTime()
+		);
+	}
 }
