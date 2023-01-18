@@ -1,12 +1,15 @@
 package com.health.healther.dto.space;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+
+import com.health.healther.constant.ConvenienceType;
+import com.health.healther.constant.SpaceType;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,7 +33,7 @@ public class CreateSpaceRequestDto {
 
 	@NotEmpty
 	@Valid
-	private List<ConvenienceTypeDto> convenienceTypes;
+	private Set<ConvenienceType> convenienceTypes;
 
 	@NotBlank
 	private String notice;
@@ -42,7 +45,7 @@ public class CreateSpaceRequestDto {
 	private int price;
 
 	@Valid
-	private List<ImageUrlDto> images;
+	private Set<String> images;
 
 	@Min(00)
 	private int openTime;
@@ -52,5 +55,5 @@ public class CreateSpaceRequestDto {
 
 	@NotEmpty
 	@Valid
-	private List<SpaceTypeDto> spaceTypes;
+	private Set<SpaceType> spaceTypes;
 }

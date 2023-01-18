@@ -23,9 +23,8 @@ public class SpaceController {
 	private final SpaceService spaceService;
 
 	@PostMapping
-	public ResponseEntity createSpace(@RequestBody @Valid CreateSpaceRequestDto createSpaceRequestDto) {
-		spaceService.createSpace(createSpaceRequestDto);
-		return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<Long> createSpace(@RequestBody @Valid CreateSpaceRequestDto createSpaceRequestDto) {
+		return new ResponseEntity(spaceService.createSpace(createSpaceRequestDto), HttpStatus.CREATED);
 	}
 
 }
