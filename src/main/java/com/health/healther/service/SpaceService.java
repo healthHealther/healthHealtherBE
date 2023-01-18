@@ -1,5 +1,6 @@
 package com.health.healther.service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,8 @@ import com.health.healther.domain.repository.SpaceKindRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.domain.repository.SpaceTimeRepository;
 import com.health.healther.dto.space.CreateSpaceRequestDto;
+import com.health.healther.dto.space.SpaceDetailResponseDto;
+import com.health.healther.exception.space.NotFoundSpaceException;
 import com.health.healther.exception.space.NotMatchSpaceTypeException;
 
 import lombok.RequiredArgsConstructor;
@@ -74,7 +77,6 @@ public class SpaceService {
 		);
 
 		// 5. 이미지 등록
-
 		imageRepository.saveAll(
 				createSpaceRequestDto.getImages().stream()
 						.map(url -> Image.builder()
@@ -107,5 +109,45 @@ public class SpaceService {
 			if (spaceType == null)
 				throw new NotMatchSpaceTypeException("일치하는 공간 유형이 없습니다.");
 		}
+	}
+
+	@Transactional(readOnly = true)
+	public SpaceDetailResponseDto getSpaceDetail(Long spaceId) {
+		Space space = spaceRepository.findByIdUseFetchJoin(spaceId)
+				.orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
+
+		Set<SpaceType> spaceKinds = new HashSet<>(
+				space.getSpaceKinds().stream()
+						.map(spaceKind -> spaceKind.getSpaceType())
+						.collect(Collectors.toList())
+		);
+
+		Set<ConvenienceType> conveniences = new HashSet<>(
+				space.getConveniences().stream()
+						.map(convenience -> convenience.getConvenienceType())
+						.collect(Collectors.toList())
+		);
+
+		Set<String> images = new HashSet<>(
+				space.getImages().stream()
+						.map(image -> image.getImageUrl())
+						.collect(Collectors.toList())
+		);
+
+		return SpaceDetailResponseDto.builder()
+				.spaceId(space.getId())
+				.title(space.getTitle())
+				.content(space.getContent())
+				.address(space.getAddress())
+				.addressDetail(space.getAddressDetail())
+				.convenienceTypes(conveniences)
+				.notice(space.getNotice())
+				.rule(space.getRule())
+				.price(space.getPrice())
+				.images(images)
+				.openTime(space.getSpaceTime().getOpenTime())
+				.closeTime(space.getSpaceTime().getCloseTime())
+				.spaceTypes(spaceKinds)
+				.build();
 	}
 }
