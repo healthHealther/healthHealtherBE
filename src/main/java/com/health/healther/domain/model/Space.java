@@ -1,10 +1,22 @@
 package com.health.healther.domain.model;
 
-import javax.persistence.*;
+
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 
 import com.health.healther.review.domain.model.Review;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import com.health.healther.dto.space.CreateSpaceRequestDto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -52,4 +64,39 @@ public class Space extends BaseEntity {
 
 	@Column(name = "PRICE")
 	private int price;
+
+	private Space(
+			Member member,
+			String title,
+			String content,
+			String address,
+			String addressDetail,
+			String notice,
+			String rule,
+			int price
+	) {
+		this.member = member;
+		this.title = title;
+		this.content = content;
+		this.address = address;
+		this.addressDetail = addressDetail;
+		this.notice = notice;
+		this.rule = rule;
+		this.price = price;
+	}
+
+	public static Space of(
+			CreateSpaceRequestDto createSpaceRequestDto
+	) {
+		return new Space(
+				null,
+				createSpaceRequestDto.getTitle(),
+				createSpaceRequestDto.getContent(),
+				createSpaceRequestDto.getAddress(),
+				createSpaceRequestDto.getAddressDetail(),
+				createSpaceRequestDto.getNotice(),
+				createSpaceRequestDto.getRule(),
+				createSpaceRequestDto.getPrice()
+		);
+	}
 }
