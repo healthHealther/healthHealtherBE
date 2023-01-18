@@ -1,7 +1,7 @@
-package com.health.healther.board.controller;
+package com.health.healther.controller;
 
 import com.health.healther.board.domain.dto.BoardCreateRequestDto;
-import com.health.healther.board.service.BoardService;
+import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +19,7 @@ import javax.validation.Valid;
 public class BoardController {
 
     private final BoardService boardService;
+
     @PostMapping
     public ResponseEntity<Object> createBoard(
             @RequestBody @Valid BoardCreateRequestDto request) {
