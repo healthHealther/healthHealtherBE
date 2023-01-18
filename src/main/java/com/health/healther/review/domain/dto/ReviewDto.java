@@ -1,6 +1,5 @@
 package com.health.healther.review.domain.dto;
 
-import com.health.healther.domain.model.Member;
 import com.health.healther.review.domain.model.Review;
 import lombok.*;
 
@@ -11,16 +10,26 @@ import lombok.*;
 @NoArgsConstructor
 public class ReviewDto {
 
-    private Member member;
+    private String spaceName;
+
+
+    private String MemberName;
+
+    private String nickName;
+
+    private String title;
 
     private String content;
 
     private int grade;
 
-    public static ReviewDto fromEntity(Review review){
+    public static ReviewDto fromEntity(Review review) {
 
         return ReviewDto.builder()
-                        .member(review.getMember())
+                        .spaceName(review.getSpace().getTitle())
+                        .MemberName(review.getMember().getName())
+                        .nickName(review.getMember().getNickName())
+                        .title(review.getTitle())
                         .content(review.getContent())
                         .grade(review.getGrade())
                         .build();

@@ -1,6 +1,7 @@
 package com.health.healther.review.controller;
 
 import com.health.healther.review.domain.dto.ReviewCreateRequestDto;
+import com.health.healther.review.domain.dto.ReviewRequestUpdateDto;
 import com.health.healther.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,4 +58,3 @@ public class ReviewController {
     }
 }
 
-}

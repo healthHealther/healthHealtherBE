@@ -82,7 +82,6 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                                         .orElseThrow(() -> new NoFoundReviewException("일치하는 후기 정보가 존재하지 않습니다."));
 
-        review.updateReview(dto.getContent(), dto.getGrade());
-
+        review.updateReview(dto.getTitle(), dto.getContent(), dto.getGrade());
     }
 }

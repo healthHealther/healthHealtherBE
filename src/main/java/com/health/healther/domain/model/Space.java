@@ -30,7 +30,6 @@ public class Space extends BaseEntity {
 	private Member member;
 
 	@OneToMany(mappedBy = "space")
-	@JoinColumn(name = "reviews")
 	private List<Review> reviews = new ArrayList<>();
 
 	@Column(name = "TITLE")

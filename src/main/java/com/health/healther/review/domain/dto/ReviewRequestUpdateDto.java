@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 public class ReviewRequestUpdateDto {
 
     @NotBlank
+    private String title;
+
+    @NotBlank
     private String content;
 
     @NotNull
