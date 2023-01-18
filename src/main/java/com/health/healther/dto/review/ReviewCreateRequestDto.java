@@ -14,9 +14,6 @@ import javax.validation.constraints.NotBlank;
 public class ReviewCreateRequestDto {
 
     @NotBlank
-    private Long userId;
-
-    @NotBlank
     private Long spaceId;
 
     @NotBlank
