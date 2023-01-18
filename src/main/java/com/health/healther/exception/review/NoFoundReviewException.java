@@ -1,4 +1,4 @@
-package com.health.healther.review.exception.review;
+package com.health.healther.exception.review;
 
 
 public class NoFoundReviewException extends RuntimeException {

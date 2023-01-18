@@ -1,8 +1,8 @@
-package com.health.healther.review.controller;
+package com.health.healther.controller;
 
-import com.health.healther.review.domain.dto.ReviewCreateRequestDto;
-import com.health.healther.review.domain.dto.ReviewRequestUpdateDto;
-import com.health.healther.review.service.ReviewService;
+import com.health.healther.dto.review.ReviewCreateRequestDto;
+import com.health.healther.dto.review.ReviewRequestUpdateDto;
+import com.health.healther.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

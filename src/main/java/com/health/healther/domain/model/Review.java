@@ -1,12 +1,10 @@
-package com.health.healther.review.domain.model;
+package com.health.healther.domain.model;
 
 import javax.persistence.*;
 
 import com.health.healther.domain.model.BaseEntity;
 import com.health.healther.domain.model.Member;
 import com.health.healther.domain.model.Space;
-import com.health.healther.review.domain.dto.ReviewCreateRequestDto;
-import com.health.healther.review.domain.repository.ReviewRepository;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

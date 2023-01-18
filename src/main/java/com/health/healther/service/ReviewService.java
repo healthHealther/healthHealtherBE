@@ -1,18 +1,18 @@
-package com.health.healther.review.service;
+package com.health.healther.service;
 
 
 import com.health.healther.domain.model.Member;
 import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.MemberRepository;
 import com.health.healther.domain.repository.SpaceRepository;
-import com.health.healther.review.domain.dto.ReviewCreateRequestDto;
-import com.health.healther.review.domain.dto.ReviewDto;
-import com.health.healther.review.domain.dto.ReviewRequestUpdateDto;
-import com.health.healther.review.domain.model.Review;
-import com.health.healther.review.domain.repository.ReviewRepository;
-import com.health.healther.review.exception.review.NoFoundMemberException;
-import com.health.healther.review.exception.review.NoFoundReviewException;
-import com.health.healther.review.exception.review.NoFoundSpaceException;
+import com.health.healther.dto.review.ReviewCreateRequestDto;
+import com.health.healther.dto.review.ReviewDto;
+import com.health.healther.dto.review.ReviewRequestUpdateDto;
+import com.health.healther.domain.model.Review;
+import com.health.healther.domain.repository.ReviewRepository;
+import com.health.healther.exception.review.NoFoundReviewException;
+import com.health.healther.exception.review.NoFoundSpaceException;
+import com.health.healther.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,6 +32,8 @@ public class ReviewService {
 
     private final MemberRepository memberRepository;
 
+    private final MemberService memberService;
+
     @Transactional(readOnly = true)
     public void createReview(ReviewCreateRequestDto request) {
 
@@ -39,9 +41,8 @@ public class ReviewService {
                    .orElseThrow(() -> new NoFoundSpaceException("일치하는 공간 정보가 존재하지 않습니다.")
                    );
 
-        Member member = memberRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new NoFoundMemberException("일치하는 회원 정보가 존재하지 않습니다.")
-                    );
+
+        Member member = memberService.findUserFromToken();
 
         reviewRepository.save(Review.builder()
                                     .member(member)
@@ -50,7 +51,6 @@ public class ReviewService {
                                     .content(request.getContent())
                                     .grade(request.getGrade())
                                     .build());
-
     }
 
     @Transactional

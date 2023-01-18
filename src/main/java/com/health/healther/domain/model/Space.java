@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 
-import com.health.healther.review.domain.model.Review;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 

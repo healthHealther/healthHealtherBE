@@ -1,4 +1,4 @@
-package com.health.healther.review.domain.dto;
+package com.health.healther.dto.review;
 
 import lombok.*;
 

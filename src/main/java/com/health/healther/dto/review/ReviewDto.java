@@ -1,6 +1,6 @@
-package com.health.healther.review.domain.dto;
+package com.health.healther.dto.review;
 
-import com.health.healther.review.domain.model.Review;
+import com.health.healther.domain.model.Review;
 import lombok.*;
 
 @Getter
