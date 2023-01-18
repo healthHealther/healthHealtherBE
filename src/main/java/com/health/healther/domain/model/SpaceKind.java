@@ -17,11 +17,15 @@ import org.hibernate.annotations.Where;
 import com.health.healther.constant.SpaceType;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE SPACE_KIND SET SPACE_KIND.DELETED_AT = CURRENT_TIMESTAMP WHERE SPACE_KIND.SPACE_KIND_ID = ?")
 @Getter
@@ -39,22 +43,4 @@ public class SpaceKind extends BaseEntity {
 	@Column(name = "TYPE_NAME")
 	@Enumerated(EnumType.STRING)
 	private SpaceType spaceType;
-
-	private SpaceKind(
-			Space space,
-			SpaceType spaceType
-	) {
-		this.space = space;
-		this.spaceType = spaceType;
-	}
-
-	public static SpaceKind of(
-			Space space,
-			SpaceType spaceType
-	) {
-		return new SpaceKind(
-				space,
-				spaceType
-		);
-	}
 }

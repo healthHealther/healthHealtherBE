@@ -17,11 +17,15 @@ import org.hibernate.annotations.Where;
 import com.health.healther.constant.ConvenienceType;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE CONVENIENCE SET CONVENIENCE.DELETED_AT = CURRENT_TIMESTAMP WHERE CONVENIENCE.CONVENIENCE_ID = ?")
 @Getter
@@ -39,22 +43,4 @@ public class Convenience extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "CONVENIENCE_TYPE")
 	private ConvenienceType convenienceType;
-
-	private Convenience(
-			Space space,
-			ConvenienceType convenienceType
-	) {
-		this.space = space;
-		this.convenienceType = convenienceType;
-	}
-
-	public static Convenience of(
-			Space space,
-			ConvenienceType convenienceType
-	) {
-		return new Convenience(
-				space,
-				convenienceType
-		);
-	}
 }
