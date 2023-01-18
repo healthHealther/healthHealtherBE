@@ -12,7 +12,6 @@ public class ReviewDto {
 
     private String spaceName;
 
-
     private String MemberName;
 
     private String nickName;
