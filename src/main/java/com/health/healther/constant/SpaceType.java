@@ -5,25 +5,21 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import lombok.Getter;
 
-public enum ConvenienceType {
-	SHOWER("SHOWER"),
-	PARKING("PARKING"),
-	DRESSING_ROOM("DRESSING_ROOM"),
-	MIRROR("MIRROR"),
-	WIFI("WIFI"),
-	FOOD("FOOD"),
-	BRING_FOOD("BRING_FOOD");
+public enum SpaceType {
+	GX("GX"),
+	PILATES("PILATES"),
+	YOGA("YOGA");
 
 	@Getter
 	private final String value;
 
-	ConvenienceType(String value) {
+	SpaceType(String value) {
 		this.value = value;
 	}
 
 	@JsonCreator
-	public static ConvenienceType from(String value) {
-		for (ConvenienceType status : ConvenienceType.values()) {
+	public static SpaceType from(String value) {
+		for (SpaceType status : SpaceType.values()) {
 			if (status.getValue().equals(value)) {
 				return status;
 			}

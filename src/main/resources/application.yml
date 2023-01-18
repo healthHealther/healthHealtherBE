@@ -2,6 +2,6 @@ spring:
   profiles:
     group:
       "test": "test"
-      "local": "local, redis, oauth"
-      "dev": "dev, datasource, redis, oauth"
-      "prod": "prod, datasource, redis, oauth"
+      "local": "local, oauth"
+      "dev": "dev, datasource, oauth"
+      "prod": "prod, datasource, oauth"

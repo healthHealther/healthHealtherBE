@@ -13,11 +13,15 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE IMAGE SET IMAGE.DELETED_AT = CURRENT_TIMESTAMP WHERE IMAGE.IMAGE_ID = ?")
 @Getter
