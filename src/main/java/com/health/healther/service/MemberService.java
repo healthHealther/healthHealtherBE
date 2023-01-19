@@ -27,7 +27,6 @@ public class MemberService {
 			.orElseThrow(() -> new MemberCustomException(NOT_FOUND_MEMBER));
 	}
 
-	@Transactional
 	public Member searchMember(Long memberId) {
 		Member member = findUserFromToken();
 		if (!member.getId().equals(memberId)) {
