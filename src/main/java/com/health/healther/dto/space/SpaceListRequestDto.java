@@ -15,7 +15,6 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class SpaceListRequestDto {
-
 	@NotNull
 	private Integer page;
 

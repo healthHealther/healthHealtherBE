@@ -23,8 +23,7 @@ public class SecurityConfig {
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return web -> web.ignoring()
 			.antMatchers(HttpMethod.GET, "/login/callback/**")
-			.antMatchers(HttpMethod.POST, "/login/oauth2/signUp")
-			.antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs");
+			.antMatchers(HttpMethod.POST, "/login/oauth2/signUp");
 	}
 
 	@Bean
