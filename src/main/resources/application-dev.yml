@@ -14,3 +14,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+oauth:
+  sign-up:
+    redirect-url: ${REDIRECT_URL}
