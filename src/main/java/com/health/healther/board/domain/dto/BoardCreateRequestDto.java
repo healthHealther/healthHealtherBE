@@ -30,5 +30,6 @@ public class BoardCreateRequestDto {
                 .content(board.getContent())
                 .build();
 
+
     }
 }
