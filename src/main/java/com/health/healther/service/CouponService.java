@@ -3,6 +3,7 @@ package com.health.healther.service;
 import static com.health.healther.exception.coupon.CouponErrorCode.*;
 
 import java.time.LocalDate;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,8 +15,9 @@ import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.CouponRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
-
 import com.health.healther.dto.coupon.CouponResponseDto;
+import com.health.healther.dto.coupon.CouponUpdateRequestDto;
+
 import com.health.healther.exception.coupon.CouponCustomException;
 
 import lombok.RequiredArgsConstructor;
@@ -64,11 +66,11 @@ public class CouponService {
 		Optional<Coupon> optionalCoupon = couponRepository.findBySpace_IdAndExpiredDateIsAfterAndIsUsed(spaceId, now,
 			false);
 
-		Coupon coupon = optionalCoupon.get();
-
 		if (!optionalCoupon.isPresent()) {
 			throw new CouponCustomException(NOT_FOUND_SPACE);
 		}
+		
+		Coupon coupon = optionalCoupon.get();
 
 		return CouponResponseDto.builder()
 			.couponId(coupon.getId())
@@ -81,5 +83,17 @@ public class CouponService {
 			.isUsed(coupon.isUsed())
 			.build();
 	}
+
+	@Transactional
+	public void updateCoupon(Long couponId, CouponUpdateRequestDto couponUpdateRequestDto) {
+
+		Coupon coupon = couponRepository.findById(couponId)
+			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_COUPON));
+
+		coupon.updateCoupon(couponUpdateRequestDto.getDiscountAmount(),
+			couponUpdateRequestDto.getOpenDate(),
+			couponUpdateRequestDto.getExpiredDate());
+	}
+
 }
 

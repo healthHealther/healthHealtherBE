@@ -1,9 +1,14 @@
 package com.health.healther.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +26,8 @@ import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.domain.repository.SpaceTimeRepository;
 import com.health.healther.dto.space.CreateSpaceRequestDto;
 import com.health.healther.dto.space.SpaceDetailResponseDto;
+import com.health.healther.dto.space.SpaceListRequestDto;
+import com.health.healther.dto.space.SpaceListResponseDto;
 import com.health.healther.exception.space.NotFoundSpaceException;
 import com.health.healther.exception.space.NotMatchSpaceTypeException;
 
@@ -149,5 +156,21 @@ public class SpaceService {
 				.closeTime(space.getSpaceTime().getCloseTime())
 				.spaceTypes(spaceKinds)
 				.build();
+	}
+
+	public Page<SpaceListResponseDto> getSpaceList(SpaceListRequestDto spaceListRequestDto) {
+		PageRequest pageRequest = PageRequest.of(
+				spaceListRequestDto.getPage(),
+				spaceListRequestDto.getSize(),
+				Sort.Direction.DESC,
+				"createdAt"
+		);
+
+		List<SpaceType> spaceTypes = new ArrayList<>(spaceListRequestDto.getSpaceType());
+
+		return spaceKindRepository.findAllBySpaceTypeIsIn(spaceTypes, pageRequest)
+				.map(spaceKind ->
+						new SpaceListResponseDto(spaceKind)
+				);
 	}
 }

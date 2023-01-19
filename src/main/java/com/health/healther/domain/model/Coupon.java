@@ -60,4 +60,9 @@ public class Coupon extends BaseEntity {
 	@Column(name = "IS_USED")
 	private boolean isUsed;
 
+	public void updateCoupon(int discountAmount, LocalDate openDate, LocalDate expiredDate) {
+		this.discountAmount = discountAmount;
+		this.openDate = openDate;
+		this.expiredDate = expiredDate;
+	}
 }
