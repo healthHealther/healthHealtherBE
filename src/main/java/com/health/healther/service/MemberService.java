@@ -1,14 +1,13 @@
 package com.health.healther.service;
 
-import static com.health.healther.exception.member.MemberErrorCode.*;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.health.healther.domain.model.Member;
 import com.health.healther.domain.repository.MemberRepository;
-import com.health.healther.dto.member.SignUpForm;
-import com.health.healther.exception.member.MemberCustomException;
+import com.health.healther.dto.member.MemberUpdateRequestDto;
+import com.health.healther.exception.member.NotFoundMemberException;
+import com.health.healther.exception.member.NotMatchMemberException;
 import com.health.healther.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -20,37 +19,27 @@ public class MemberService {
 
 	public Member findById(Long id) {
 		return memberRepository.findById(id)
-				.orElseThrow(() -> new MemberCustomException(NOT_FOUND_MEMBER));
+			.orElseThrow(() -> new NotFoundMemberException("회원 정보를 찾을 수 없습니다."));
 	}
 
 	public Member findUserFromToken() {
 		return memberRepository.findById(SecurityUtil.getCurrentUserId())
-			.orElseThrow(() -> new MemberCustomException(NOT_FOUND_MEMBER));
-	}
-
-	public Member searchMember(Long memberId) {
-		Member member = findUserFromToken();
-		if (!member.getId().equals(memberId)) {
-			throw new MemberCustomException(NOT_FOUND_MEMBER);
-		}
-		return member;
+			.orElseThrow(() -> new NotMatchMemberException("토큰 정보와 일치하는 회원 정보가 없습니다."));
 	}
 
 	@Transactional
-	public void updateMember(Long memberId, SignUpForm form) {
+	public void updateMember(MemberUpdateRequestDto memberUpdateRequestDto) {
 		Member member = findUserFromToken();
-		if (!member.getId().equals(memberId)) {
-			throw new MemberCustomException(NOT_FOUND_MEMBER);
-		}
-		member.updateFromSignUpForm(form.getName(), form.getNickName(), form.getPhone());
+		member.updateFromSignUpForm(
+			memberUpdateRequestDto.getName(),
+			memberUpdateRequestDto.getNickName(),
+			memberUpdateRequestDto.getPhone()
+		);
 	}
 
 	@Transactional
-	public void deleteMember(Long memberId) {
+	public void deleteMember() {
 		Member member = findUserFromToken();
-		if (!member.getId().equals(memberId)) {
-			throw new MemberCustomException(NOT_FOUND_MEMBER);
-		}
 		memberRepository.delete(member);
 	}
 }

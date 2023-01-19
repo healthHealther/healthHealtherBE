@@ -1,7 +1,6 @@
 package com.health.healther.service;
 
 import static com.health.healther.constant.MemberStatus.*;
-import static com.health.healther.exception.member.MemberErrorCode.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -23,13 +22,15 @@ import com.health.healther.config.JwtTokenProvider;
 import com.health.healther.constant.LoginType;
 import com.health.healther.domain.model.Member;
 import com.health.healther.domain.repository.MemberRepository;
-import com.health.healther.dto.member.LoginResponse;
-import com.health.healther.dto.member.OauthTokenResponse;
-import com.health.healther.dto.member.SignUpForm;
+import com.health.healther.dto.member.MemberLoginResponseDto;
+import com.health.healther.dto.member.MemberOauthResponseDto;
+import com.health.healther.dto.member.MemberSignUpRequestDto;
+import com.health.healther.dto.member.OauthTokenResponseDto;
 import com.health.healther.dto.member.userInfo.GoogleUserInfo;
 import com.health.healther.dto.member.userInfo.KakaoUserInfo;
 import com.health.healther.dto.member.userInfo.OAuth2UserInfo;
-import com.health.healther.exception.member.MemberCustomException;
+import com.health.healther.exception.member.InvalidAccessException;
+import com.health.healther.exception.member.NotFoundMemberException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,41 +40,48 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class OauthService {
-	private static final String BEARER_TYPE = "Bearer";
+	private static final String BEARER_TYPE = "Bearer ";
 	private final InMemoryClientRegistrationRepository inMemoryRepository;
 	private final MemberRepository memberRepository;
 	private final JwtTokenProvider jwtAuthenticationProvider;
 
 	@Transactional
-	public LoginResponse getOauth(String providerName, String code) {
+	public Member getOauth(String providerName, String code) {
 		ClientRegistration provider = inMemoryRepository.findByRegistrationId(providerName);
-		OauthTokenResponse tokenResponse = getToken(provider, code);
-		Member member = saveMemberWithUserInfo(providerName, tokenResponse, provider);
-		if (member.getMemberStatus().equals(NEED_DATA)) {
-			return LoginResponse.builder()
-				.oauthId(member.getOauthId())
-				.nickName(member.getNickName())
-				.build();
-		} else {
-			String accessToken = jwtAuthenticationProvider.createAccessToken(String.valueOf(member.getId()));
-			String refreshToken = jwtAuthenticationProvider.createRefreshToken();
-			return LoginResponse.builder()
-				.tokenType(BEARER_TYPE)
-				.accessToken(accessToken)
-				.refreshToken(refreshToken)
-				.build();
-		}
+		OauthTokenResponseDto tokenResponse = getToken(provider, code);
+		return saveMemberWithUserInfo(providerName, tokenResponse, provider);
+	}
+
+	public MemberOauthResponseDto needDataResult(Member member) {
+		return MemberOauthResponseDto.builder()
+			.name(member.getName())
+			.nickName(member.getNickName())
+			.oauthId(member.getOauthId())
+			.build();
+	}
+
+	public MemberLoginResponseDto loginResult(Member member) {
+		String accessToken = jwtAuthenticationProvider.createAccessToken(String.valueOf(member.getId()));
+		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
+		return MemberLoginResponseDto.builder()
+			.tokenType(BEARER_TYPE)
+			.accessToken(accessToken)
+			.refreshToken(refreshToken)
+			.build();
 	}
 
 	@Transactional
-	public LoginResponse signUpAndCreateJwtAuth(String oauthId, SignUpForm form) {
-		Member member = memberRepository.findByOauthId(oauthId)
-			.orElseThrow(() -> new MemberCustomException(NOT_FOUND_MEMBER));
-		member.updateFromSignUpForm(form.getName(), form.getNickName(), form.getPhone());
+	public MemberLoginResponseDto signUpAndCreateJwtAuth(MemberSignUpRequestDto memberSignUpRequestDto) {
+		Member member = memberRepository.findByOauthId(memberSignUpRequestDto.getOauthId())
+			.orElseThrow(() -> new NotFoundMemberException("회원 정보를 찾을 수 없습니다."));
+		member.updateFromSignUpForm(
+			memberSignUpRequestDto.getName(),
+			memberSignUpRequestDto.getNickName(),
+			memberSignUpRequestDto.getPhone()
+		);
 		String accessToken = jwtAuthenticationProvider.createAccessToken(String.valueOf(member.getId()));
 		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
-		return LoginResponse.builder()
-			.nickName(member.getNickName())
+		return MemberLoginResponseDto.builder()
 			.tokenType(BEARER_TYPE)
 			.accessToken(accessToken)
 			.refreshToken(refreshToken)
@@ -90,7 +98,7 @@ public class OauthService {
 		return formData;
 	}
 
-	private OauthTokenResponse getToken(ClientRegistration provider, String code) {
+	private OauthTokenResponseDto getToken(ClientRegistration provider, String code) {
 		return WebClient.create()
 			.post()
 			.uri(provider.getProviderDetails().getTokenUri())
@@ -100,11 +108,11 @@ public class OauthService {
 			})
 			.bodyValue(tokenRequest(provider, code))
 			.retrieve()
-			.bodyToMono(OauthTokenResponse.class)
+			.bodyToMono(OauthTokenResponseDto.class)
 			.block();
 	}
 
-	private Map<String, Object> getUserAttribute(ClientRegistration provider, OauthTokenResponse tokenResponse) {
+	private Map<String, Object> getUserAttribute(ClientRegistration provider, OauthTokenResponseDto tokenResponse) {
 		return WebClient.create()
 			.get()
 			.uri(provider.getProviderDetails().getUserInfoEndpoint().getUri())
@@ -115,7 +123,7 @@ public class OauthService {
 			.block();
 	}
 
-	private Member saveMemberWithUserInfo(String providerName, OauthTokenResponse tokenResponse,
+	private Member saveMemberWithUserInfo(String providerName, OauthTokenResponseDto tokenResponse,
 		ClientRegistration provider) {
 		Map<String, Object> attributes = getUserAttribute(provider, tokenResponse);
 		OAuth2UserInfo oAuth2UserInfo;
@@ -129,7 +137,7 @@ public class OauthService {
 			oauthName = ((GoogleUserInfo)oAuth2UserInfo).getName();
 		} else {
 			log.info("잘못된 접근입니다.");
-			throw new MemberCustomException(INVALID_ACCESS);
+			throw new InvalidAccessException("잘못된 접근입니다.");
 		}
 		String oauthProvider = oAuth2UserInfo.getProvider();
 		String oauthProviderId = oAuth2UserInfo.getProviderId();
