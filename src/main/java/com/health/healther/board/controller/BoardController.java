@@ -32,7 +32,7 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getBoardList(
+    public ResponseEntity<List<QueryBoardResponseDto>> getBoardList(
             final Pageable pageable
     ) {
 
