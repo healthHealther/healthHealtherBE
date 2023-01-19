@@ -1,19 +1,16 @@
 package com.health.healther.board.domain.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import com.health.healther.domain.model.BaseEntity;
+import com.health.healther.domain.model.Comment;
 import com.health.healther.domain.model.Member;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -32,6 +29,9 @@ public class Board extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
+
+	@OneToMany(mappedBy = "board")
+	private List<Comment> comments = new ArrayList<>();
 
 	@Column(name = "TITLE")
 	private String title;
