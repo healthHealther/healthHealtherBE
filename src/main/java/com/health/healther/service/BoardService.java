@@ -1,11 +1,12 @@
 package com.health.healther.service;
 
 import com.health.healther.board.domain.dto.BoardCreateRequestDto;
+import com.health.healther.board.domain.dto.BoardDetailResponse;
 import com.health.healther.board.domain.dto.BoardListResponseDto;
 import com.health.healther.board.domain.model.Board;
 import com.health.healther.board.domain.repository.BoardRepository;
 import com.health.healther.domain.model.Member;
-import com.health.healther.service.MemberService;
+import com.health.healther.exception.board.NoFoundBoardException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -28,18 +29,17 @@ public class BoardService {
     private final MemberService memberService;
 
 
-
     @Transactional
     public void createBoard(BoardCreateRequestDto request) {
 
         Member member = memberService.findUserFromToken();
 
         boardRepository.save(Board.builder()
-                              .member(member)
-                              .title(request.getTitle())
-                              .content(request.getContent())
-                              .likeCount(0)
-                              .build()
+                                  .member(member)
+                                  .title(request.getTitle())
+                                  .content(request.getContent())
+                                  .likeCount(0)
+                                  .build()
         );
     }
 
@@ -51,8 +51,17 @@ public class BoardService {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "board_id"));
 
         return boardRepository.findAll(pageRequest)
-                .stream()
-                .map(BoardListResponseDto :: from)
-                .collect(Collectors.toList());
+                              .stream()
+                              .map(BoardListResponseDto::from)
+                              .collect(Collectors.toList());
+    }
+
+    public BoardDetailResponse getBoardDetail(long boardId) {
+
+        Board board = boardRepository.findById(boardId)
+                                     .orElseThrow(() -> new NoFoundBoardException("일치하는 공간 정보가 존재하지 않습니다."));
+
+        return BoardDetailResponse.from(board);
+
     }
 }
