@@ -7,8 +7,14 @@ import com.health.healther.domain.model.Member;
 import com.health.healther.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -34,5 +40,18 @@ public class BoardService {
                               .likeCount(0)
                               .build()
         );
+    }
+
+    public List<BoardCreateRequestDto> getBoardList(Pageable pageable) {
+
+        int page = (Pageable.unpaged().getPageNumber() == 0)? 0 : (pageable.getPageNumber() - 1);
+        int size = pageable.getPageSize();
+
+        PageRequest pageRequest = PageRequest.of(page,size, Sort.by(Sort.Direction.DESC, "board_id"));
+
+        return boardRepository.findAll(pageRequest)
+                .stream()
+                .map(BoardCreateRequestDto::from)
+                .collect(Collectors.toList());
     }
 }
