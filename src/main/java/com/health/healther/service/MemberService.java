@@ -43,4 +43,13 @@ public class MemberService {
 		}
 		member.updateFromSignUpForm(form.getName(), form.getNickName(), form.getPhone());
 	}
+
+	@Transactional
+	public void deleteMember(Long memberId) {
+		Member member = findUserFromToken();
+		if (!member.getId().equals(memberId)) {
+			throw new MemberCustomException(NOT_FOUND_MEMBER);
+		}
+		memberRepository.delete(member);
+	}
 }

@@ -3,6 +3,7 @@ package com.health.healther.controller;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,14 +23,20 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	private final MemberService memberService;
 
-	@PutMapping("/users/{memberId}")
+	@PutMapping("/member/{memberId}")
 	public ResponseEntity<Void> updateMember(@PathVariable Long memberId, @RequestBody @Valid SignUpForm form) {
 		memberService.updateMember(memberId, form);
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/user/{memberId}")
+	@GetMapping("/member/{memberId}")
 	public ResponseEntity<MemberSearchResponse> searchMember(@PathVariable Long memberId) {
 		return ResponseEntity.ok(MemberSearchResponse.from(memberService.searchMember(memberId)));
+	}
+
+	@DeleteMapping("/member/{memberId}")
+	public ResponseEntity<Void> withdrawMember(@PathVariable Long memberId) {
+		memberService.deleteMember(memberId);
+		return ResponseEntity.ok().build();
 	}
 }
