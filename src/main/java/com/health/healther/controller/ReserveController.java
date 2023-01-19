@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.health.healther.dto.reservation.AvailableTimeResponse;
-import com.health.healther.dto.reservation.MakeReservationForm;
+import com.health.healther.dto.reservation.MakeReservationRequest;
 import com.health.healther.service.ReservationService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class ReserveController {
 	private final ReservationService reservationService;
 
 	@PostMapping("/reserve")
-	public ResponseEntity makeReservation(@RequestBody @Valid MakeReservationForm form) {
+	public ResponseEntity makeReservation(@RequestBody @Valid MakeReservationRequest form) {
 		reservationService.makeReservation(form);
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}

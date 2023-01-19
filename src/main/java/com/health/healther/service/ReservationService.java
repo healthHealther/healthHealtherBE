@@ -17,7 +17,7 @@ import com.health.healther.domain.model.SpaceTime;
 import com.health.healther.domain.repository.ReservationRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.domain.repository.SpaceTimeRepository;
-import com.health.healther.dto.reservation.MakeReservationForm;
+import com.health.healther.dto.reservation.MakeReservationRequest;
 import com.health.healther.exception.reservation.ReservationCustomException;
 import com.health.healther.exception.space.NotFoundSpaceException;
 
@@ -31,7 +31,7 @@ public class ReservationService {
 	private final SpaceRepository spaceRepository;
 	private final MemberService memberService;
 
-	public Reservation makeReservation(MakeReservationForm form) {
+	public Reservation makeReservation(MakeReservationRequest form) {
 		Member member = memberService.findUserFromToken();
 		Space space = spaceRepository.findById(form.getSpaceId())
 			.orElseThrow(() -> new NotFoundSpaceException("공간 존재 X"));
@@ -66,7 +66,7 @@ public class ReservationService {
 		return allTime;
 	}
 
-	private int getReservationTime(MakeReservationForm form, Space space) {
+	private int getReservationTime(MakeReservationRequest form, Space space) {
 		List<Integer> availableTimes = getAvailableTime(space.getId(), form.getReservationDate());
 		int reservationTime = form.getReservationTime();
 		if (availableTimes.contains(reservationTime)) {

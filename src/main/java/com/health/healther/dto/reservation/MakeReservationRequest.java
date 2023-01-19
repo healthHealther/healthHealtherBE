@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MakeReservationForm {
+public class MakeReservationRequest {
 	@NotNull
 	@Min(0)
 	private Long spaceId;
