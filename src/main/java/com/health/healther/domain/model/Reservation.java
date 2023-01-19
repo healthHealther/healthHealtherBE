@@ -15,14 +15,18 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE RESERVATION SET RESERVATION.DELETED_AT = CURRENT_TIMESTAMP WHERE RESERVATION.RESERVATION_ID = ?")
-@Getter
+@Entity
 public class Reservation extends BaseEntity {
 
 	@Id
@@ -46,7 +50,7 @@ public class Reservation extends BaseEntity {
 	private LocalDate reservationDate;
 
 	@Column(name = "RESERVATION_TIME")
-	private LocalDate reservationTime;
+	private int reservationTime;
 
 	@Column(name = "PRICE")
 	private int price;
