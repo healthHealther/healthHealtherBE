@@ -5,6 +5,7 @@ import static com.health.healther.exception.coupon.CouponErrorCode.*;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.health.healther.domain.model.Coupon;
 import com.health.healther.domain.model.Space;
@@ -37,6 +38,16 @@ public class CouponService {
 			.amount(createDto.getAmount())
 			.build();
 		couponRepository.save(coupon);
+
+	}
+
+	@Transactional
+	public void deleteCoupon(Long couponId) {
+
+		Coupon coupon = couponRepository.findById(couponId)
+			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_COUPON));
+
+		couponRepository.delete(coupon);
 
 	}
 }
