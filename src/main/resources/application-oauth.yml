@@ -7,10 +7,16 @@ spring:
     oauth2:
       client:
         registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: http://${REDIRECT_HOST:localhost}:${REDIRECT_PORT:3000}/login/callback/google
+            scope: profile
+            client-name: google
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: http://${REDIRECT_HOST:localhost}:${REDIRECT_PORT:3000}/login/oauth2/code/kakao
+            redirect-uri: http://${REDIRECT_HOST:localhost}:${REDIRECT_PORT:3000}/login/callback/kakao
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope:

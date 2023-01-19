@@ -41,7 +41,7 @@ public class OauthController {
 		if (response.getTokenType() == null) {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setLocation(
-				URI.create("http://localhost:8080/login/oauth2/signUp?oauthId=" + response.getOauthId()));
+				URI.create("http://localhost:3000/login/oauth2/signUp?oauthId=" + response.getOauthId()));
 			return new ResponseEntity<>(response, headers, HttpStatus.MOVED_PERMANENTLY);
 		} else {
 			return ResponseEntity.ok(response);

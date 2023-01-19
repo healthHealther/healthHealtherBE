@@ -120,11 +120,13 @@ public class OauthService {
 		Map<String, Object> attributes = getUserAttribute(provider, tokenResponse);
 		OAuth2UserInfo oAuth2UserInfo;
 		String oauthNickName = null;
+		String oauthName = null;
 		if (providerName.equals("kakao")) {
 			oAuth2UserInfo = new KakaoUserInfo(attributes);
 			oauthNickName = ((KakaoUserInfo)oAuth2UserInfo).getNickName();
 		} else if (providerName.equals("google")) {
 			oAuth2UserInfo = new GoogleUserInfo(attributes);
+			oauthName = ((GoogleUserInfo)oAuth2UserInfo).getName();
 		} else {
 			log.info("잘못된 접근입니다.");
 			throw new MemberCustomException(INVALID_ACCESS);
@@ -134,6 +136,7 @@ public class OauthService {
 		Optional<Member> optionalMember = memberRepository.findByOauthId(oauthProviderId);
 		if (optionalMember.isEmpty()) {
 			Member member = Member.builder()
+				.name(oauthName)
 				.nickName(oauthNickName)
 				.memberStatus(NEED_DATA)
 				.loginType(getloginType(oauthProvider))

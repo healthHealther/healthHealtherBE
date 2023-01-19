@@ -1,5 +1,7 @@
 package com.health.healther.dto.member;
 
+import com.health.healther.domain.model.Member;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,16 +14,18 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class LoginResponse {
+public class MemberSearchResponse {
 	private String name;
 
 	private String nickName;
 
-	private String oauthId;
+	private String phone;
 
-	private String tokenType;
-
-	private String accessToken;
-
-	private String refreshToken;
+	public static MemberSearchResponse from(Member member) {
+		return MemberSearchResponse.builder()
+			.name(member.getName())
+			.nickName(member.getNickName())
+			.phone(member.getPhone())
+			.build();
+	}
 }

@@ -28,12 +28,29 @@ public class MemberService {
 	}
 
 	@Transactional
-	public Member updateMember(Long memberId, SignUpForm form) {
+	public Member searchMember(Long memberId) {
+		Member member = findUserFromToken();
+		if (!member.getId().equals(memberId)) {
+			throw new MemberCustomException(NOT_FOUND_MEMBER);
+		}
+		return member;
+	}
+
+	@Transactional
+	public void updateMember(Long memberId, SignUpForm form) {
 		Member member = findUserFromToken();
 		if (!member.getId().equals(memberId)) {
 			throw new MemberCustomException(NOT_FOUND_MEMBER);
 		}
 		member.updateFromSignUpForm(form.getName(), form.getNickName(), form.getPhone());
-		return member;
+	}
+
+	@Transactional
+	public void deleteMember(Long memberId) {
+		Member member = findUserFromToken();
+		if (!member.getId().equals(memberId)) {
+			throw new MemberCustomException(NOT_FOUND_MEMBER);
+		}
+		memberRepository.delete(member);
 	}
 }
