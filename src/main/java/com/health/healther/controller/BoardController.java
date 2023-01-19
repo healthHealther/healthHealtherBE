@@ -33,6 +33,7 @@ public class BoardController {
     public ResponseEntity<List<BoardCreateRequestDto>> getBoardList(
             Pageable pageable) {
 
+
         return new ResponseEntity<>(
                 boardService.getBoardList(pageable), HttpStatus.OK
         );
