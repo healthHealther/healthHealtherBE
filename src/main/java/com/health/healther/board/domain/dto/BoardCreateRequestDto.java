@@ -1,5 +1,6 @@
 package com.health.healther.board.domain.dto;
 
+import com.health.healther.board.domain.model.Board;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -21,4 +22,13 @@ public class BoardCreateRequestDto {
     @NotBlank
     private String content;
 
+
+    public static BoardCreateRequestDto from(Board board) {
+
+        return BoardCreateRequestDto.builder()
+                .title(board.getTitle())
+                .content(board.getContent())
+                .build();
+
+    }
 }
