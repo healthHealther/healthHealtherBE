@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -42,9 +43,12 @@ public class BoardService {
         );
     }
 
-    public Page<Board> getBoardList(
+    public List<QueryBoardResponseDto> getBoardList(
             PageRequest pageRequest) {
 
-        return boardRepository.findAll(pageRequest);
+        return boardRepository.findAll(pageRequest)
+                .stream()
+                .map(QueryBoardResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 }
