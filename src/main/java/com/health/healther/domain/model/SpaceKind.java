@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.health.healther.constant.SpaceType;
 
 import lombok.AccessLevel;
@@ -38,6 +39,7 @@ public class SpaceKind extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SPACE_ID")
+	@JsonIgnore
 	private Space space;
 
 	@Column(name = "TYPE_NAME")
