@@ -1,7 +1,5 @@
 package com.health.healther.dto.member;
 
-import com.health.healther.constant.LoginType;
-import com.health.healther.constant.MemberStatus;
 import com.health.healther.domain.model.Member;
 
 import lombok.AccessLevel;
@@ -16,30 +14,18 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MemberDto {
-	private Long id;
-
+public class MemberSearchResponse {
 	private String name;
 
 	private String nickName;
 
 	private String phone;
 
-	private MemberStatus memberStatus;
-
-	private String oauthId;
-
-	private LoginType loginType;
-
-	public static MemberDto from(Member member) {
-		return MemberDto.builder()
-			.id(member.getId())
+	public static MemberSearchResponse from(Member member) {
+		return MemberSearchResponse.builder()
 			.name(member.getName())
 			.nickName(member.getNickName())
 			.phone(member.getPhone())
-			.memberStatus(member.getMemberStatus())
-			.oauthId(member.getOauthId())
-			.loginType(member.getLoginType())
 			.build();
 	}
 }

@@ -13,11 +13,15 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE IMAGE SET IMAGE.DELETED_AT = CURRENT_TIMESTAMP WHERE IMAGE.IMAGE_ID = ?")
 @Getter
@@ -34,22 +38,4 @@ public class Image extends BaseEntity {
 
 	@Column(name = "IMAGE_URL")
 	private String imageUrl;
-
-	private Image(
-			Space space,
-			String imageUrl
-	) {
-		this.space = space;
-		this.imageUrl = imageUrl;
-	}
-
-	public static Image of(
-			Space space,
-			String imageUrl
-	) {
-		return new Image(
-				space,
-				imageUrl
-		);
-	}
 }

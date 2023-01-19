@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -15,11 +15,15 @@ import org.hibernate.annotations.Where;
 import com.health.healther.dto.space.CreateSpaceRequestDto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE SPACE_TIME SET SPACE_TIME.DELETED_AT = CURRENT_TIMESTAMP WHERE SPACE_TIME.SPACE_TIME_ID = ?")
 @Getter
@@ -30,7 +34,7 @@ public class SpaceTime extends BaseEntity {
 	@Column(name = "SPACE_TIME_ID")
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SPACE_ID")
 	private Space space;
 
