@@ -1,6 +1,7 @@
 package com.health.healther.controller;
 
 import com.health.healther.board.domain.dto.BoardCreateRequestDto;
+import com.health.healther.board.domain.dto.BoardListResponseDto;
 import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +31,8 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BoardCreateRequestDto>> getBoardList(
+    public ResponseEntity<List<BoardListResponseDto>> getBoardList(
             Pageable pageable) {
-
 
         return new ResponseEntity<>(
                 boardService.getBoardList(pageable), HttpStatus.OK
