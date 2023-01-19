@@ -19,6 +19,8 @@ public class BoardDetailResponse { // 게시글 상세 조회 응답 dto
 
     private String content;
 
+    private int commentCount;
+
     public static BoardDetailResponse from(Board board) {
 
         return BoardDetailResponse.builder()
@@ -26,6 +28,7 @@ public class BoardDetailResponse { // 게시글 상세 조회 응답 dto
                 .nickName(board.getMember().getNickName())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .commentCount(board.getComments().size())
                 .build();
     }
 }
