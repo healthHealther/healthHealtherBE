@@ -30,13 +30,19 @@ public class OauthController {
 	private final OauthService oauthService;
 
 	@PostMapping("/login/callback/{provider}")
-	public ResponseEntity<LoginResponse> oauthLogin(@PathVariable String provider, @RequestParam String code) {
+	public ResponseEntity<LoginResponse> oauthLogin(
+			@PathVariable String provider,
+			@RequestParam String code
+	) {
 		LoginResponse response = oauthService.getOauth(provider, code);
 		return getResponseEntity(response);
 	}
 
 	@PostMapping("/login/oauth2/signUp")
-	public ResponseEntity<LoginResponse> signUp(@RequestParam String oauthId, @RequestBody @Valid SignUpForm form) {
+	public ResponseEntity<LoginResponse> signUp(
+			@RequestParam String oauthId,
+			@RequestBody @Valid SignUpForm form
+	) {
 		LoginResponse response = oauthService.signUpAndCreateJwtAuth(oauthId, form);
 		return  new ResponseEntity<>(response, HttpStatus.CREATED);
 	}

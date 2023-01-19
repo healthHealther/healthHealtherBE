@@ -12,7 +12,6 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class CouponCreateRequestDto {
-
 	@NotNull
 	private Long spaceId;
 
@@ -27,6 +26,5 @@ public class CouponCreateRequestDto {
 
 	@NotNull
 	private int amount;
-
 }
 

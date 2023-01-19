@@ -23,29 +23,36 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/coupon")
 public class CouponController {
-
 	private final CouponService couponService;
 
 	@PostMapping
-	public ResponseEntity addCoupon(@RequestBody @Valid CouponCreateRequestDto createDto) {
+	public ResponseEntity addCoupon(
+			@RequestBody @Valid CouponCreateRequestDto createDto
+	) {
 		couponService.addCoupon(createDto);
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/{couponId}")
-	public ResponseEntity deleteCoupon(@PathVariable("couponId") Long couponId) {
+	public ResponseEntity deleteCoupon(
+			@PathVariable("couponId") Long couponId
+	) {
 		couponService.deleteCoupon(couponId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@GetMapping("/{spaceId}")
-	public ResponseEntity getCoupon(@PathVariable("spaceId") Long spaceId) {
+	public ResponseEntity getCoupon(
+			@PathVariable("spaceId") Long spaceId
+	) {
 		return ResponseEntity.ok().body(couponService.getCoupon(spaceId));
 	}
 
 	@PutMapping("/{couponId}")
-	public ResponseEntity updateCoupon(@PathVariable("couponId") Long couponId,
-		@RequestBody @Valid CouponUpdateRequestDto couponUpdateRequestDto) {
+	public ResponseEntity updateCoupon(
+			@PathVariable("couponId") Long couponId,
+		@RequestBody @Valid CouponUpdateRequestDto couponUpdateRequestDto
+	) {
 		couponService.updateCoupon(couponId, couponUpdateRequestDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

@@ -15,11 +15,15 @@ import org.hibernate.annotations.Where;
 import com.health.healther.dto.space.CreateSpaceRequestDto;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE SPACE_TIME SET SPACE_TIME.DELETED_AT = CURRENT_TIMESTAMP WHERE SPACE_TIME.SPACE_TIME_ID = ?")
 @Getter

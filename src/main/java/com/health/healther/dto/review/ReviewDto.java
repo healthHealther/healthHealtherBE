@@ -23,7 +23,6 @@ public class ReviewDto {
     private int grade;
 
     public static ReviewDto fromEntity(Review review) {
-
         return ReviewDto.builder()
                         .spaceName(review.getSpace().getTitle())
                         .MemberName(review.getMember().getName())

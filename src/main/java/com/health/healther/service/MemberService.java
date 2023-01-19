@@ -19,7 +19,8 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	public Member findById(Long id) {
-		return memberRepository.findById(id).orElseThrow(() -> new MemberCustomException(NOT_FOUND_MEMBER));
+		return memberRepository.findById(id)
+				.orElseThrow(() -> new MemberCustomException(NOT_FOUND_MEMBER));
 	}
 
 	public Member findUserFromToken() {

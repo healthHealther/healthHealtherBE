@@ -16,7 +16,6 @@ import javax.validation.Valid;
 @RequestMapping("/review")
 @RestController
 public class ReviewController {
-
     private final ReviewService reviewService;
 
     @PostMapping
