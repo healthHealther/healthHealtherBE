@@ -22,3 +22,7 @@ spring:
   h2:
     console:
       enabled: true
+
+oauth:
+  sign-up:
+    redirect-url: ${REDIRECT_URL

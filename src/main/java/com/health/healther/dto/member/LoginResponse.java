@@ -13,6 +13,8 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class LoginResponse {
+	private String name;
+
 	private String nickName;
 
 	private String oauthId;
