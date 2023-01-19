@@ -1,6 +1,7 @@
 package com.health.healther.controller;
 
 import com.health.healther.board.domain.dto.BoardCreateRequestDto;
+import com.health.healther.board.domain.dto.BoardDetailResponse;
 import com.health.healther.board.domain.dto.BoardListResponseDto;
 import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -38,4 +39,16 @@ public class BoardController {
                 boardService.getBoardList(pageable), HttpStatus.OK
         );
     }
+
+    @GetMapping("/{boardId}")
+    public ResponseEntity<BoardDetailResponse> getBoardDetail(
+            @PathVariable("boardId") long boardId
+    ) {
+
+        return new ResponseEntity<>(
+                boardService.getBoardDetail(boardId), HttpStatus.OK
+        );
+    }
+
+
 }
