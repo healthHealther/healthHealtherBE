@@ -2,3 +2,38 @@ spring:
   config:
     activate:
       on-profile: "oauth"
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            redirect-uri: http://${REDIRECT_HOST:localhost}:${REDIRECT_PORT:3000}/login/callback/google
+            scope: profile
+            client-name: google
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: http://${REDIRECT_HOST:localhost}:${REDIRECT_PORT:3000}/login/callback/kakao
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope:
+              - profile_nickname
+            client_name: kakao
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+jwt:
+  token:
+    secret-key: ${JWT_SECRET_KEY}
+  access-token:
+    expire-length: ${JWT_ACCESS_EXPIRE:3600000}
+  refresh-token:
+    expire-length: ${JWT_REFRESH_EXPIRE:86400000}

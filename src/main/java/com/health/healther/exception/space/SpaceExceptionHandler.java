@@ -38,4 +38,20 @@ public class SpaceExceptionHandler {
 		return ResponseEntity.badRequest()
 				.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
 	}
+
+	@ExceptionHandler(NotFoundSpaceException.class)
+	public ResponseEntity<ErrorMessage> NotFoundSpaceException(
+			NotFoundSpaceException exception
+	) {
+		return ResponseEntity.badRequest()
+				.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
+
+	@ExceptionHandler(NotFoundConvenienceTypeException.class)
+	public ResponseEntity<ErrorMessage> NotFoundConvenienceTypeException(
+			NotFoundConvenienceTypeException exception
+	) {
+		return ResponseEntity.badRequest()
+				.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
 }
