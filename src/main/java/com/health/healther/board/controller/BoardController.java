@@ -5,11 +5,15 @@ import com.health.healther.board.domain.dto.QueryBoardResponseDto;
 import com.health.healther.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,13 +31,19 @@ public class BoardController {
 
     }
 
-    @GetMapping("/{boardId}")
-    public ResponseEntity<QueryBoardResponseDto> getBoard(
-            @PathVariable("boardId") long boardId ) {
+    @GetMapping
+    public ResponseEntity<Object> getBoardList(
+            final Pageable pageable
+    ) {
+
+        PageRequest pageRequest
+                = PageRequest.of(
+                        pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "board_id")
+        );
 
         return new ResponseEntity<>(
-                QueryBoardResponseDto.fromEntity(boardService.getBoard(boardId)),
-                HttpStatus.OK
+                boardService.getBoardList(pageRequest), HttpStatus.OK
         );
     }
+
 }
