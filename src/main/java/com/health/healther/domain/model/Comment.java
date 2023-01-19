@@ -29,14 +29,18 @@ public class Comment extends BaseEntity {
 	@Column(name = "COMMENT_ID")
 	private Long id;
 
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
+
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "BOARD_ID")
 	private Board board;
 
+
 	@Column(name = "CONTEXT")
 	private String context;
+
 }
