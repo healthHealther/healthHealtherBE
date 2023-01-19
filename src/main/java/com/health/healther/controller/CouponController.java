@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +34,11 @@ public class CouponController {
 	public ResponseEntity deleteCoupon(@PathVariable("couponId") Long couponId) {
 		couponService.deleteCoupon(couponId);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@GetMapping("/{spaceId}")
+	public ResponseEntity getCoupon(@PathVariable("spaceId") Long spaceId) {
+		return ResponseEntity.ok().body(couponService.getCoupon(spaceId));
 	}
 
 }
