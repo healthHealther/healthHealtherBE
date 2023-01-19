@@ -49,4 +49,5 @@ public class CouponController {
 		couponService.updateCoupon(couponId, couponUpdateRequestDto);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
 }
