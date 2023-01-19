@@ -1,6 +1,7 @@
 package com.health.healther.domain.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -72,5 +73,5 @@ public class Space extends BaseEntity {
 	private Set<Convenience> conveniences = new HashSet<>();
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "space")
-	private Set<Image> images = new HashSet<>();
+	private List<Image> images;
 }
