@@ -18,15 +18,12 @@ public class QueryBoardResponseDto { // 게시판 조회 응답 Dto
 
     private String title;
 
-    private String content;
-
     public static QueryBoardResponseDto fromEntity(Board board) {
 
         return QueryBoardResponseDto.builder()
                 .boardId(board.getId())
                 .nickName(board.getMember().getNickName())
                 .title(board.getTitle())
-                .content(board.getContent())
                 .build();
     }
 }
