@@ -14,6 +14,7 @@ import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.CouponRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
+
 import com.health.healther.dto.coupon.CouponResponseDto;
 import com.health.healther.exception.coupon.CouponCustomException;
 
