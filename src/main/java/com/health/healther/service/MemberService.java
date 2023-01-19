@@ -27,13 +27,20 @@ public class MemberService {
 			.orElseThrow(() -> new MemberCustomException(NOT_FOUND_MEMBER));
 	}
 
+	public Member searchMember(Long memberId) {
+		Member member = findUserFromToken();
+		if (!member.getId().equals(memberId)) {
+			throw new MemberCustomException(NOT_FOUND_MEMBER);
+		}
+		return member;
+	}
+
 	@Transactional
-	public Member updateMember(Long memberId, SignUpForm form) {
+	public void updateMember(Long memberId, SignUpForm form) {
 		Member member = findUserFromToken();
 		if (!member.getId().equals(memberId)) {
 			throw new MemberCustomException(NOT_FOUND_MEMBER);
 		}
 		member.updateFromSignUpForm(form.getName(), form.getNickName(), form.getPhone());
-		return member;
 	}
 }
