@@ -2,6 +2,7 @@ package com.health.healther.service;
 
 import static com.health.healther.exception.coupon.CouponErrorCode.*;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -57,11 +58,16 @@ public class CouponService {
 	@Transactional(readOnly = true)
 	public CouponResponseDto getCoupon(Long spaceId) {
 
-		Optional<Coupon> optionalCoupon = couponRepository.findBySpace_Id(spaceId);
+		LocalDate now = LocalDate.now().minusDays(1);
+
+		Optional<Coupon> optionalCoupon = couponRepository.findBySpace_IdAndExpiredDateIsAfterAndIsUsed(spaceId, now,
+			false);
+
+		Coupon coupon = optionalCoupon.get();
+
 		if (!optionalCoupon.isPresent()) {
 			throw new CouponCustomException(NOT_FOUND_SPACE);
 		}
-		Coupon coupon = optionalCoupon.get();
 
 		return CouponResponseDto.builder()
 			.couponId(coupon.getId())
@@ -75,3 +81,4 @@ public class CouponService {
 			.build();
 	}
 }
+
