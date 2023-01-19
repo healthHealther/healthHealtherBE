@@ -12,7 +12,6 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class CouponUpdateRequestDto {
-
 	@NotNull
 	private int discountAmount;
 

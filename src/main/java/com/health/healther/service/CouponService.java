@@ -44,8 +44,8 @@ public class CouponService {
 			.amount(createDto.getAmount())
 			.isUsed(false)
 			.build();
-		couponRepository.save(coupon);
 
+		couponRepository.save(coupon);
 	}
 
 	@Transactional
@@ -67,7 +67,7 @@ public class CouponService {
 			false);
 
 		if (!optionalCoupon.isPresent()) {
-			throw new CouponCustomException(NOT_FOUND_SPACE);
+			throw new CouponCustomException(NOT_FOUND_COUPON);
 		}
 		
 		Coupon coupon = optionalCoupon.get();

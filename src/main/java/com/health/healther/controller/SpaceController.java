@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/space")
+@RequestMapping("/spaces")
 @RestController
 public class SpaceController {
 	private final SpaceService spaceService;
