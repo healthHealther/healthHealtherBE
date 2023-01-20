@@ -24,8 +24,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 @Where(clause = "DELETED_AT is null")
 @SQLDelete(sql = "UPDATE RESERVATION SET RESERVATION.DELETED_AT = CURRENT_TIMESTAMP WHERE RESERVATION.RESERVATION_ID = ?")
 @Entity
