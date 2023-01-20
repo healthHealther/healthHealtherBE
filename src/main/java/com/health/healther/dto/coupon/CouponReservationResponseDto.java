@@ -14,20 +14,14 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class CouponResponseDto {
+public class CouponReservationResponseDto {
 	private Long couponId;
 
-	private String memberName;
-
 	private int discountAmount;
-
-	private LocalDate openDate;
 
 	private LocalDate expiredDate;
 
 	private String couponNumber;
-
-	private int amount;
 
 	private boolean isUsed;
 }

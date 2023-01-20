@@ -12,7 +12,7 @@ import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.CouponRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
-import com.health.healther.dto.coupon.CouponResponseDto;
+import com.health.healther.dto.coupon.CouponReservationResponseDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
 import com.health.healther.exception.coupon.NotFoundCouponException;
 import com.health.healther.exception.space.NotFoundSpaceException;
@@ -56,12 +56,15 @@ public class CouponService {
 	}
 
 	@Transactional(readOnly = true)
-	public CouponResponseDto getCoupon(Long spaceId) {
+	public CouponReservationResponseDto getCoupon(Long spaceId, Long memberId) {
 
-		LocalDate now = LocalDate.now().minusDays(1);
+		LocalDate expiredNow = LocalDate.now().minusDays(1);
+		LocalDate openNow = LocalDate.now().plusDays(1);
 
-		Optional<Coupon> optionalCoupon = couponRepository.findBySpace_IdAndExpiredDateIsAfterAndIsUsed(spaceId, now,
-			false);
+		Optional<Coupon> optionalCoupon = couponRepository
+			.findBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
+				spaceId, memberId, expiredNow, openNow, false
+			);
 
 		if (!optionalCoupon.isPresent()) {
 			throw new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다.");
@@ -69,14 +72,11 @@ public class CouponService {
 
 		Coupon coupon = optionalCoupon.get();
 
-		return CouponResponseDto.builder()
+		return CouponReservationResponseDto.builder()
 			.couponId(coupon.getId())
-			.memberName(coupon.getMember().getName())
 			.discountAmount(coupon.getDiscountAmount())
-			.openDate(coupon.getOpenDate())
 			.expiredDate(coupon.getExpiredDate())
 			.couponNumber(coupon.getCouponNumber())
-			.amount(coupon.getAmount())
 			.isUsed(coupon.isUsed())
 			.build();
 	}
