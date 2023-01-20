@@ -3,7 +3,6 @@ package com.health.healther.dto.member.userInfo;
 import java.util.Map;
 
 public class GoogleUserInfo implements OAuth2UserInfo {
-
 	private final Map<String, Object> attributes;
 
 	public GoogleUserInfo(Map<String, Object> attributes) {

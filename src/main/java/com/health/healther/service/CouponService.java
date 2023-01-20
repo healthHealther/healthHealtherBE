@@ -1,9 +1,6 @@
 package com.health.healther.service;
 
-import static com.health.healther.exception.coupon.CouponErrorCode.*;
-
 import java.time.LocalDate;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,8 +14,8 @@ import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
 import com.health.healther.dto.coupon.CouponResponseDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
-
-import com.health.healther.exception.coupon.CouponCustomException;
+import com.health.healther.exception.coupon.NotFoundCouponException;
+import com.health.healther.exception.space.NotFoundSpaceException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +30,7 @@ public class CouponService {
 	public void addCoupon(CouponCreateRequestDto createDto) {
 
 		Space space = spaceRepository.findById(createDto.getSpaceId())
-			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_SPACE));
+			.orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
 		Coupon coupon = Coupon.builder()
 			.space(space)
@@ -52,7 +49,7 @@ public class CouponService {
 	public void deleteCoupon(Long couponId) {
 
 		Coupon coupon = couponRepository.findById(couponId)
-			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_COUPON));
+			.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
 
 		couponRepository.delete(coupon);
 
@@ -67,9 +64,9 @@ public class CouponService {
 			false);
 
 		if (!optionalCoupon.isPresent()) {
-			throw new CouponCustomException(NOT_FOUND_COUPON);
+			throw new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다.");
 		}
-		
+
 		Coupon coupon = optionalCoupon.get();
 
 		return CouponResponseDto.builder()
@@ -88,7 +85,7 @@ public class CouponService {
 	public void updateCoupon(Long couponId, CouponUpdateRequestDto couponUpdateRequestDto) {
 
 		Coupon coupon = couponRepository.findById(couponId)
-			.orElseThrow(() -> new CouponCustomException(NOT_FOUND_COUPON));
+			.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
 
 		coupon.updateCoupon(couponUpdateRequestDto.getDiscountAmount(),
 			couponUpdateRequestDto.getOpenDate(),

@@ -12,13 +12,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class LoginResponse {
-	private String name;
-
-	private String nickName;
-
-	private String oauthId;
-
+public class MemberLoginResponseDto {
 	private String tokenType;
 
 	private String accessToken;
