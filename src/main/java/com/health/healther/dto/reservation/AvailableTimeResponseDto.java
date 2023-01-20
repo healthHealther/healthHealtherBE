@@ -14,11 +14,11 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class AvailableTimeResponse {
+public class AvailableTimeResponseDto {
 	private List<Integer> time;
 
-	public static AvailableTimeResponse from(List<Integer> time) {
-		return AvailableTimeResponse.builder()
+	public static AvailableTimeResponseDto from(List<Integer> time) {
+		return AvailableTimeResponseDto.builder()
 			.time(time)
 			.build();
 	}

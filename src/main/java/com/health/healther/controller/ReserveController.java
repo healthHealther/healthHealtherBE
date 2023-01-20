@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.health.healther.dto.reservation.AvailableTimeResponse;
-import com.health.healther.dto.reservation.MakeReservationRequest;
+import com.health.healther.dto.reservation.AvailableTimeResponseDto;
+import com.health.healther.dto.reservation.MakeReservationRequestDto;
 import com.health.healther.service.ReservationService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,13 +25,19 @@ public class ReserveController {
 	private final ReservationService reservationService;
 
 	@PostMapping("/reserve")
-	public ResponseEntity makeReservation(@RequestBody @Valid MakeReservationRequest form) {
+	public ResponseEntity makeReservation(
+		@RequestBody @Valid MakeReservationRequestDto form
+	) {
 		reservationService.makeReservation(form);
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
 
 	@GetMapping("/reserve/available/{spaceId}")
-	public ResponseEntity<AvailableTimeResponse> getAvailableTime(@PathVariable Long spaceId, @RequestParam String reserveDate) {
-		return ResponseEntity.ok(AvailableTimeResponse.from(reservationService.getAvailableTime(spaceId, reserveDate)));
+	public ResponseEntity<AvailableTimeResponseDto> getAvailableTime(
+		@PathVariable Long spaceId,
+		@RequestParam String reserveDate
+	) {
+		return ResponseEntity.ok(
+			AvailableTimeResponseDto.from(reservationService.getAvailableTime(spaceId, reserveDate)));
 	}
 }
