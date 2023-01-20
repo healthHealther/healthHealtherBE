@@ -13,7 +13,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.health.healther.exception.member.MemberCustomException;
 import com.health.healther.service.AuthService;
 import com.health.healther.util.UserAuthentication;
 
@@ -33,15 +32,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
-		try {
-			String token = resolveTokenFromRequest(request);
-			if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
-				Long id = authService.findMemberByToken(token);
-				UserAuthentication authentication = new UserAuthentication(id);
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-			}
-		} catch (MemberCustomException e) {
-			request.setAttribute("MemberCustomException", e);
+		String token = resolveTokenFromRequest(request);
+		if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+			Long id = authService.findMemberByToken(token);
+			UserAuthentication authentication = new UserAuthentication(id);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
 		filterChain.doFilter(request, response);
 	}

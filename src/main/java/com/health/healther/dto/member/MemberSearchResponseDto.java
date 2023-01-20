@@ -1,7 +1,6 @@
 package com.health.healther.dto.member;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import com.health.healther.domain.model.Member;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,14 +14,18 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class SignUpForm {
-	@NotNull
+public class MemberSearchResponseDto {
 	private String name;
 
-	@NotNull
 	private String nickName;
 
-	@NotNull
-	@Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "010-xxxx-xxxx 형식으로 입력해주세요.")
 	private String phone;
+
+	public static MemberSearchResponseDto from(Member member) {
+		return MemberSearchResponseDto.builder()
+			.name(member.getName())
+			.nickName(member.getNickName())
+			.phone(member.getPhone())
+			.build();
+	}
 }
