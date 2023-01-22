@@ -18,13 +18,13 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
 		return web -> web.ignoring()
-			.antMatchers(HttpMethod.GET, "/login/callback/**")
-			.antMatchers(HttpMethod.POST, "/login/oauth2/signUp");
+			.antMatchers(HttpMethod.GET, "/members/login/callback/**")
+			.antMatchers(HttpMethod.POST, "/members/signUp")
+			.antMatchers("/h2-console/**");
 	}
 
 	@Bean
@@ -32,17 +32,17 @@ public class SecurityConfig {
 		http
 			.cors()
 			.and()
+			.csrf().disable()
 			.httpBasic().disable()
 			.formLogin().disable()
-			.csrf().disable()
 			.headers().frameOptions().disable()
 			.and()
 			.authorizeRequests()
-			.antMatchers("/login/callback/**", "/login/oauth2/signUp").permitAll()
+			.antMatchers("/h2-console/**", "/members/login/callback/**", "/members/signUp").permitAll()
+			.anyRequest().authenticated()
 			.and()
 			.exceptionHandling()
 			.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-			.accessDeniedHandler(jwtAccessDeniedHandler)
 			.and()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
