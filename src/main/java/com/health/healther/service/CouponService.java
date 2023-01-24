@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.health.healther.domain.model.Coupon;
+import com.health.healther.domain.model.Member;
 import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.CouponRepository;
 import com.health.healther.domain.repository.SpaceRepository;
@@ -26,6 +27,8 @@ public class CouponService {
 	private final CouponRepository couponRepository;
 
 	private final SpaceRepository spaceRepository;
+
+	private final MemberService memberService;
 
 	public void addCoupon(CouponCreateRequestDto createDto) {
 
@@ -56,14 +59,15 @@ public class CouponService {
 	}
 
 	@Transactional(readOnly = true)
-	public CouponReservationResponseDto getCoupon(Long spaceId, Long memberId) {
+	public CouponReservationResponseDto getCoupon(Long spaceId) {
+		Member member = memberService.findUserFromToken();
 
 		LocalDate expiredNow = LocalDate.now().minusDays(1);
 		LocalDate openNow = LocalDate.now().plusDays(1);
 
 		Optional<Coupon> optionalCoupon = couponRepository
 			.findBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
-				spaceId, memberId, expiredNow, openNow, false
+				spaceId, member.getId(), expiredNow, openNow, false
 			);
 
 		if (!optionalCoupon.isPresent()) {

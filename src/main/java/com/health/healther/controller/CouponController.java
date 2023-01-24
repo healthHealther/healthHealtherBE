@@ -1,7 +1,6 @@
 package com.health.healther.controller;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,10 +43,9 @@ public class CouponController {
 
 	@GetMapping("/{spaceId}")
 	public ResponseEntity getCoupon(
-		@PathVariable("spaceId") Long spaceId,
-		@RequestBody @NotNull Long memberId
+		@PathVariable("spaceId") Long spaceId
 	) {
-		return ResponseEntity.ok().body(couponService.getCoupon(spaceId, memberId));
+		return ResponseEntity.ok().body(couponService.getCoupon(spaceId));
 	}
 
 	@PutMapping("/{couponId}")
