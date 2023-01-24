@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.health.healther.controller.MemberController;
 import com.health.healther.exception.ErrorMessage;
+import com.health.healther.exception.space.NotFoundSpaceException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +25,14 @@ public class ReservationExceptionHandler {
 	@ExceptionHandler(InappropriateDateException.class)
 	public ResponseEntity<ErrorMessage> InappropriateDateException(
 		InappropriateDateException exception
+	) {
+		return ResponseEntity.badRequest()
+			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
+
+	@ExceptionHandler(NotFoundSpaceException.class)
+	public ResponseEntity<ErrorMessage> NotFoundSpaceException(
+		NotFoundSpaceException exception
 	) {
 		return ResponseEntity.badRequest()
 			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
