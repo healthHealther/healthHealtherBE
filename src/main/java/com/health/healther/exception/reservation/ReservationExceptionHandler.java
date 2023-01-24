@@ -30,6 +30,14 @@ public class ReservationExceptionHandler {
 			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
 	}
 
+	@ExceptionHandler(NotBusinessHoursException.class)
+	public ResponseEntity<ErrorMessage> NotBusinessHoursException(
+		NotBusinessHoursException exception
+	) {
+		return ResponseEntity.badRequest()
+			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
+
 	@ExceptionHandler(NotFoundSpaceException.class)
 	public ResponseEntity<ErrorMessage> NotFoundSpaceException(
 		NotFoundSpaceException exception

@@ -3,6 +3,7 @@ package com.health.healther.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import com.health.healther.dto.reservation.AvailableTimeResponseDto;
 import com.health.healther.dto.reservation.MakeReservationRequestDto;
 import com.health.healther.exception.reservation.AlreadyReservedException;
 import com.health.healther.exception.reservation.InappropriateDateException;
+import com.health.healther.exception.reservation.NotBusinessHoursException;
 import com.health.healther.exception.space.NotFoundSpaceException;
 
 import lombok.RequiredArgsConstructor;
@@ -45,7 +47,7 @@ public class ReservationService {
 			.space(space)
 			// .coupon()
 			.reservationDate(getLocalDateFromString(form.getReservationDate()))
-			.reservationTime(getReservationTime(form, space))
+			.reservationTime(validateAndGetReservationTime(form, space))
 			// .price()
 			.build();
 		reservationRepository.save(reservation);
@@ -66,19 +68,24 @@ public class ReservationService {
 		int openTime = spaceTime.getOpenTime();
 		int closeTime = spaceTime.getCloseTime();
 		for (int i = openTime; i < closeTime; i++) {
-			Optional<Reservation> optionalReservation = reservationRepository.findByReservationDateAndReservationTime(
-				reserveDate, i);
+			Optional<Reservation> optionalReservation =
+				reservationRepository.findByReservationDateAndReservationTime(reserveDate, i);
 			if (optionalReservation.isEmpty()) {
 				allTime.add(i);
 			}
 		}
+		Collections.sort(allTime);
 		return allTime;
 	}
 
-	private int getReservationTime(MakeReservationRequestDto form, Space space) {
+	private int validateAndGetReservationTime(MakeReservationRequestDto form, Space space) {
 		List<Integer> availableTimes = getAvailableTime(space.getId(), form.getReservationDate());
 		int reservationTime = form.getReservationTime();
-		if (!availableTimes.contains(reservationTime)) {
+		int minTime = space.getSpaceTime().getOpenTime();
+		int maxTime = space.getSpaceTime().getCloseTime();
+		if (reservationTime < minTime || reservationTime > maxTime) {
+			throw new NotBusinessHoursException("영업시간이 아닙니다.");
+		} else if (!availableTimes.contains(reservationTime)) {
 			throw new AlreadyReservedException("이미 예약된 시간입니다.");
 		}
 		return reservationTime;
