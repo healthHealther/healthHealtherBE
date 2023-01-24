@@ -5,7 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.domain.repository.SpaceTimeRepository;
 import com.health.healther.dto.reservation.AvailableTimeResponseDto;
 import com.health.healther.dto.reservation.MakeReservationRequestDto;
+import com.health.healther.dto.reservation.ReservationListResponseDto;
 import com.health.healther.exception.reservation.AlreadyReservedException;
 import com.health.healther.exception.reservation.InappropriateDateException;
 import com.health.healther.exception.reservation.NotBusinessHoursException;
@@ -52,6 +55,33 @@ public class ReservationService {
 			.build();
 		reservationRepository.save(reservation);
 		return reservation.getId();
+	}
+
+	public Map<LocalDate, List<ReservationListResponseDto>> getReservations() {
+		Member member = memberService.findUserFromToken();
+		Map<LocalDate, List<ReservationListResponseDto>> map = new TreeMap<>();
+		List<Reservation> reservationList =
+			reservationRepository.findByMember_IdOrderByReservationDate(member.getId());
+		if (reservationList.size() == 0) {
+			return null;
+		}
+		for (Reservation reservation : reservationList) {
+			LocalDate reservationDate = reservation.getReservationDate();
+			if (LocalDate.now().minusDays(1).isAfter(reservationDate)
+				|| map.containsKey(reservationDate)) {
+				continue;
+			}
+			List<Reservation> reservations = reservationRepository.findAllByMember_IdAndReservationDateOrderByReservationTime(
+				member.getId(),
+				reservationDate
+			);
+			List<ReservationListResponseDto> reservationListResponseDtos = reservations
+				.stream()
+				.map(ReservationListResponseDto::from)
+				.collect(Collectors.toList());
+			map.put(reservationDate, reservationListResponseDtos);
+		}
+		return map;
 	}
 
 	public List<AvailableTimeResponseDto> getAvailableTimeResponseDto(Long spaceId, String strDate) {
