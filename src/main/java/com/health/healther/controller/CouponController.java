@@ -1,5 +1,7 @@
 package com.health.healther.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
+import com.health.healther.dto.coupon.CouponReservationListResponseDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
 import com.health.healther.service.CouponService;
 
@@ -42,10 +45,10 @@ public class CouponController {
 	}
 
 	@GetMapping("/{spaceId}")
-	public ResponseEntity getCoupon(
+	public ResponseEntity<List<CouponReservationListResponseDto>> getCoupon(
 		@PathVariable("spaceId") Long spaceId
 	) {
-		return ResponseEntity.ok().body(couponService.getCoupon(spaceId));
+		return ResponseEntity.ok(couponService.getCoupon(spaceId)); //.body(couponService.getCoupon(spaceId));
 	}
 
 	@PutMapping("/{couponId}")

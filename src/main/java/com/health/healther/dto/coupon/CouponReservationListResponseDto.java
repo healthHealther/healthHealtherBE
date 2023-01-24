@@ -2,6 +2,8 @@ package com.health.healther.dto.coupon;
 
 import java.time.LocalDate;
 
+import com.health.healther.domain.model.Coupon;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class CouponReservationResponseDto {
+public class CouponReservationListResponseDto {
 	private Long couponId;
 
 	private int discountAmount;
@@ -24,4 +26,14 @@ public class CouponReservationResponseDto {
 	private String couponNumber;
 
 	private boolean isUsed;
+
+	public static CouponReservationListResponseDto from(Coupon coupon) {
+		return CouponReservationListResponseDto.builder()
+			.couponId(coupon.getId())
+			.discountAmount(coupon.getDiscountAmount())
+			.expiredDate(coupon.getExpiredDate())
+			.couponNumber(coupon.getCouponNumber())
+			.isUsed(coupon.isUsed())
+			.build();
+	}
 }

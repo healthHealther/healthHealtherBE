@@ -1,8 +1,9 @@
 package com.health.healther.service;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.CouponRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
-import com.health.healther.dto.coupon.CouponReservationResponseDto;
+import com.health.healther.dto.coupon.CouponReservationListResponseDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
 import com.health.healther.exception.coupon.NotFoundCouponException;
 import com.health.healther.exception.space.NotFoundSpaceException;
@@ -59,30 +60,24 @@ public class CouponService {
 	}
 
 	@Transactional(readOnly = true)
-	public CouponReservationResponseDto getCoupon(Long spaceId) {
+	public List<CouponReservationListResponseDto> getCoupon(Long spaceId) {
 		Member member = memberService.findUserFromToken();
 
 		LocalDate expiredDt = LocalDate.now().minusDays(1);
 		LocalDate openDt = LocalDate.now().plusDays(1);
 
-		Optional<Coupon> optionalCoupon = couponRepository
+		List<Coupon> couponList = couponRepository
 			.findBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
 				spaceId, member.getId(), expiredDt, openDt, false
 			);
 
-		if (!optionalCoupon.isPresent()) {
+		if (couponList.size() == 0) {
 			throw new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다.");
 		}
 
-		Coupon coupon = optionalCoupon.get();
-
-		return CouponReservationResponseDto.builder()
-			.couponId(coupon.getId())
-			.discountAmount(coupon.getDiscountAmount())
-			.expiredDate(coupon.getExpiredDate())
-			.couponNumber(coupon.getCouponNumber())
-			.isUsed(coupon.isUsed())
-			.build();
+		return couponList.stream()
+			.map(CouponReservationListResponseDto::from)
+			.collect(Collectors.toList());
 	}
 
 	@Transactional
