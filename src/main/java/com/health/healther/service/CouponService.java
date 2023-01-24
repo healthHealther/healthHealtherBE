@@ -62,12 +62,12 @@ public class CouponService {
 	public CouponReservationResponseDto getCoupon(Long spaceId) {
 		Member member = memberService.findUserFromToken();
 
-		LocalDate expiredNow = LocalDate.now().minusDays(1);
-		LocalDate openNow = LocalDate.now().plusDays(1);
+		LocalDate expiredDt = LocalDate.now().minusDays(1);
+		LocalDate openDt = LocalDate.now().plusDays(1);
 
 		Optional<Coupon> optionalCoupon = couponRepository
 			.findBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
-				spaceId, member.getId(), expiredNow, openNow, false
+				spaceId, member.getId(), expiredDt, openDt, false
 			);
 
 		if (!optionalCoupon.isPresent()) {
