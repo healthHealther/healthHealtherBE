@@ -1,11 +1,13 @@
 package com.health.healther.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -76,14 +78,20 @@ public class ReservationService {
 		}
 		for (Reservation reservation : reservationList) {
 			LocalDate reservationDate = reservation.getReservationDate();
-			if (LocalDate.now().minusDays(1).isAfter(reservationDate)
+			if (LocalDate.now().isAfter(reservationDate)
 				|| map.containsKey(reservationDate)) {
 				continue;
 			}
 			List<Reservation> reservations = reservationRepository.findAllByMember_IdAndReservationDateOrderByReservationTime(
 				member.getId(),
 				reservationDate
-			);
+			).stream()
+				.filter(reservation1 -> !(Objects.equals(reservation1.getReservationDate(), LocalDate.now())
+					&& reservation1.getReservationTime() < LocalTime.now().getHour()))
+				.collect(Collectors.toList());
+			if (reservations.size() == 0) {
+				continue;
+			}
 			List<ReservationListResponseDto> reservationListResponseDtos = reservations
 				.stream()
 				.map(ReservationListResponseDto::from)
