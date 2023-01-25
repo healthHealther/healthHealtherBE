@@ -19,12 +19,13 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 public class BoardController {
-
-    private final BoardService boardService;
+`    private final BoardService boardService;
 
     @PostMapping
     public ResponseEntity createBoard(
             @RequestBody @Valid BoardCreateRequestDto request) {
-        return new ResponseEntity<>(boardService.createBoard(request), HttpStatus.CREATED);
+
+        boardService.createBoard(request);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
