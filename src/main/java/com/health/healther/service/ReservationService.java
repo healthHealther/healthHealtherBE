@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.health.healther.domain.model.Coupon;
 import com.health.healther.domain.model.Member;
@@ -28,6 +29,7 @@ import com.health.healther.exception.coupon.NotFoundCouponException;
 import com.health.healther.exception.reservation.AlreadyReservedException;
 import com.health.healther.exception.reservation.InappropriateDateException;
 import com.health.healther.exception.reservation.NotBusinessHoursException;
+import com.health.healther.exception.reservation.NotFoundReservationException;
 import com.health.healther.exception.space.NotFoundSpaceException;
 
 import lombok.RequiredArgsConstructor;
@@ -89,6 +91,15 @@ public class ReservationService {
 			map.put(reservationDate, reservationListResponseDtos);
 		}
 		return map;
+	}
+
+	@Transactional
+	public void deleteReservation(Long reservationId) {
+		Reservation reservation = reservationRepository.findById(reservationId)
+			.orElseThrow(() -> new NotFoundReservationException("예약 정보를 찾을 수 없습니다."));
+		Coupon coupon = reservation.getCoupon();
+		// TODO: 쿠폰 사용 취소 로직
+		reservationRepository.delete(reservation);
 	}
 
 	private Reservation getReservationByBuilder(

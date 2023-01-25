@@ -39,6 +39,14 @@ public class ReservationExceptionHandler {
 			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
 	}
 
+	@ExceptionHandler(NotFoundReservationException.class)
+	public ResponseEntity<ErrorMessage> NotFoundReservationException(
+		NotFoundReservationException exception
+	) {
+		return ResponseEntity.badRequest()
+			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
+
 	@ExceptionHandler(NotFoundSpaceException.class)
 	public ResponseEntity<ErrorMessage> NotFoundSpaceException(
 		NotFoundSpaceException exception
