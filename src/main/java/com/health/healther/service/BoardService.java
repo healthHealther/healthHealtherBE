@@ -9,6 +9,7 @@ import com.health.healther.exception.board.NotFoundBoardException;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class BoardService {
 
     private final MemberService memberService;
 
+    @Transactional
     public void createBoard(BoardCreateRequestDto request) {
 
         Member member = memberService.findUserFromToken();
@@ -31,6 +33,7 @@ public class BoardService {
                                   .build());
     }
 
+    @Transactional(readOnly = true)
     public BoardDetailResponseDto getBoardDetail(Long id) {
 
         Board board = boardRepository.findById(id)
