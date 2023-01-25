@@ -15,9 +15,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class ReservationListResponseDto {
-	String spaceName;
-	int reservationTime;
-	int price;
+	private String spaceName;
+	private int reservationTime;
+	private int price;
 
 	public static ReservationListResponseDto from(Reservation reservation) {
 		return ReservationListResponseDto.builder()
