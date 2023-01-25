@@ -48,7 +48,7 @@ public class CouponController {
 	public ResponseEntity<List<CouponReservationListResponseDto>> getCoupon(
 		@PathVariable("spaceId") Long spaceId
 	) {
-		return ResponseEntity.ok(couponService.getCoupon(spaceId)); //.body(couponService.getCoupon(spaceId));
+		return ResponseEntity.ok(couponService.getCoupon(spaceId));
 	}
 
 	@PutMapping("/{couponId}")
