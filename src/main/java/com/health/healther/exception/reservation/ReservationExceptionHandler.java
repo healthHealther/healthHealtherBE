@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.health.healther.controller.MemberController;
 import com.health.healther.exception.ErrorMessage;
+import com.health.healther.exception.coupon.NotFoundCouponException;
 import com.health.healther.exception.space.NotFoundSpaceException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,14 @@ public class ReservationExceptionHandler {
 	@ExceptionHandler(NotFoundSpaceException.class)
 	public ResponseEntity<ErrorMessage> NotFoundSpaceException(
 		NotFoundSpaceException exception
+	) {
+		return ResponseEntity.badRequest()
+			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
+
+	@ExceptionHandler(NotFoundCouponException.class)
+	public ResponseEntity<ErrorMessage> NotFoundCouponException(
+		NotFoundCouponException exception
 	) {
 		return ResponseEntity.badRequest()
 			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
