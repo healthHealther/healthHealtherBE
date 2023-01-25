@@ -7,6 +7,8 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.health.healther.exception.member.UnauthorizedMemberException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -60,7 +62,7 @@ public class JwtTokenProvider {
 		} catch (ExpiredJwtException e) {
 			return e.getClaims().getSubject();
 		} catch (JwtException e) {
-			throw new RuntimeException("유효하지 않은 토큰 입니다");
+			throw new UnauthorizedMemberException("로그인이 필요합니다.");
 		}
 	}
 
