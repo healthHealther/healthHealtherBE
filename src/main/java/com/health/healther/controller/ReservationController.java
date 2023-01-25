@@ -48,7 +48,7 @@ public class ReservationController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Map<LocalDate, List<ReservationListResponseDto>>> getAvailableTime() {
+	public ResponseEntity<Map<LocalDate, List<ReservationListResponseDto>>> getAllReservations() {
 		return ResponseEntity.ok(reservationService.getReservations());
 	}
 }
