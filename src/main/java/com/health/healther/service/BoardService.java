@@ -7,9 +7,11 @@ import com.health.healther.dto.board.BoardCreateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
 @RequiredArgsConstructor
 @Service
 public class BoardService {
+
     private final BoardRepository boardRepository;
     private final MemberService memberService;
     public void createBoard(BoardCreateRequestDto request) {

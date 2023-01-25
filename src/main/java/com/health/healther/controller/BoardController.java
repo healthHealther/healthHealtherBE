@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 public class BoardController {
-    private final BoardService boardService;
+`    private final BoardService boardService;
 
     @PostMapping
     public ResponseEntity createBoard(
