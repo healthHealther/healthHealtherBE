@@ -57,7 +57,7 @@ public class MemberController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Void> updateMember(
+	public ResponseEntity updateMember(
 		@RequestBody @Valid MemberUpdateRequestDto memberUpdateRequestDto
 	) {
 		memberService.updateMember(memberUpdateRequestDto);
