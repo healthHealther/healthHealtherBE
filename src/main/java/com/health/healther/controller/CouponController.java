@@ -1,5 +1,7 @@
 package com.health.healther.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
+import com.health.healther.dto.coupon.CouponReservationListResponseDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
 import com.health.healther.service.CouponService;
 
@@ -27,7 +30,7 @@ public class CouponController {
 
 	@PostMapping
 	public ResponseEntity addCoupon(
-			@RequestBody @Valid CouponCreateRequestDto createDto
+		@RequestBody @Valid CouponCreateRequestDto createDto
 	) {
 		couponService.addCoupon(createDto);
 		return ResponseEntity.ok().build();
@@ -35,22 +38,22 @@ public class CouponController {
 
 	@DeleteMapping("/{couponId}")
 	public ResponseEntity deleteCoupon(
-			@PathVariable("couponId") Long couponId
+		@PathVariable("couponId") Long couponId
 	) {
 		couponService.deleteCoupon(couponId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@GetMapping("/{spaceId}")
-	public ResponseEntity getCoupon(
-			@PathVariable("spaceId") Long spaceId
+	public ResponseEntity<List<CouponReservationListResponseDto>> getCoupon(
+		@PathVariable("spaceId") Long spaceId
 	) {
-		return ResponseEntity.ok().body(couponService.getCoupon(spaceId));
+		return ResponseEntity.ok(couponService.getCoupon(spaceId));
 	}
 
 	@PutMapping("/{couponId}")
 	public ResponseEntity updateCoupon(
-			@PathVariable("couponId") Long couponId,
+		@PathVariable("couponId") Long couponId,
 		@RequestBody @Valid CouponUpdateRequestDto couponUpdateRequestDto
 	) {
 		couponService.updateCoupon(couponId, couponUpdateRequestDto);
