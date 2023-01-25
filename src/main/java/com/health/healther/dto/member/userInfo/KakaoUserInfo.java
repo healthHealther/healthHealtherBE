@@ -3,7 +3,6 @@ package com.health.healther.dto.member.userInfo;
 import java.util.Map;
 
 public class KakaoUserInfo implements OAuth2UserInfo {
-
 	private final Map<String, Object> attributes;
 
 	public KakaoUserInfo(Map<String, Object> attributes) {

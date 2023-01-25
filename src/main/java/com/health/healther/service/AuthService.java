@@ -1,12 +1,10 @@
 package com.health.healther.service;
 
-import static com.health.healther.exception.member.MemberErrorCode.*;
-
 import org.springframework.stereotype.Service;
 
 import com.health.healther.config.JwtTokenProvider;
 import com.health.healther.domain.model.Member;
-import com.health.healther.exception.member.MemberCustomException;
+import com.health.healther.exception.member.InvalidTokenException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +27,7 @@ public class AuthService {
 
 	public void accessTokenCheck(String accessToken) {
 		if (!jwtTokenProvider.validateToken(accessToken)) {
-			throw new MemberCustomException(UNAUTHORIZED_ACCESS_TOKEN);
+			throw new InvalidTokenException("유효하지 않는 액세스 토큰입니다.");
 		}
 	}
 }
