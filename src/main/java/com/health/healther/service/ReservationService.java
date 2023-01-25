@@ -53,11 +53,11 @@ public class ReservationService {
 			.orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 		Reservation reservation;
 		if (form.getCouponId() == null) {
-			reservation = getReservation(form, member, space, null, space.getPrice());
+			reservation = getReservationByBuilder(form, member, space, null, space.getPrice());
 		} else {
 			Coupon coupon = couponRepository.findById(form.getCouponId())
 				.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
-			reservation = getReservation(form, member, space, coupon, getPriceWithCoupon(space, coupon));
+			reservation = getReservationByBuilder(form, member, space, coupon, getPriceWithCoupon(space, coupon));
 			//TODO: 쿠폰 차감 로직 추가
 		}
 		reservationRepository.save(reservation);
@@ -91,7 +91,7 @@ public class ReservationService {
 		return map;
 	}
 
-	private Reservation getReservation(
+	private Reservation getReservationByBuilder(
 		MakeReservationRequestDto form,
 		Member member,
 		Space space,
