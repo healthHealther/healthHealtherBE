@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+
     private final MemberService memberService;
+
     public void createBoard(BoardCreateRequestDto request) {
 
         Member member = memberService.findUserFromToken();
