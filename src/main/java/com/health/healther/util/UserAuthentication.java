@@ -31,6 +31,11 @@ public class UserAuthentication extends AbstractAuthenticationToken {
 		return userId;
 	}
 
+	@Override
+	public boolean isAuthenticated() {
+		return true;
+	}
+
 	private static List<GrantedAuthority> authorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority(USER));
