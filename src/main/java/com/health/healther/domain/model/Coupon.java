@@ -54,9 +54,6 @@ public class Coupon extends BaseEntity {
 	@Column(name = "COUPON_NUMBER")
 	private String couponNumber;
 
-	@Column(name = "AMOUNT")
-	private int amount;
-
 	@Column(name = "IS_USED")
 	private boolean isUsed;
 

@@ -30,10 +30,10 @@ public class CouponController {
 
 	@PostMapping
 	public ResponseEntity addCoupon(
-		@RequestBody @Valid CouponCreateRequestDto createDto
+		@RequestBody @Valid CouponCreateRequestDto couponCreateRequestDto
 	) {
-		couponService.addCoupon(createDto);
-		return ResponseEntity.ok().build();
+		couponService.addCoupon(couponCreateRequestDto);
+		return new ResponseEntity(HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/{couponId}")
