@@ -32,7 +32,7 @@ public class Board extends BaseEntity {
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany
 	@JoinColumn
 	private List<Comment> comments = new ArrayList<>();
 
