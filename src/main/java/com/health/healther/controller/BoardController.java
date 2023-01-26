@@ -32,4 +32,12 @@ public class BoardController {
     ) {
         return new ResponseEntity<>(boardService.getBoardDetail(id), HttpStatus.OK);
     }
+
+    @DeleteMapping("/like/{boardId}")
+    public ResponseEntity deleteBoardLike(
+            @PathVariable("boardId") Long id
+    ) {
+        boardService.deleteBoardLike(id);
+        return ResponseEntity.ok().build();
+    }
 }
