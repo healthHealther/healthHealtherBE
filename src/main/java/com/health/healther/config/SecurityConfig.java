@@ -26,6 +26,7 @@ public class SecurityConfig {
 		return web -> web.ignoring()
 			.antMatchers(HttpMethod.GET, "/members/login/callback/**")
 			.antMatchers(HttpMethod.POST, "/members/signUp")
+			.antMatchers(HttpMethod.POST, "/members/reissue")
 			.antMatchers("/h2-console/**");
 	}
 
