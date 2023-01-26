@@ -1,12 +1,12 @@
 package com.health.healther.config;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.health.healther.dto.member.Token;
 import com.health.healther.exception.member.UnauthorizedMemberException;
 
 import io.jsonwebtoken.Claims;
@@ -30,15 +30,14 @@ public class JwtTokenProvider {
 	@Value("${jwt.token.secret-key}")
 	private String secretKey;
 
-	public String createAccessToken(String payload) {
-		return createToken(payload, accessTokenValidityInMilliseconds);
+	public Token createAccessToken(String payload) {
+		String token = createToken(payload, accessTokenValidityInMilliseconds);
+		return new Token(token, accessTokenValidityInMilliseconds);
 	}
 
-	public String createRefreshToken() {
-		byte[] array = new byte[7];
-		new Random().nextBytes(array);
-		String generatedString = new String(array, StandardCharsets.UTF_8);
-		return createToken(generatedString, refreshTokenValidityInMilliseconds);
+	public Token createRefreshToken() {
+		String token = createToken(UUID.randomUUID().toString(), refreshTokenValidityInMilliseconds);
+		return new Token(token, refreshTokenValidityInMilliseconds);
 	}
 
 	private String createToken(String payload, long expiredLength) {

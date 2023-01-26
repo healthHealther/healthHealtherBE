@@ -1,6 +1,5 @@
 package com.health.healther.dto.member;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,16 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@Builder
 @ToString
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class MemberLoginResponseDto {
-	private String tokenType;
-
+public class AccessTokenResponseDto {
 	private String accessToken;
 
 	private Long accessTokenExpiredTime;
-
-	private String refreshToken;
 }

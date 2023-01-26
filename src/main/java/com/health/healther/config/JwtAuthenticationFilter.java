@@ -24,8 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-	public static final String TOKEN_HEADER = "Authorization";
-	public static final String TOKEN_PREFIX = "Bearer ";
+	public static final String AUTHORIZATION = "Authorization";
+	public static String BEARER_TYPE = "Bearer";
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthService authService;
 
@@ -47,9 +47,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	}
 
 	private String resolveTokenFromRequest(HttpServletRequest request) {
-		String token = request.getHeader(TOKEN_HEADER);
-		if (!ObjectUtils.isEmpty(token) && token.startsWith(TOKEN_PREFIX)) {
-			return token.substring(TOKEN_PREFIX.length());
+		String token = request.getHeader(AUTHORIZATION);
+		if (!ObjectUtils.isEmpty(token) && token.toLowerCase().startsWith(BEARER_TYPE.toLowerCase())) {
+			return token.substring(BEARER_TYPE.length()).trim();
 		}
 		return null;
 	}
