@@ -1,6 +1,7 @@
 package com.health.healther.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,29 +25,31 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CouponService {
-
 	private final CouponRepository couponRepository;
 
 	private final SpaceRepository spaceRepository;
 
 	private final MemberService memberService;
 
-	public void addCoupon(CouponCreateRequestDto createDto) {
+	public void addCoupon(CouponCreateRequestDto couponCreateRequestDto) {
 
-		Space space = spaceRepository.findById(createDto.getSpaceId())
+		Space space = spaceRepository.findById(couponCreateRequestDto.getSpaceId())
 			.orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
-		Coupon coupon = Coupon.builder()
-			.space(space)
-			.discountAmount(createDto.getDiscountAmount())
-			.openDate(createDto.getOpenDate())
-			.expiredDate(createDto.getExpiredDate())
-			.couponNumber(UUID.randomUUID().toString())
-			.amount(createDto.getAmount())
-			.isUsed(false)
-			.build();
-
-		couponRepository.save(coupon);
+		List<Coupon> coupons = new ArrayList<>();
+		int amount = couponCreateRequestDto.getAmount();
+		for (int i = 0; i < amount; i++) {
+			Coupon coupon = Coupon.builder()
+				.space(space)
+				.discountAmount(couponCreateRequestDto.getDiscountAmount())
+				.openDate(couponCreateRequestDto.getOpenDate())
+				.expiredDate(couponCreateRequestDto.getExpiredDate())
+				.couponNumber(UUID.randomUUID().toString())
+				.isUsed(false)
+				.build();
+			coupons.add(coupon);
+		}
+		couponRepository.saveAll(coupons);
 	}
 
 	@Transactional
