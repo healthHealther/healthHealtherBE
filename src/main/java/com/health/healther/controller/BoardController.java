@@ -32,4 +32,12 @@ public class BoardController {
     ) {
         return new ResponseEntity<>(boardService.getBoardDetail(id), HttpStatus.OK);
     }
+
+    @PostMapping("/like/{boardId}")
+    public ResponseEntity likeBoard(
+            @PathVariable("boardId") Long id
+    ) {
+        boardService.likeBoard(id);
+        return ResponseEntity.ok().build();
+    }
 }
