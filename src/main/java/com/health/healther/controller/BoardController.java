@@ -34,10 +34,12 @@ public class BoardController {
         return new ResponseEntity<>(boardService.getBoardDetail(id), HttpStatus.OK);
     }
 
+    @PutMapping("/{boardId}")
     public ResponseEntity updateBoard(
+            @PathVariable("boardId") Long id,
             @RequestBody BoardUpdateRequestDto request
     ) {
-        boardService.updateBoard(request);
+        boardService.updateBoard(id, request);
         return ResponseEntity.ok().build();
     }
 }
