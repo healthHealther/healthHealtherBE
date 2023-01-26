@@ -90,5 +90,13 @@ public class CouponService {
 			couponUpdateRequestDto.getExpiredDate());
 	}
 
+	@Transactional
+	public void useCoupon(Long couponId) {
+		Coupon coupon = couponRepository.findById(couponId)
+			.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
+
+		coupon.useCoupon(true);
+	}
+
 }
 

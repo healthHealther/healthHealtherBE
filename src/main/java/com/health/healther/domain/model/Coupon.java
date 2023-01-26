@@ -62,4 +62,8 @@ public class Coupon extends BaseEntity {
 		this.openDate = openDate;
 		this.expiredDate = expiredDate;
 	}
+
+	public void useCoupon(boolean isUsed) {
+		this.isUsed = isUsed;
+	}
 }
