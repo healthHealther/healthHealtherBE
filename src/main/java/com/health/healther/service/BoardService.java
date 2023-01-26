@@ -2,7 +2,9 @@ package com.health.healther.service;
 
 import com.health.healther.domain.model.Board;
 import com.health.healther.domain.model.Member;
+import com.health.healther.domain.repository.BoardLikeRepository;
 import com.health.healther.domain.repository.BoardRepository;
+import com.health.healther.domain.repository.CommentRepository;
 import com.health.healther.dto.board.BoardCreateRequestDto;
 import com.health.healther.dto.board.BoardDetailResponseDto;
 import com.health.healther.exception.board.NotFoundBoardException;
@@ -17,6 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+
+    private final BoardLikeRepository boardLikeRepository;
+
+    private final CommentRepository commentRepository;
 
     private final MemberService memberService;
 
