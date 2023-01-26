@@ -5,6 +5,7 @@ import com.health.healther.domain.model.BoardLike;
 import com.health.healther.domain.model.Member;
 import com.health.healther.domain.repository.BoardLikeRepository;
 import com.health.healther.domain.repository.BoardRepository;
+import com.health.healther.domain.repository.CommentRepository;
 import com.health.healther.dto.board.BoardCreateRequestDto;
 import com.health.healther.dto.board.BoardDetailResponseDto;
 import com.health.healther.exception.board.NotFoundBoardException;
@@ -21,6 +22,9 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     private final BoardLikeRepository boardLikeRepository;
+
+
+    private final CommentRepository commentRepository;
 
     private final MemberService memberService;
 
