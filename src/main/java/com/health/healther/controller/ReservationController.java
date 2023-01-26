@@ -1,6 +1,8 @@
 package com.health.healther.controller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.health.healther.dto.reservation.AvailableTimeResponseDto;
 import com.health.healther.dto.reservation.MakeReservationRequestDto;
+import com.health.healther.dto.reservation.ReservationListResponseDto;
 import com.health.healther.service.ReservationService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,5 +45,10 @@ public class ReservationController {
 	) {
 		return new ResponseEntity<>(
 			reservationService.makeReservation(form), HttpStatus.CREATED);
+	}
+
+	@GetMapping
+	public ResponseEntity<Map<LocalDate, List<ReservationListResponseDto>>> getAllReservations() {
+		return ResponseEntity.ok(reservationService.getReservations());
 	}
 }
