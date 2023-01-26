@@ -41,4 +41,13 @@ public class BoardService {
 
         return BoardDetailResponseDto.of(board);
     }
+
+    @Transactional
+    public void deleteBoard(Long id) {
+
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+        boardRepository.delete(board);
+    }
 }
