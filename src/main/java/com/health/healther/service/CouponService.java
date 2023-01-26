@@ -32,7 +32,6 @@ public class CouponService {
 	private final MemberService memberService;
 
 	public void addCoupon(CouponCreateRequestDto couponCreateRequestDto) {
-
 		Space space = spaceRepository.findById(couponCreateRequestDto.getSpaceId())
 			.orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
@@ -54,12 +53,10 @@ public class CouponService {
 
 	@Transactional
 	public void deleteCoupon(Long couponId) {
-
 		Coupon coupon = couponRepository.findById(couponId)
 			.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
 
 		couponRepository.delete(coupon);
-
 	}
 
 	@Transactional(readOnly = true)
@@ -85,7 +82,6 @@ public class CouponService {
 
 	@Transactional
 	public void updateCoupon(Long couponId, CouponUpdateRequestDto couponUpdateRequestDto) {
-
 		Coupon coupon = couponRepository.findById(couponId)
 			.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
 
