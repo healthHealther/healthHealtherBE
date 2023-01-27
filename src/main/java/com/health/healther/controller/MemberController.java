@@ -2,10 +2,14 @@ package com.health.healther.controller;
 
 import static com.health.healther.constant.MemberStatus.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +21,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.health.healther.domain.model.Member;
+import com.health.healther.dto.member.AccessTokenResponseDto;
 import com.health.healther.dto.member.MemberLoginResponseDto;
 import com.health.healther.dto.member.MemberSearchResponseDto;
 import com.health.healther.dto.member.MemberSignUpRequestDto;
 import com.health.healther.dto.member.MemberUpdateRequestDto;
+import com.health.healther.dto.member.RefreshTokenRequestDto;
+import com.health.healther.exception.member.InvalidTokenException;
+import com.health.healther.service.AuthService;
 import com.health.healther.service.MemberService;
 import com.health.healther.service.OauthService;
+import com.health.healther.util.AuthTransformUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	private final MemberService memberService;
 	private final OauthService oauthService;
+	private final AuthService authService;
 
 	@PostMapping("/login/callback/{provider}")
 	public ResponseEntity<?> oauthLogin(
@@ -46,6 +56,27 @@ public class MemberController {
 		} else {
 			return ResponseEntity.ok(oauthService.loginResult(member));
 		}
+	}
+
+	@PostMapping(value = "/reissue", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public ResponseEntity<AccessTokenResponseDto> updateAccessToken(
+		HttpServletRequest request,
+		@Validated RefreshTokenRequestDto refreshToken,
+		BindingResult bindingResult
+	) {
+		if (bindingResult.hasErrors()) {
+			throw new InvalidTokenException("토큰 입력값을 다시 확인하세요.");
+		}
+		String accessToken = AuthTransformUtil.resolveTokenFromRequest(request);
+		return ResponseEntity.ok(authService.accessTokenByRefreshToken(accessToken, refreshToken));
+	}
+
+	@PostMapping("/logout/me")
+	public ResponseEntity<String> logout(
+		HttpServletRequest request
+	) {
+		String accessToken = AuthTransformUtil.resolveTokenFromRequest(request);
+		return ResponseEntity.ok(authService.logout(accessToken));
 	}
 
 	@PostMapping("/signUp")

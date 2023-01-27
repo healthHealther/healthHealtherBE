@@ -8,6 +8,7 @@ import com.health.healther.domain.repository.MemberRepository;
 import com.health.healther.dto.member.MemberUpdateRequestDto;
 import com.health.healther.exception.member.NotFoundMemberException;
 import com.health.healther.exception.member.NotMatchMemberException;
+import com.health.healther.util.RedisUtil;
 import com.health.healther.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
+	private final RedisUtil redisUtil;
 
 	public Member findById(Long id) {
 		return memberRepository.findById(id)
@@ -40,6 +42,7 @@ public class MemberService {
 	@Transactional
 	public void deleteMember() {
 		Member member = findUserFromToken();
+		redisUtil.deleteData(String.valueOf(member.getId()));
 		memberRepository.delete(member);
 	}
 }
