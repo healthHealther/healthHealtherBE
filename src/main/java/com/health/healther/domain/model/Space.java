@@ -30,6 +30,8 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.health.healther.dto.space.CreateSpaceRequestDto;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -83,4 +85,20 @@ public class Space extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "space")
 	private List<Image> images;
+
+	public static Space of(
+			CreateSpaceRequestDto createSpaceRequestDto,
+			Member member
+	) {
+		return Space.builder()
+				.member(member)
+				.title(createSpaceRequestDto.getTitle())
+				.content(createSpaceRequestDto.getContent())
+				.address(createSpaceRequestDto.getAddress())
+				.addressDetail(createSpaceRequestDto.getAddressDetail())
+				.notice(createSpaceRequestDto.getNotice())
+				.rule(createSpaceRequestDto.getRule())
+				.price(createSpaceRequestDto.getPrice())
+				.build();
+	}
 }
