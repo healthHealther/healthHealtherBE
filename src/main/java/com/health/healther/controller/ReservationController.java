@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,5 +51,11 @@ public class ReservationController {
 	@GetMapping
 	public ResponseEntity<Map<LocalDate, List<ReservationListResponseDto>>> getAllReservations() {
 		return ResponseEntity.ok(reservationService.getReservations());
+	}
+
+	@DeleteMapping("{reservationId}")
+	public ResponseEntity deleteReservation(@PathVariable Long reservationId) {
+		reservationService.deleteReservation(reservationId);
+		return ResponseEntity.ok().build();
 	}
 }
