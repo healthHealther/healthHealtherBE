@@ -87,7 +87,7 @@ public class OauthService {
 		return MemberLoginResponseDto.builder()
 			.tokenType(BEARER_TYPE)
 			.accessToken(accessToken.getValue())
-			.accessTokenExpiredTime(accessToken.getExpiredTime())
+			.expiredTime(accessToken.getExpiredTime())
 			.refreshToken(refreshToken.getValue())
 			.build();
 	}
