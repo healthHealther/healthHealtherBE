@@ -8,12 +8,15 @@ import com.health.healther.domain.repository.BoardRepository;
 import com.health.healther.domain.repository.CommentRepository;
 import com.health.healther.dto.board.BoardCreateRequestDto;
 import com.health.healther.dto.board.BoardDetailResponseDto;
+import com.health.healther.exception.board.BoardLikeAlreadyExistException;
 import com.health.healther.exception.board.NotFoundBoardException;
 import com.health.healther.exception.board.NotFoundBoardLikeException;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -51,18 +54,49 @@ public class BoardService {
     }
 
     @Transactional
-    public void deleteBoardLike(Long id) {
-
-        Member member = memberService.findUserFromToken();
+    public void deleteBoard(Long id) {
 
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+                                     .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
 
-        BoardLike boardLike = boardLikeRepository.findByMemberAndBoard(member,board)
-                 .orElseThrow(() -> new NotFoundBoardLikeException("추천 정보를 찾을 수 없습니다."));
+        boardRepository.delete(board);
+    }
 
-        boardLikeRepository.delete(boardLike);
+    @Transactional
+    public void likeBoard(Long id) {
 
-        board.deleteBoardLike();
+        Member member = memberService.findUserFromToken();
+        
+        Board board = boardRepository.findById(id)
+              .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+        if(boardLikeRepository.findByMemberAndBoard(member,board).isPresent()) {
+           throw new BoardLikeAlreadyExistException("추천 정보가 이미 존재합니다.");
+        }
+
+        boardLikeRepository.save(BoardLike.builder()
+              .member(member)
+              .board(board)
+              .isLiked(true)
+              .build());
+
+        board.likeBoard();   
+    }
+    
+    @Transactional
+    public void deleteBoardLike(Long id) {
+    
+      Member member = memberService.findUserFromToken();
+
+      Board board = boardRepository.findById(id)
+              .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+      BoardLike boardLike = boardLikeRepository.findByMemberAndBoard(member,board)
+               .orElseThrow(() -> new NotFoundBoardLikeException("추천 정보를 찾을 수 없습니다."));
+
+      boardLikeRepository.delete(boardLike);
+
+      board.deleteBoardLike();
     }
 }
+
