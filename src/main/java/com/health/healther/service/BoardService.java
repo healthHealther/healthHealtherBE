@@ -54,13 +54,16 @@ public class BoardService {
     }
 
     @Transactional
+
     public void likeBoard(Long id) {
 
         Member member = memberService.findUserFromToken();
 
+    public void deleteBoard(Long id) {
+
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
-
+                
         if(boardLikeRepository.findByMemberAndBoard(member,board).isPresent()) {
             throw new BoardLikeAlreadyExistException("추천 정보가 이미 존재합니다.");
         }
@@ -72,5 +75,6 @@ public class BoardService {
                 .build());
 
         board.likeBoard();
+        boardRepository.delete(board);
     }
 }
