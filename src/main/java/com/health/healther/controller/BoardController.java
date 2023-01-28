@@ -2,6 +2,8 @@ package com.health.healther.controller;
 
 
 import com.health.healther.dto.board.BoardCreateRequestDto;
+import com.health.healther.dto.board.CommentRegisterDto.RequestDto;
+import com.health.healther.dto.board.CommentRegisterDto.ResponseDto;
 import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,5 +57,15 @@ public class BoardController {
     ) {
         boardService.deleteBoardLike(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{boardId}/comment")
+    public ResponseEntity<ResponseDto> registerComment(
+            @RequestBody RequestDto request,
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(
+                boardService.registerComment(id,request), HttpStatus.OK
+        );
     }
 }
