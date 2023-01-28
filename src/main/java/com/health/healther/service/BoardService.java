@@ -54,6 +54,15 @@ public class BoardService {
     }
 
     @Transactional
+    public void deleteBoard(Long id) {
+
+        Board board = boardRepository.findById(id)
+                                     .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+        boardRepository.delete(board);
+    }
+
+    @Transactional
     public void likeBoard(Long id) {
 
         Member member = memberService.findUserFromToken();
@@ -72,14 +81,5 @@ public class BoardService {
                 .build());
 
         board.likeBoard();
-    }
-
-    @Transactional
-    public void deleteBoard(Long id) {
-
-        Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
-
-        boardRepository.delete(board);
     }
 }
