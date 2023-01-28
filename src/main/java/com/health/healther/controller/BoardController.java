@@ -2,7 +2,6 @@ package com.health.healther.controller;
 
 
 import com.health.healther.dto.board.BoardCreateRequestDto;
-import com.health.healther.dto.board.BoardUpdateRequestDto;
 import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,14 +31,5 @@ public class BoardController {
             @PathVariable("boardId") Long id
     ) {
         return new ResponseEntity<>(boardService.getBoardDetail(id), HttpStatus.OK);
-    }
-
-    @PutMapping("/{boardId}")
-    public ResponseEntity updateBoard(
-            @PathVariable("boardId") Long id,
-            @RequestBody BoardUpdateRequestDto request
-    ) {
-        boardService.updateBoard(id, request);
-        return ResponseEntity.ok().build();
     }
 }

@@ -2,7 +2,6 @@ package com.health.healther.domain.model;
 
 import javax.persistence.*;
 
-import com.health.healther.dto.board.BoardUpdateRequestDto;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -45,9 +44,4 @@ public class Board extends BaseEntity {
 
 	@Column(name = "LIKE_COUNT")
 	private int likeCount;
-
-	public void updateBoard(BoardUpdateRequestDto request) {
-		this.title = request.getTitle();
-		this.content = request.getContent();
-	}
 }
