@@ -40,6 +40,7 @@ public class BoardController {
     ) {
         boardService.likeBoard(id);
         return ResponseEntity.ok().build();
+    }
 
     @DeleteMapping("{boardId}")
     public ResponseEntity deleteBoard(
