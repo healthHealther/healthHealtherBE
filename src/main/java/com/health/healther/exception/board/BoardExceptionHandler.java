@@ -17,7 +17,15 @@ public class BoardExceptionHandler {
             NotFoundBoardException exception
     ) {
         return ResponseEntity.badRequest()
-                .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+                             .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(NotFoundBoardLikeException.class)
+    public ResponseEntity<ErrorMessage> NotFoundBoardLikeException(
+            NotFoundBoardLikeException exception
+    ) {
+        return ResponseEntity.badRequest()
+                             .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(BoardLikeAlreadyExistException.class)
