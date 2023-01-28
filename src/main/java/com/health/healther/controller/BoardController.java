@@ -32,6 +32,14 @@ public class BoardController {
     ) {
         return new ResponseEntity<>(boardService.getBoardDetail(id), HttpStatus.OK);
     }
+
+
+    @GetMapping("/like/{boardId}")
+    public ResponseEntity boardIsLiked(
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(boardService.boardIsLiked(id), HttpStatus.OK);
+
     
     @DeleteMapping("{boardId}")
     public ResponseEntity deleteBoard(
@@ -55,5 +63,6 @@ public class BoardController {
     ) {
         boardService.deleteBoardLike(id);
         return ResponseEntity.ok().build();
+
     }
 }
