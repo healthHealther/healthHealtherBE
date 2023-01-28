@@ -39,11 +39,4 @@ public class CouponExceptionHandler {
 			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
 	}
 
-	@ExceptionHandler(NotExistCouponInReservationException.class)
-	public ResponseEntity<ErrorMessage> NotExistCouponInReservationException(
-		NotExistCouponInReservationException exception
-	) {
-		return ResponseEntity.badRequest()
-			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
-	}
 }
