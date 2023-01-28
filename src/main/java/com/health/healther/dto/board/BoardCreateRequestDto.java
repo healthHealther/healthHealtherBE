@@ -16,5 +16,5 @@ public class BoardCreateRequestDto {
     private String title;
 
     @NotBlank
-    private String content; // @Max 필요할까?
+    private String content;
 }
