@@ -2,21 +2,22 @@ package com.health.healther.service;
 
 import com.health.healther.domain.model.Board;
 import com.health.healther.domain.model.BoardLike;
+import com.health.healther.domain.model.Comment;
 import com.health.healther.domain.model.Member;
 import com.health.healther.domain.repository.BoardLikeRepository;
 import com.health.healther.domain.repository.BoardRepository;
 import com.health.healther.domain.repository.CommentRepository;
 import com.health.healther.dto.board.BoardCreateRequestDto;
 import com.health.healther.dto.board.BoardDetailResponseDto;
+import com.health.healther.dto.board.CommentRegisterDto;
+import com.health.healther.dto.board.CommentRegisterDto.RequestDto;
+import com.health.healther.dto.board.CommentRegisterDto.ResponseDto;
 import com.health.healther.exception.board.BoardLikeAlreadyExistException;
 import com.health.healther.exception.board.NotFoundBoardException;
 import com.health.healther.exception.board.NotFoundBoardLikeException;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -97,6 +98,22 @@ public class BoardService {
       boardLikeRepository.delete(boardLike);
 
       board.deleteBoardLike();
+    }
+    @Transactional
+    public ResponseDto registerComment(Long id, RequestDto request) {
+
+        Member member = memberService.findUserFromToken();
+
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+        commentRepository.save(Comment.builder()
+                .member(member)
+                .board(board)
+                .context(request.getContext())
+                .build());
+
+        return new ResponseDto(request.getContext());
     }
 }
 
