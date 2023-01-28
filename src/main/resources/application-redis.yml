@@ -2,3 +2,9 @@ spring:
   config:
     activate:
       on-profile: "redis"
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    username: ${REDIS_USERNAME:root}
+    password: ${REDIS_PASSWORD}

@@ -6,10 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,8 +23,6 @@ import com.health.healther.dto.member.MemberLoginResponseDto;
 import com.health.healther.dto.member.MemberSearchResponseDto;
 import com.health.healther.dto.member.MemberSignUpRequestDto;
 import com.health.healther.dto.member.MemberUpdateRequestDto;
-import com.health.healther.dto.member.RefreshTokenRequestDto;
-import com.health.healther.exception.member.InvalidTokenException;
 import com.health.healther.service.AuthService;
 import com.health.healther.service.MemberService;
 import com.health.healther.service.OauthService;
@@ -58,16 +53,12 @@ public class MemberController {
 		}
 	}
 
-	@PostMapping(value = "/reissue", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	@PostMapping(value = "/reissue")
 	public ResponseEntity<AccessTokenResponseDto> updateAccessToken(
-		HttpServletRequest request,
-		@Validated RefreshTokenRequestDto refreshToken,
-		BindingResult bindingResult
+		HttpServletRequest request
 	) {
-		if (bindingResult.hasErrors()) {
-			throw new InvalidTokenException("토큰 입력값을 다시 확인하세요.");
-		}
-		String accessToken = AuthTransformUtil.resolveTokenFromRequest(request);
+		String accessToken = AuthTransformUtil.resolveAccessTokenFromRequest(request);
+		String refreshToken = AuthTransformUtil.resolveRefreshTokenFromRequest(request);
 		return ResponseEntity.ok(authService.accessTokenByRefreshToken(accessToken, refreshToken));
 	}
 
@@ -75,7 +66,7 @@ public class MemberController {
 	public ResponseEntity<String> logout(
 		HttpServletRequest request
 	) {
-		String accessToken = AuthTransformUtil.resolveTokenFromRequest(request);
+		String accessToken = AuthTransformUtil.resolveAccessTokenFromRequest(request);
 		return ResponseEntity.ok(authService.logout(accessToken));
 	}
 
@@ -102,7 +93,7 @@ public class MemberController {
 	}
 
 	@DeleteMapping
-	public ResponseEntity<Void> withdrawMember(
+	public ResponseEntity withdrawMember(
 	) {
 		memberService.deleteMember();
 		return ResponseEntity.ok().build();

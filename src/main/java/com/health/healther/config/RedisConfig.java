@@ -1,6 +1,5 @@
 package com.health.healther.config;
 
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -26,7 +25,7 @@ public class RedisConfig {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(redisConnectionFactory);
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
+		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
 		return redisTemplate;
 	}
 }

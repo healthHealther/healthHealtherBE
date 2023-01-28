@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.health.healther.config.JwtTokenProvider;
 import com.health.healther.domain.model.Member;
 import com.health.healther.dto.member.AccessTokenResponseDto;
-import com.health.healther.dto.member.RefreshTokenRequestDto;
 import com.health.healther.dto.member.Token;
 import com.health.healther.exception.member.InvalidTokenException;
 import com.health.healther.exception.member.UnauthorizedAccessTokenException;
@@ -35,19 +34,19 @@ public class AuthService {
 
 	public AccessTokenResponseDto accessTokenByRefreshToken(
 		String accessToken,
-		RefreshTokenRequestDto refreshTokenRequest
+		String refreshToken
 	) {
-		validateRefreshToken(refreshTokenRequest);
+		validateRefreshToken(refreshToken);
 		String id = jwtTokenProvider.getPayload(accessToken);
 		String data = redisUtil.getData(id);
-		if (!data.equals(refreshTokenRequest.getRefreshToken())) {
+		if (!data.equals(refreshToken)) {
 			throw new InvalidTokenException("유효하지 않는 액세스 토큰입니다.");
 		}
 		Token newAccessToken = jwtTokenProvider.createAccessToken(id);
 		return AccessTokenResponseDto
 			.builder()
 			.accessToken(newAccessToken.getValue())
-			.accessTokenExpiredTime(newAccessToken.getExpiredTime())
+			.expiredTime(newAccessToken.getExpiredTime())
 			.build();
 	}
 
@@ -64,8 +63,8 @@ public class AuthService {
 		}
 	}
 
-	private void validateRefreshToken(RefreshTokenRequestDto refreshTokenRequest) {
-		if (!jwtTokenProvider.validateToken(refreshTokenRequest.getRefreshToken())) {
+	private void validateRefreshToken(String refreshToken) {
+		if (!jwtTokenProvider.validateToken(refreshToken)) {
 			throw new UnauthorizedRefreshTokenException("인가되지 않은 refresh 토큰입니다.");
 		}
 	}
