@@ -30,4 +30,13 @@ public class CouponExceptionHandler {
 		return ResponseEntity.badRequest()
 			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
 	}
+
+	@ExceptionHandler(NotUsedCouponException.class)
+	public ResponseEntity<ErrorMessage> NotUseCouponException(
+		NotUsedCouponException exception
+	) {
+		return ResponseEntity.badRequest()
+			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
+
 }

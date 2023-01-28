@@ -18,6 +18,7 @@ import com.health.healther.dto.coupon.CouponCreateRequestDto;
 import com.health.healther.dto.coupon.CouponReservationListResponseDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
 import com.health.healther.exception.coupon.NotFoundCouponException;
+import com.health.healther.exception.coupon.NotUsedCouponException;
 import com.health.healther.exception.space.NotFoundSpaceException;
 
 import lombok.RequiredArgsConstructor;
@@ -96,6 +97,18 @@ public class CouponService {
 			.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
 
 		coupon.useCoupon(true);
+	}
+
+	@Transactional
+	public void cancelUseCoupon(Long couponId) {
+		Coupon coupon = couponRepository.findById(couponId)
+			.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
+
+		if (!coupon.isUsed()) {
+			throw new NotUsedCouponException("사용되지 않은 쿠폰입니다.");
+		}
+
+		coupon.useCoupon(false);
 	}
 
 }
