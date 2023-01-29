@@ -10,6 +10,8 @@ spring:
     open-in-view: true
     hibernate:
       ddl-auto: validate
+      naming:
+        physical-strategy: com.health.healther.config.UpperCaseNamingStrategy
     show-sql: true
     properties:
       hibernate:
