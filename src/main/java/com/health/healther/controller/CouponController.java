@@ -60,4 +60,12 @@ public class CouponController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@PutMapping("download/{spaceId}")
+	public ResponseEntity downloadCoupon(
+		@PathVariable("spaceId") Long spaceId
+	) {
+		couponService.downloadCoupon(spaceId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
 }

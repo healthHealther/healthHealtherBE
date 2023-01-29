@@ -11,4 +11,12 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
 	List<Coupon> findBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
 		Long spaceId, Long memberId, LocalDate expiredNow, LocalDate openNow, boolean isUsed
 	);
+
+	Coupon findTopBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
+		Long spaceId, Long memberId, LocalDate expiredNow, LocalDate openNow, boolean isUsed
+	);
+
+	List<Coupon> findBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBefore(
+		Long spaceId, Long memberId, LocalDate expiredNow, LocalDate openNow
+	);
 }
