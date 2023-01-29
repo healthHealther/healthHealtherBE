@@ -1,5 +1,8 @@
 package com.health.healther.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,10 +46,11 @@ public class AuthService {
 			throw new InvalidTokenException("유효하지 않는 액세스 토큰입니다.");
 		}
 		Token newAccessToken = jwtTokenProvider.createAccessToken(id);
+		LocalDateTime expiredTime = LocalDateTime.now().plusSeconds(newAccessToken.getExpiredTime() / 1000);
 		return AccessTokenResponseDto
 			.builder()
 			.accessToken(newAccessToken.getValue())
-			.expiredTime(newAccessToken.getExpiredTime())
+			.expiredTime(expiredTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
 			.build();
 	}
 

@@ -14,5 +14,5 @@ import lombok.ToString;
 public class AccessTokenResponseDto {
 	private String accessToken;
 
-	private Long expiredTime;
+	private String expiredTime;
 }
