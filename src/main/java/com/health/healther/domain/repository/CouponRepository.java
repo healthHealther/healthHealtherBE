@@ -2,6 +2,7 @@ package com.health.healther.domain.repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,7 +13,7 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
 		Long spaceId, Long memberId, LocalDate expiredNow, LocalDate openNow, boolean isUsed
 	);
 
-	Coupon findTopBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
+	Optional<Coupon> findTopBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
 		Long spaceId, Long memberId, LocalDate expiredNow, LocalDate openNow, boolean isUsed
 	);
 
