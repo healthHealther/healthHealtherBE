@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum SpaceType {
 	GX("GX"),
 	PILATES("PILATES"),
-	YOGA("YOGA");
+	ANAEROBIC("ANAEROBIC"),
+	AEROBIC("AEROBIC");
 
 	@Getter
 	private final String value;
