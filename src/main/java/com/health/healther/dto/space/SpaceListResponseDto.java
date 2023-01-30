@@ -1,12 +1,16 @@
 package com.health.healther.dto.space;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.health.healther.constant.SpaceType;
 import com.health.healther.domain.model.Space;
 import com.health.healther.domain.model.SpaceKind;
+import com.health.healther.dto.coupon.CouponReservationListResponseDto;
+import com.health.healther.dto.review.ReviewDto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,8 +35,16 @@ public class SpaceListResponseDto {
 
 	private Set<SpaceType> spaceTypes;
 
+	private boolean existCoupon;
+
+	private long reviewAverage;
+
 	@Builder
-	public SpaceListResponseDto(SpaceKind spaceKind) {
+	public SpaceListResponseDto(
+			SpaceKind spaceKind,
+			boolean existCoupon,
+			List<ReviewDto> reviewList
+	) {
 		Space space = spaceKind.getSpace();
 		String imageUrl = null;
 
@@ -50,5 +62,16 @@ public class SpaceListResponseDto {
 						.map(kind -> kind.getSpaceType())
 						.collect(Collectors.toList())
 		);
+		this.existCoupon = existCoupon;
+
+		long average = 0;
+
+		OptionalDouble optionalDouble = reviewList.stream()
+				.mapToInt(review -> review.getGrade()).average();
+
+		if (optionalDouble.isPresent()) {
+			average = Math.round(optionalDouble.getAsDouble());
+		}
+		this.reviewAverage = average;
 	}
 }

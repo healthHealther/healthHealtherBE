@@ -16,5 +16,9 @@ public interface SpaceKindRepository extends JpaRepository<SpaceKind, Long> {
 	Optional<Set<SpaceKind>> findAllBySpaceId(Long spaceId);
 
 	@EntityGraph(attributePaths = {"space"})
-	Page<SpaceKind> findAllBySpaceTypeIsIn(List<SpaceType> spaceType, Pageable pageable);
+	Page<SpaceKind> findAllBySpaceTypeIsInAndSpace_TitleContainingIgnoreCase(
+			List<SpaceType> spaceType,
+			Pageable pageable,
+			String title
+	);
 }

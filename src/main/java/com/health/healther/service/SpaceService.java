@@ -25,6 +25,7 @@ import com.health.healther.domain.repository.ImageRepository;
 import com.health.healther.domain.repository.SpaceKindRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.domain.repository.SpaceTimeRepository;
+import com.health.healther.dto.coupon.CouponReservationListResponseDto;
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
 import com.health.healther.dto.space.CreateSpaceRequestDto;
 import com.health.healther.dto.space.SpaceDetailResponseDto;
@@ -40,8 +41,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class SpaceService {
-	private final MemberService memberService;
 	private final CouponService couponService;
+	private final ReviewService reviewService;
+	private final MemberService memberService;
 	private final SpaceRepository spaceRepository;
 	private final SpaceTimeRepository spaceTimeRepository;
 	private final SpaceKindRepository spaceKindRepository;
@@ -166,12 +168,22 @@ public class SpaceService {
 				Sort.Direction.DESC,
 				"createdAt"
 		);
+		List<SpaceType> spaceTypes = List.of(SpaceType.GX, SpaceType.PILATES, SpaceType.ANAEROBIC, SpaceType.AEROBIC);
 
-		List<SpaceType> spaceTypes = new ArrayList<>(spaceListRequestDto.getSpaceType());
+		if (spaceListRequestDto.getSpaceType() != null) {
+			spaceTypes = new ArrayList<>(spaceListRequestDto.getSpaceType());
+		}
 
-		return spaceKindRepository.findAllBySpaceTypeIsIn(spaceTypes, pageRequest)
-				.map(spaceKind ->
-						new SpaceListResponseDto(spaceKind)
+		return spaceKindRepository.findAllBySpaceTypeIsInAndSpace_TitleContainingIgnoreCase(
+						spaceTypes,
+						pageRequest,
+						spaceListRequestDto.getSearchText()
+				).map(spaceKind ->
+					new SpaceListResponseDto(
+							spaceKind,
+							couponService.availableCouponIsExist(spaceKind.getSpace().getId()),
+							reviewService.getReviewList(spaceKind.getSpace().getId())
+					)
 				);
 	}
 }
