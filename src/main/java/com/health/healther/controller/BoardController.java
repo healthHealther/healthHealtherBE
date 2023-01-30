@@ -27,6 +27,13 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<GetBoardListResponseDto>> getBoardList(
+            @RequestBody @Valid GetBoardListRequestDto request
+    ) {
+        return new ResponseEntity<>(boardService.getBoardList(request), HttpStatus.OK);
+    }
+
     @GetMapping("/{boardId}")
     public ResponseEntity getBoardDetail(
             @PathVariable("boardId") Long id
@@ -37,7 +44,7 @@ public class BoardController {
     @PutMapping("/{boardId}")
     public ResponseEntity updateBoard(
             @PathVariable("boardId") Long id,
-            @RequestBody BoardUpdateRequestDto request
+            @RequestBody @Valid BoardUpdateRequestDto request
     ) {
         boardService.updateBoard(id, request);
         return ResponseEntity.ok().build();
@@ -76,10 +83,11 @@ public class BoardController {
 
     @PostMapping("/{boardId}/comment")
     public ResponseEntity<CommentRegisterResponseDto> registerComment(
-            @RequestBody CommentRegisterRequestDto request,
+            @RequestBody @Valid CommentRegisterRequestDto request,
             @PathVariable("boardId") Long id
     ) {
         return new ResponseEntity<>(boardService.registerComment(id, request), HttpStatus.CREATED);
+
     }
 
     @GetMapping("/{boardId}/comment")

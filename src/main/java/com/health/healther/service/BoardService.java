@@ -9,8 +9,6 @@ import com.health.healther.domain.repository.BoardRepository;
 import com.health.healther.domain.repository.CommentRepository;
 import com.health.healther.dto.board.*;
 import com.health.healther.exception.board.BoardLikeAlreadyExistException;
-import com.health.healther.dto.board.BoardCreateRequestDto;
-import com.health.healther.dto.board.BoardDetailResponseDto;
 import com.health.healther.exception.board.NotFoundBoardException;
 import com.health.healther.exception.board.NotFoundBoardLikeException;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +45,17 @@ public class BoardService {
                                   .likeCount(0)
                                   .build());
     }
+    
+    @Transactional(readOnly = true)
+    public List<GetBoardListResponseDto> getBoardList(GetBoardListRequestDto request) {
+      
+        PageRequest pageRequest
+                = PageRequest.of(request.getPage(), request.getSize(), Sort.by("modifiedAt").descending());
+
+        return boardRepository.findAll(pageRequest).stream()
+                .map(GetBoardListResponseDto :: from)
+                .collect(Collectors.toList());
+    }
 
     @Transactional(readOnly = true)
     public BoardDetailResponseDto getBoardDetail(Long id) {
@@ -76,7 +85,7 @@ public class BoardService {
     public void updateBoard(Long id, BoardUpdateRequestDto request) {
 
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+                                     .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
 
         board.updateBoard(request);
 
@@ -145,12 +154,13 @@ public class BoardService {
 
         return new CommentRegisterResponseDto(request.getContext());
     }
+
     @Transactional(readOnly = true)
     public List<CommentListResponseDto> getCommentList(Long id, CommentListRequestDto request) {
 
         Board board = boardRepository.findById(id)
                                      .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
-
+                                     
         PageRequest pageRequest
                 = PageRequest.of(request.getPage(), request.getSize(), Sort.by("modifiedAt").descending());
 

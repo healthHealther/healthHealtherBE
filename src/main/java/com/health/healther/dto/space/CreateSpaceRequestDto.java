@@ -1,5 +1,6 @@
 package com.health.healther.dto.space;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -7,6 +8,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.health.healther.constant.ConvenienceType;
 import com.health.healther.constant.SpaceType;
@@ -56,4 +58,16 @@ public class CreateSpaceRequestDto {
 	@NotEmpty
 	@Valid
 	private Set<SpaceType> spaceTypes;
+
+	@NotNull
+	private int discountAmount;
+
+	@NotNull
+	private LocalDate openDate;
+
+	@NotNull
+	private LocalDate expiredDate;
+
+	@NotNull
+	private int amount;
 }

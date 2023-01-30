@@ -25,6 +25,7 @@ import com.health.healther.domain.repository.ImageRepository;
 import com.health.healther.domain.repository.SpaceKindRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.domain.repository.SpaceTimeRepository;
+import com.health.healther.dto.coupon.CouponCreateRequestDto;
 import com.health.healther.dto.space.CreateSpaceRequestDto;
 import com.health.healther.dto.space.SpaceDetailResponseDto;
 import com.health.healther.dto.space.SpaceListRequestDto;
@@ -40,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class SpaceService {
 	private final MemberService memberService;
+	private final CouponService couponService;
 	private final SpaceRepository spaceRepository;
 	private final SpaceTimeRepository spaceTimeRepository;
 	private final SpaceKindRepository spaceKindRepository;
@@ -87,6 +89,17 @@ public class SpaceService {
 								.imageUrl(url)
 								.build()
 						).collect(Collectors.toList())
+		);
+
+
+		couponService.addCoupon(
+				CouponCreateRequestDto.builder()
+						.spaceId(space.getId())
+						.discountAmount(createSpaceRequestDto.getDiscountAmount())
+						.openDate(createSpaceRequestDto.getOpenDate())
+						.expiredDate(createSpaceRequestDto.getExpiredDate())
+						.amount(createSpaceRequestDto.getAmount())
+						.build()
 		);
 
 		return space.getId();
