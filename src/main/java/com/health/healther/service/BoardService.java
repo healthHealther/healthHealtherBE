@@ -13,6 +13,7 @@ import com.health.healther.exception.board.NotFoundBoardException;
 import com.health.healther.exception.board.NotFoundBoardLikeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -145,7 +146,9 @@ public class BoardService {
 
     public List<GetBoardListResponseDto> getBoardList(GetBoardListRequestDto request) {
 
-        PageRequest pageRequest = PageRequest.of(request.getPage(), request.getSize());
+        PageRequest pageRequest
+                = PageRequest.of(request.getPage(), request.getSize(), Sort.by("modifiedAt").descending());
+
         return boardRepository.findAll(pageRequest).stream()
                 .map(GetBoardListResponseDto :: from)
                 .collect(Collectors.toList());
