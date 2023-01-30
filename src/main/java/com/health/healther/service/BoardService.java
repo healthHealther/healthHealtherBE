@@ -14,10 +14,13 @@ import com.health.healther.dto.board.BoardDetailResponseDto;
 import com.health.healther.exception.board.NotFoundBoardException;
 import com.health.healther.exception.board.NotFoundBoardLikeException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -142,9 +145,18 @@ public class BoardService {
 
         return new CommentRegisterResponseDto(request.getContext());
     }
-
+    @Transactional(readOnly = true)
     public List<CommentListResponseDto> getCommentList(Long id, CommentListRequestDto request) {
-        return null;
+
+        Board board = boardRepository.findById(id)
+                                     .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+        PageRequest pageRequest
+                = PageRequest.of(request.getPage(), request.getSize(), Sort.by("modifiedAt").descending());
+
+        return commentRepository.findByBoard(board,pageRequest).stream()
+                .map(CommentListResponseDto::from)
+                .collect(Collectors.toList());
     }
 }
 
