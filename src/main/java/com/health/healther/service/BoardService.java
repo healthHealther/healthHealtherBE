@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @Service
@@ -139,6 +141,10 @@ public class BoardService {
                                       .build());
 
         return new CommentRegisterResponseDto(request.getContext());
+    }
+
+    public List<CommentListResponseDto> getCommentList(Long id, CommentListRequestDto request) {
+        return null;
     }
 }
 
