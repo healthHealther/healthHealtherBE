@@ -1,10 +1,6 @@
 package com.health.healther.controller;
 
-
-import com.health.healther.dto.board.BoardCreateRequestDto;
-import com.health.healther.dto.board.BoardUpdateRequestDto;
-import com.health.healther.dto.board.CommentRegisterRequestDto;
-import com.health.healther.dto.board.CommentRegisterResponseDto;
+import com.health.healther.dto.board.*;
 import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RequestMapping("/board")
@@ -29,6 +26,13 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<GetBoardListResponseDto>> getBoardList(
+            @RequestBody @Valid GetBoardListRequestDto request
+    ) {
+        return new ResponseEntity<>(boardService.getBoardList(request), HttpStatus.OK);
+    }
+
     @GetMapping("/{boardId}")
     public ResponseEntity getBoardDetail(
             @PathVariable("boardId") Long id
@@ -39,7 +43,7 @@ public class BoardController {
     @PutMapping("/{boardId}")
     public ResponseEntity updateBoard(
             @PathVariable("boardId") Long id,
-            @RequestBody BoardUpdateRequestDto request
+            @RequestBody @Valid BoardUpdateRequestDto request
     ) {
         boardService.updateBoard(id, request);
         return ResponseEntity.ok().build();
@@ -78,11 +82,9 @@ public class BoardController {
 
     @PostMapping("/{boardId}/comment")
     public ResponseEntity<CommentRegisterResponseDto> registerComment(
-            @RequestBody CommentRegisterRequestDto request,
+            @RequestBody @Valid CommentRegisterRequestDto request,
             @PathVariable("boardId") Long id
     ) {
-        return new ResponseEntity<>(
-                boardService.registerComment(id, request), HttpStatus.CREATED
-        );
+        return new ResponseEntity<>(boardService.registerComment(id, request), HttpStatus.CREATED);
     }
 }
