@@ -67,6 +67,16 @@ public class BoardService {
     }
 
 
+    @Transactional
+    public void updateBoard(Long id, BoardUpdateRequestDto request) {
+
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+        board.updateBoard(request);
+
+    }
+
 
     @Transactional
     public void deleteBoard(Long id) {
