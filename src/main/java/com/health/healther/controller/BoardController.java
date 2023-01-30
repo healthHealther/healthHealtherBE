@@ -84,7 +84,7 @@ public class BoardController {
 
     @GetMapping("/{boardId}/comment")
     public ResponseEntity<List<CommentListResponseDto>> getCommentList(
-            @RequestBody CommentListRequestDto request,
+            @RequestBody @Valid CommentListRequestDto request,
             @PathVariable("boardId") Long id
     ) {
         return new ResponseEntity<>(boardService.getCommentList(id,request), HttpStatus.OK);
