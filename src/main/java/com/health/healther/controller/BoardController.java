@@ -1,5 +1,6 @@
 package com.health.healther.controller;
 
+
 import com.health.healther.dto.board.*;
 import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -86,5 +87,14 @@ public class BoardController {
             @PathVariable("boardId") Long id
     ) {
         return new ResponseEntity<>(boardService.registerComment(id, request), HttpStatus.CREATED);
+
+    }
+
+    @GetMapping("/{boardId}/comment")
+    public ResponseEntity<List<CommentListResponseDto>> getCommentList(
+            @RequestBody @Valid CommentListRequestDto request,
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(boardService.getCommentList(id,request), HttpStatus.OK);
     }
 }
