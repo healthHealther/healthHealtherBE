@@ -9,8 +9,9 @@ import com.health.healther.domain.repository.BoardRepository;
 import com.health.healther.domain.repository.CommentRepository;
 import com.health.healther.dto.board.*;
 import com.health.healther.exception.board.BoardLikeAlreadyExistException;
+import com.health.healther.dto.board.BoardCreateRequestDto;
+import com.health.healther.dto.board.BoardDetailResponseDto;
 import com.health.healther.exception.board.NotFoundBoardException;
-import com.health.healther.exception.board.NotFoundBoardLikeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +50,6 @@ public class BoardService {
 
         return BoardDetailResponseDto.of(board);
     }
-
 
     @Transactional(readOnly = true)
     public BoardIsLikedResponseDto boardIsLiked(Long id) {
@@ -130,5 +130,4 @@ public class BoardService {
         return new CommentRegisterResponseDto(request.getContext());
     }
 }
-
 

@@ -3,6 +3,8 @@ package com.health.healther.service;
 import static com.health.healther.constant.MemberStatus.*;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -26,11 +28,13 @@ import com.health.healther.dto.member.MemberLoginResponseDto;
 import com.health.healther.dto.member.MemberOauthResponseDto;
 import com.health.healther.dto.member.MemberSignUpRequestDto;
 import com.health.healther.dto.member.OauthTokenResponseDto;
+import com.health.healther.dto.member.Token;
 import com.health.healther.dto.member.userInfo.GoogleUserInfo;
 import com.health.healther.dto.member.userInfo.KakaoUserInfo;
 import com.health.healther.dto.member.userInfo.OAuth2UserInfo;
 import com.health.healther.exception.member.InvalidAccessException;
 import com.health.healther.exception.member.NotFoundMemberException;
+import com.health.healther.util.RedisUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,16 +44,18 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class OauthService {
-	private static final String BEARER_TYPE = "Bearer ";
+	private static final String BEARER_TYPE = "Bearer";
+
 	private final InMemoryClientRegistrationRepository inMemoryRepository;
 	private final MemberRepository memberRepository;
 	private final JwtTokenProvider jwtAuthenticationProvider;
+	private final RedisUtil redisUtil;
 
 	@Transactional
 	public Member getOauth(String providerName, String code) {
-		ClientRegistration provider = inMemoryRepository.findByRegistrationId(providerName);
+		ClientRegistration provider = inMemoryRepository.findByRegistrationId(providerName.toLowerCase());
 		OauthTokenResponseDto tokenResponse = getToken(provider, code);
-		return saveMemberWithUserInfo(providerName, tokenResponse, provider);
+		return saveMemberWithUserInfo(providerName.toLowerCase(), tokenResponse, provider);
 	}
 
 	public MemberOauthResponseDto needDataResult(Member member) {
@@ -61,13 +67,7 @@ public class OauthService {
 	}
 
 	public MemberLoginResponseDto loginResult(Member member) {
-		String accessToken = jwtAuthenticationProvider.createAccessToken(String.valueOf(member.getId()));
-		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
-		return MemberLoginResponseDto.builder()
-			.tokenType(BEARER_TYPE)
-			.accessToken(accessToken)
-			.refreshToken(refreshToken)
-			.build();
+		return getMemberLoginResponseDto(member);
 	}
 
 	@Transactional
@@ -79,12 +79,19 @@ public class OauthService {
 			memberSignUpRequestDto.getNickName(),
 			memberSignUpRequestDto.getPhone()
 		);
-		String accessToken = jwtAuthenticationProvider.createAccessToken(String.valueOf(member.getId()));
-		String refreshToken = jwtAuthenticationProvider.createRefreshToken();
+		return getMemberLoginResponseDto(member);
+	}
+
+	private MemberLoginResponseDto getMemberLoginResponseDto(Member member) {
+		Token accessToken = jwtAuthenticationProvider.createAccessToken(String.valueOf(member.getId()));
+		Token refreshToken = jwtAuthenticationProvider.createRefreshToken();
+		LocalDateTime expiredTime = LocalDateTime.now().plusSeconds(accessToken.getExpiredTime() / 1000);
+		redisUtil.setDataExpire(String.valueOf(member.getId()), refreshToken.getValue(), refreshToken.getExpiredTime());
 		return MemberLoginResponseDto.builder()
 			.tokenType(BEARER_TYPE)
-			.accessToken(accessToken)
-			.refreshToken(refreshToken)
+			.accessToken(accessToken.getValue())
+			.expiredTime(expiredTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+			.refreshToken(refreshToken.getValue())
 			.build();
 	}
 

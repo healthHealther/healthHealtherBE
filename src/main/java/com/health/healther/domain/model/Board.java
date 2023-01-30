@@ -44,13 +44,4 @@ public class Board extends BaseEntity {
 
 	@Column(name = "LIKE_COUNT")
 	private int likeCount;
-  
-  public void likeBoard() {
-		this.likeCount += 1;
-	}
-  
-	public void deleteBoardLike() {
-		this.likeCount -= 1;
-    
-  }
 }

@@ -16,6 +16,7 @@ import com.health.healther.constant.ConvenienceType;
 import com.health.healther.constant.SpaceType;
 import com.health.healther.domain.model.Convenience;
 import com.health.healther.domain.model.Image;
+import com.health.healther.domain.model.Member;
 import com.health.healther.domain.model.Space;
 import com.health.healther.domain.model.SpaceKind;
 import com.health.healther.domain.model.SpaceTime;
@@ -38,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class SpaceService {
+	private final MemberService memberService;
 	private final SpaceRepository spaceRepository;
 	private final SpaceTimeRepository spaceTimeRepository;
 	private final SpaceKindRepository spaceKindRepository;
@@ -45,18 +47,12 @@ public class SpaceService {
 	private final ImageRepository imageRepository;
 
 	@Transactional
-	public Long saveSpaceInfo(CreateSpaceRequestDto createSpaceRequestDto) {
+	public Long saveSpaceInfo(
+			CreateSpaceRequestDto createSpaceRequestDto,
+			Member member
+	) {
 		// 1. 공간 등록
-		Space space = Space.builder()
-				// .member()
-				.title(createSpaceRequestDto.getTitle())
-				.content(createSpaceRequestDto.getContent())
-				.address(createSpaceRequestDto.getAddress())
-				.addressDetail(createSpaceRequestDto.getAddressDetail())
-				.notice(createSpaceRequestDto.getNotice())
-				.rule(createSpaceRequestDto.getRule())
-				.price(createSpaceRequestDto.getPrice())
-				.build();
+		Space space = Space.of(createSpaceRequestDto, member);
 
 		spaceRepository.save(space);
 
@@ -100,8 +96,9 @@ public class SpaceService {
 		validationSpaceType(createSpaceRequestDto.getSpaceTypes());
 		validationConvenienceType(createSpaceRequestDto.getConvenienceTypes());
 
-		// TODO Find the member and set it up.
-		return saveSpaceInfo(createSpaceRequestDto);
+		Member member = memberService.findUserFromToken();
+
+		return saveSpaceInfo(createSpaceRequestDto, member);
 	}
 
 	private void validationConvenienceType(Set<ConvenienceType> convenienceTypes) {
@@ -141,21 +138,12 @@ public class SpaceService {
 						.collect(Collectors.toList())
 		);
 
-		return SpaceDetailResponseDto.builder()
-				.spaceId(space.getId())
-				.title(space.getTitle())
-				.content(space.getContent())
-				.address(space.getAddress())
-				.addressDetail(space.getAddressDetail())
-				.convenienceTypes(conveniences)
-				.notice(space.getNotice())
-				.rule(space.getRule())
-				.price(space.getPrice())
-				.images(images)
-				.openTime(space.getSpaceTime().getOpenTime())
-				.closeTime(space.getSpaceTime().getCloseTime())
-				.spaceTypes(spaceKinds)
-				.build();
+		return SpaceDetailResponseDto.of(
+				space,
+				spaceKinds,
+				conveniences,
+				images
+		);
 	}
 
 	public Page<SpaceListResponseDto> getSpaceList(SpaceListRequestDto spaceListRequestDto) {

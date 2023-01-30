@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.health.healther.constant.ConvenienceType;
 import com.health.healther.constant.SpaceType;
+import com.health.healther.domain.model.Space;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -43,4 +44,27 @@ public class SpaceDetailResponseDto {
 	private int closeTime;
 
 	private Set<SpaceType> spaceTypes;
+
+	public static SpaceDetailResponseDto of(
+			Space space,
+			Set<SpaceType> spaceKinds,
+			Set<ConvenienceType> conveniences,
+			Set<String> images
+	) {
+		return SpaceDetailResponseDto.builder()
+				.spaceId(space.getId())
+				.title(space.getTitle())
+				.content(space.getContent())
+				.address(space.getAddress())
+				.addressDetail(space.getAddressDetail())
+				.convenienceTypes(conveniences)
+				.notice(space.getNotice())
+				.rule(space.getRule())
+				.price(space.getPrice())
+				.images(images)
+				.openTime(space.getSpaceTime().getOpenTime())
+				.closeTime(space.getSpaceTime().getCloseTime())
+				.spaceTypes(spaceKinds)
+				.build();
+	}
 }

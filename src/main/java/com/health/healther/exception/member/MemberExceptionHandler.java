@@ -44,4 +44,20 @@ public class MemberExceptionHandler {
 		return ResponseEntity.badRequest()
 			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
 	}
+
+	@ExceptionHandler(UnauthorizedAccessTokenException.class)
+	public ResponseEntity<ErrorMessage> UnauthorizedAccessTokenException(
+		UnauthorizedAccessTokenException exception
+	) {
+		return ResponseEntity.badRequest()
+			.body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+	}
+
+	@ExceptionHandler(UnauthorizedRefreshTokenException.class)
+	public ResponseEntity<ErrorMessage> UnauthorizedRefreshTokenException(
+		UnauthorizedRefreshTokenException exception
+	) {
+		return ResponseEntity.badRequest()
+			.body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+	}
 }

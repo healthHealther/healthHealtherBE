@@ -1,11 +1,14 @@
 package com.health.healther.controller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.health.healther.dto.reservation.AvailableTimeResponseDto;
 import com.health.healther.dto.reservation.MakeReservationRequestDto;
+import com.health.healther.dto.reservation.ReservationListResponseDto;
 import com.health.healther.service.ReservationService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,5 +46,16 @@ public class ReservationController {
 	) {
 		return new ResponseEntity<>(
 			reservationService.makeReservation(form), HttpStatus.CREATED);
+	}
+
+	@GetMapping
+	public ResponseEntity<Map<LocalDate, List<ReservationListResponseDto>>> getAllReservations() {
+		return ResponseEntity.ok(reservationService.getReservations());
+	}
+
+	@DeleteMapping("{reservationId}")
+	public ResponseEntity deleteReservation(@PathVariable Long reservationId) {
+		reservationService.deleteReservation(reservationId);
+		return ResponseEntity.ok().build();
 	}
 }
