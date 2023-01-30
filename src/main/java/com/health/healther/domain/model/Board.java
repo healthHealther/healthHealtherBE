@@ -33,8 +33,7 @@ public class Board extends BaseEntity {
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
 
-	@OneToMany
-	@JoinColumn
+	@OneToMany(mappedBy = "board")
 	private List<Comment> comments = new ArrayList<>();
 
 	@Column(name = "TITLE")
