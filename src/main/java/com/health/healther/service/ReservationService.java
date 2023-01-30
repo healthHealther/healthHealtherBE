@@ -43,6 +43,7 @@ public class ReservationService {
 	private final SpaceTimeRepository spaceTimeRepository;
 	private final SpaceRepository spaceRepository;
 	private final MemberService memberService;
+	private final CouponService couponService;
 	private final CouponRepository couponRepository;
 
 	public List<AvailableTimeResponseDto> getAvailableTimeResponseDto(Long spaceId, String strDate) {
@@ -58,12 +59,13 @@ public class ReservationService {
 		Reservation reservation;
 		if (form.getCouponId() == null) {
 			reservation = getReservationByBuilder(form, member, space, null, space.getPrice());
-		} else {
-			Coupon coupon = couponRepository.findById(form.getCouponId())
-				.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
-			reservation = getReservationByBuilder(form, member, space, coupon, getPriceWithCoupon(space, coupon));
-			//TODO: 쿠폰 차감 로직 추가
+			reservationRepository.save(reservation);
+			return reservation.getId();
 		}
+		Coupon coupon = couponRepository.findById(form.getCouponId())
+			.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
+		reservation = getReservationByBuilder(form, member, space, coupon, getPriceWithCoupon(space, coupon));
+		couponService.useCoupon(coupon.getId());
 		reservationRepository.save(reservation);
 		return reservation.getId();
 	}
@@ -82,12 +84,13 @@ public class ReservationService {
 				|| map.containsKey(reservationDate)) {
 				continue;
 			}
-			List<Reservation> reservations = reservationRepository.findAllByMember_IdAndReservationDateOrderByReservationTime(
-				member.getId(),
-				reservationDate
-			).stream()
-				.filter(reservation1 -> !(Objects.equals(reservation1.getReservationDate(), LocalDate.now())
-					&& reservation1.getReservationTime() < LocalTime.now().getHour()))
+			List<Reservation> reservations
+				= reservationRepository.findAllByMember_IdAndReservationDateOrderByReservationTime(
+					member.getId(),
+					reservationDate
+				).stream()
+				.filter(res -> !(Objects.equals(res.getReservationDate(), LocalDate.now())
+					&& res.getReservationTime() < LocalTime.now().getHour()))
 				.collect(Collectors.toList());
 			if (reservations.size() == 0) {
 				continue;
@@ -106,7 +109,11 @@ public class ReservationService {
 		Reservation reservation = reservationRepository.findById(reservationId)
 			.orElseThrow(() -> new NotFoundReservationException("예약 정보를 찾을 수 없습니다."));
 		Coupon coupon = reservation.getCoupon();
-		// TODO: 쿠폰 사용 취소 로직
+		if (coupon == null) {
+			reservationRepository.delete(reservation);
+			return;
+		}
+		couponService.cancelUseCoupon(coupon.getId());
 		reservationRepository.delete(reservation);
 	}
 
