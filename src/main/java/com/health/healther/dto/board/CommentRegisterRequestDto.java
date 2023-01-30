@@ -5,16 +5,12 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@Setter
 @Builder
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardCreateRequestDto {
+public class CommentRegisterRequestDto {
 
     @NotBlank
-    private String title;
-
-    @NotBlank
-    private String content;
+    private String context;
 }

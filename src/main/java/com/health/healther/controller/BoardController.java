@@ -2,6 +2,8 @@ package com.health.healther.controller;
 
 
 import com.health.healther.dto.board.BoardCreateRequestDto;
+import com.health.healther.dto.board.CommentRegisterRequestDto;
+import com.health.healther.dto.board.CommentRegisterResponseDto;
 import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +41,9 @@ public class BoardController {
             @PathVariable("boardId") Long id
     ) {
         return new ResponseEntity<>(boardService.boardIsLiked(id), HttpStatus.OK);
+    }
 
-    
+
     @DeleteMapping("{boardId}")
     public ResponseEntity deleteBoard(
             @PathVariable("boardId") Long id
@@ -48,7 +51,7 @@ public class BoardController {
         boardService.deleteBoard(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("/like/{boardId}")
     public ResponseEntity likeBoard(
             @PathVariable("boardId") Long id
@@ -56,7 +59,7 @@ public class BoardController {
         boardService.likeBoard(id);
         return ResponseEntity.ok().build();
     }
-    
+
     @DeleteMapping("/like/{boardId}")
     public ResponseEntity deleteBoardLike(
             @PathVariable("boardId") Long id
@@ -64,5 +67,15 @@ public class BoardController {
         boardService.deleteBoardLike(id);
         return ResponseEntity.ok().build();
 
+    }
+
+    @PostMapping("/{boardId}/comment")
+    public ResponseEntity<CommentRegisterResponseDto> registerComment(
+            @RequestBody CommentRegisterRequestDto request,
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(
+                boardService.registerComment(id, request), HttpStatus.CREATED
+        );
     }
 }
