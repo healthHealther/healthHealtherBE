@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -26,5 +27,15 @@ public class CouponCreateRequestDto {
 
 	@NotNull
 	private int amount;
+
+	@Builder
+	public CouponCreateRequestDto(Long spaceId, int discountAmount, LocalDate openDate, LocalDate expiredDate,
+			int amount) {
+		this.spaceId = spaceId;
+		this.discountAmount = discountAmount;
+		this.openDate = openDate;
+		this.expiredDate = expiredDate;
+		this.amount = amount;
+	}
 }
 
