@@ -153,8 +153,11 @@ public class SpaceService {
 				Sort.Direction.DESC,
 				"createdAt"
 		);
+		List<SpaceType> spaceTypes = List.of(SpaceType.GX, SpaceType.PILATES, SpaceType.ANAEROBIC, SpaceType.AEROBIC);
 
-		List<SpaceType> spaceTypes = new ArrayList<>(spaceListRequestDto.getSpaceType());
+		if (spaceListRequestDto.getSpaceType() != null) {
+			spaceTypes = new ArrayList<>(spaceListRequestDto.getSpaceType());
+		}
 
 		return spaceKindRepository.findAllBySpaceTypeIsIn(spaceTypes, pageRequest)
 				.map(spaceKind ->
