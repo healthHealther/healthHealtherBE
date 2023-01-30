@@ -12,6 +12,7 @@ import com.health.healther.dto.board.BoardDetailResponseDto;
 import com.health.healther.dto.board.CommentRegisterDto;
 import com.health.healther.dto.board.CommentRegisterDto.RequestDto;
 import com.health.healther.dto.board.CommentRegisterDto.ResponseDto;
+import com.health.healther.dto.board.BoardIsLikedResponseDto;
 import com.health.healther.exception.board.BoardLikeAlreadyExistException;
 import com.health.healther.exception.board.NotFoundBoardException;
 import com.health.healther.exception.board.NotFoundBoardLikeException;
@@ -53,6 +54,22 @@ public class BoardService {
 
         return BoardDetailResponseDto.of(board);
     }
+
+
+    @Transactional(readOnly = true)
+    public BoardIsLikedResponseDto boardIsLiked(Long id) {
+
+        Member member = memberService.findUserFromToken();
+
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+        if(boardLikeRepository.findByMemberAndBoard(member,board).isEmpty()) {
+            return BoardIsLikedResponseDto.of(false);
+        }
+        return BoardIsLikedResponseDto.of(true);
+    }
+}
 
     @Transactional
     public void deleteBoard(Long id) {
@@ -116,4 +133,5 @@ public class BoardService {
         return new ResponseDto(request.getContext());
     }
 }
+
 
