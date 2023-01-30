@@ -57,15 +57,15 @@ public class ReservationService {
 		Space space = spaceRepository.findById(form.getSpaceId())
 			.orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 		Reservation reservation;
-		if (form.getCouponId() == null) {
-			reservation = getReservationByBuilder(form, member, space, null, space.getPrice());
+		if (form.getCouponId() != null) {
+			Coupon coupon = couponRepository.findById(form.getCouponId())
+				.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
+			reservation = getReservationByBuilder(form, member, space, coupon, getPriceWithCoupon(space, coupon));
+			couponService.useCoupon(coupon.getId());
 			reservationRepository.save(reservation);
 			return reservation.getId();
 		}
-		Coupon coupon = couponRepository.findById(form.getCouponId())
-			.orElseThrow(() -> new NotFoundCouponException("쿠폰 정보를 찾을 수 없습니다."));
-		reservation = getReservationByBuilder(form, member, space, coupon, getPriceWithCoupon(space, coupon));
-		couponService.useCoupon(coupon.getId());
+		reservation = getReservationByBuilder(form, member, space, null, space.getPrice());
 		reservationRepository.save(reservation);
 		return reservation.getId();
 	}
@@ -109,11 +109,11 @@ public class ReservationService {
 		Reservation reservation = reservationRepository.findById(reservationId)
 			.orElseThrow(() -> new NotFoundReservationException("예약 정보를 찾을 수 없습니다."));
 		Coupon coupon = reservation.getCoupon();
-		if (coupon == null) {
+		if (coupon != null) {
+			couponService.cancelUseCoupon(coupon.getId());
 			reservationRepository.delete(reservation);
 			return;
 		}
-		couponService.cancelUseCoupon(coupon.getId());
 		reservationRepository.delete(reservation);
 	}
 
