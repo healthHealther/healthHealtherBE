@@ -17,7 +17,7 @@ public class MemberLoginResponseDto {
 
 	private String accessToken;
 
-	private Long expiredTime;
+	private String expiredTime;
 
 	private String refreshToken;
 }

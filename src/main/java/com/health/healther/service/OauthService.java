@@ -3,6 +3,8 @@ package com.health.healther.service;
 import static com.health.healther.constant.MemberStatus.*;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -83,11 +85,12 @@ public class OauthService {
 	private MemberLoginResponseDto getMemberLoginResponseDto(Member member) {
 		Token accessToken = jwtAuthenticationProvider.createAccessToken(String.valueOf(member.getId()));
 		Token refreshToken = jwtAuthenticationProvider.createRefreshToken();
+		LocalDateTime expiredTime = LocalDateTime.now().plusSeconds(accessToken.getExpiredTime() / 1000);
 		redisUtil.setDataExpire(String.valueOf(member.getId()), refreshToken.getValue(), refreshToken.getExpiredTime());
 		return MemberLoginResponseDto.builder()
 			.tokenType(BEARER_TYPE)
 			.accessToken(accessToken.getValue())
-			.expiredTime(accessToken.getExpiredTime())
+			.expiredTime(expiredTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
 			.refreshToken(refreshToken.getValue())
 			.build();
 	}
