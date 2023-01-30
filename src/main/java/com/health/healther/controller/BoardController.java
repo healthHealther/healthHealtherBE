@@ -1,10 +1,7 @@
 package com.health.healther.controller;
 
 
-import com.health.healther.dto.board.BoardCreateRequestDto;
-import com.health.healther.dto.board.BoardUpdateRequestDto;
-import com.health.healther.dto.board.CommentRegisterRequestDto;
-import com.health.healther.dto.board.CommentRegisterResponseDto;
+import com.health.healther.dto.board.*;
 import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @RequestMapping("/board")
@@ -81,8 +79,14 @@ public class BoardController {
             @RequestBody CommentRegisterRequestDto request,
             @PathVariable("boardId") Long id
     ) {
-        return new ResponseEntity<>(
-                boardService.registerComment(id, request), HttpStatus.CREATED
-        );
+        return new ResponseEntity<>(boardService.registerComment(id, request), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{boardId}/comment")
+    public ResponseEntity<List<CommentListResponseDto>> getCommentList(
+            @RequestBody CommentListRequestDto request,
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(boardService.getCommentList(id,request), HttpStatus.OK);
     }
 }
