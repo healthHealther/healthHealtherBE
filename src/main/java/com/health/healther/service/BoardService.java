@@ -11,6 +11,7 @@ import com.health.healther.dto.board.*;
 import com.health.healther.exception.board.BoardLikeAlreadyExistException;
 import com.health.healther.exception.board.NotFoundBoardException;
 import com.health.healther.exception.board.NotFoundBoardLikeException;
+import com.health.healther.exception.board.NotFoundCommentException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -167,6 +168,15 @@ public class BoardService {
         return commentRepository.findByBoard(board,pageRequest).stream()
                 .map(CommentListResponseDto::from)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateComment(Long id, CommentUpdateRequestDto request) {
+
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(()-> new NotFoundCommentException("댓글 정보를 찾을 수 없습니다."));
+
+        comment.updateComment(request.getContent());
     }
 }
 
