@@ -1,13 +1,6 @@
 package com.health.healther.domain.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -42,4 +35,11 @@ public class BoardLike extends BaseEntity {
 
 	@Column(name = "IS_LIKED")
 	private boolean isLiked;
+
+	public void deleteBoardLike() {
+		this.isLiked = false;
+	}
+	public void likeBoard() {
+		this.isLiked = true;
+	}
 }
