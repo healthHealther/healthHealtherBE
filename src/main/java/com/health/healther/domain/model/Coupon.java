@@ -66,4 +66,8 @@ public class Coupon extends BaseEntity {
 	public void useCoupon(boolean isUsed) {
 		this.isUsed = isUsed;
 	}
+
+	public void downloadCoupon(Member member) {
+		this.member = member;
+	}
 }

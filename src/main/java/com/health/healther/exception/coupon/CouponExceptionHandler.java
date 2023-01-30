@@ -39,4 +39,20 @@ public class CouponExceptionHandler {
 			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
 	}
 
+	@ExceptionHandler(AlreadyDownloadCouponException.class)
+	public ResponseEntity<ErrorMessage> AlreadyDownloadCouponException(
+		AlreadyDownloadCouponException exception
+	) {
+		return ResponseEntity.badRequest()
+			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
+
+	@ExceptionHandler(AlreadySoldOutCouponException.class)
+	public ResponseEntity<ErrorMessage> AlreadySoldOutCouponException(
+		AlreadySoldOutCouponException exception
+	) {
+		return ResponseEntity.badRequest()
+			.body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
+
 }

@@ -17,6 +17,8 @@ import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
 import com.health.healther.dto.coupon.CouponReservationListResponseDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
+import com.health.healther.exception.coupon.AlreadyDownloadCouponException;
+import com.health.healther.exception.coupon.AlreadySoldOutCouponException;
 import com.health.healther.exception.coupon.NotFoundCouponException;
 import com.health.healther.exception.coupon.NotUsedCouponException;
 import com.health.healther.exception.space.NotFoundSpaceException;
@@ -111,5 +113,26 @@ public class CouponService {
 		coupon.useCoupon(false);
 	}
 
+	@Transactional
+	public void downloadCoupon(Long spaceId) {
+		Member member = memberService.findUserFromToken();
+
+		LocalDate expiredDt = LocalDate.now().minusDays(1);
+		LocalDate openDt = LocalDate.now().plusDays(1);
+
+		List<Coupon> couponList = couponRepository
+			.findBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBefore(
+				spaceId, member.getId(), expiredDt, openDt
+			);
+
+		if (!couponList.isEmpty()) {
+			throw new AlreadyDownloadCouponException("이미 발급된 쿠폰입니다.");
+		}
+		Coupon coupon = couponRepository
+			.findTopBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
+				spaceId, null, expiredDt, openDt, false
+			).orElseThrow(() -> new AlreadySoldOutCouponException("쿠폰이 모두 소진 되었습니다."));
+		coupon.downloadCoupon(member);
+	}
 }
 
