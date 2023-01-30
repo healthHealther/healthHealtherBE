@@ -3,7 +3,6 @@ package com.health.healther.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -128,17 +127,12 @@ public class CouponService {
 
 		if (!couponList.isEmpty()) {
 			throw new AlreadyDownloadCouponException("이미 발급된 쿠폰입니다.");
-		} else {
-			Optional<Coupon> optionalCoupon = couponRepository
-				.findTopBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
-					spaceId, null, expiredDt, openDt, false
-				);
-			optionalCoupon.orElseThrow(
-				() -> new AlreadySoldOutCouponException("쿠폰이 모두 소진 되었습니다.")
-			);
-			optionalCoupon.get().downloadCoupon(member);
 		}
-
+		Coupon coupon = couponRepository
+			.findTopBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
+				spaceId, null, expiredDt, openDt, false
+			).orElseThrow(() -> new AlreadySoldOutCouponException("쿠폰이 모두 소진 되었습니다."));
+		coupon.downloadCoupon(member);
 	}
 }
 
