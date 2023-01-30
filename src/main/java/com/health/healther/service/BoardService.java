@@ -47,10 +47,10 @@ public class BoardService {
     }
     
     @Transactional(readOnly = true)
-    public List<GetBoardListResponseDto> getBoardList(GetBoardListRequestDto request) {
+    public List<GetBoardListResponseDto> getBoardList(int page, int size) {
       
         PageRequest pageRequest
-                = PageRequest.of(request.getPage(), request.getSize(), Sort.by("modifiedAt").descending());
+                = PageRequest.of(page, size, Sort.by("modifiedAt").descending());
 
         return boardRepository.findAll(pageRequest).stream()
                 .map(GetBoardListResponseDto :: from)
