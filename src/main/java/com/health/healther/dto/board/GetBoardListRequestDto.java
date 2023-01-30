@@ -3,6 +3,7 @@ package com.health.healther.dto.board;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
@@ -11,9 +12,9 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class GetBoardListRequestDto {
 
-    @NotBlank
+    @NotNull
     private int page;
 
-    @NotBlank
+    @NotNull
     private int size;
 }

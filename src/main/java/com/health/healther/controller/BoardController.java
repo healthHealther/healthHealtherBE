@@ -28,7 +28,7 @@ public class BoardController {
 
     @GetMapping
     public ResponseEntity<List<GetBoardListResponseDto>> getBoardList(
-            @RequestBody GetBoardListRequestDto request
+            @RequestBody @Valid GetBoardListRequestDto request
     ) {
         return new ResponseEntity<>(boardService.getBoardList(request), HttpStatus.OK);
     }
