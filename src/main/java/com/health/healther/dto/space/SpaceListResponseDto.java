@@ -37,7 +37,7 @@ public class SpaceListResponseDto {
 
 	private boolean existCoupon;
 
-	private int reviewAverage;
+	private long reviewAverage;
 
 	@Builder
 	public SpaceListResponseDto(
@@ -64,7 +64,14 @@ public class SpaceListResponseDto {
 		);
 		this.existCoupon = existCoupon;
 
-		this.reviewAverage = reviewList.stream()
-				.mapToInt(review -> review.getGrade()).sum();
+		long average = 0;
+
+		OptionalDouble optionalDouble = reviewList.stream()
+				.mapToInt(review -> review.getGrade()).average();
+
+		if (optionalDouble.isPresent()) {
+			average = Math.round(optionalDouble.getAsDouble());
+		}
+		this.reviewAverage = average;
 	}
 }
