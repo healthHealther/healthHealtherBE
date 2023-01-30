@@ -1,6 +1,8 @@
 package com.health.healther.service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.stereotype.Service;
@@ -46,7 +48,8 @@ public class AuthService {
 			throw new InvalidTokenException("유효하지 않는 액세스 토큰입니다.");
 		}
 		Token newAccessToken = jwtTokenProvider.createAccessToken(id);
-		LocalDateTime expiredTime = LocalDateTime.now().plusSeconds(newAccessToken.getExpiredTime() / 1000);
+		ZoneId zid = ZoneId.of("Asia/Seoul");
+		ZonedDateTime expiredTime = (LocalDateTime.now().atZone(zid)).plusSeconds(newAccessToken.getExpiredTime() / 1000);
 		return AccessTokenResponseDto
 			.builder()
 			.accessToken(newAccessToken.getValue())

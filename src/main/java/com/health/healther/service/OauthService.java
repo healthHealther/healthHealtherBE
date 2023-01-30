@@ -4,6 +4,8 @@ import static com.health.healther.constant.MemberStatus.*;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Map;
@@ -85,7 +87,8 @@ public class OauthService {
 	private MemberLoginResponseDto getMemberLoginResponseDto(Member member) {
 		Token accessToken = jwtAuthenticationProvider.createAccessToken(String.valueOf(member.getId()));
 		Token refreshToken = jwtAuthenticationProvider.createRefreshToken();
-		LocalDateTime expiredTime = LocalDateTime.now().plusSeconds(accessToken.getExpiredTime() / 1000);
+		ZoneId zid = ZoneId.of("Asia/Seoul");
+		ZonedDateTime expiredTime = (LocalDateTime.now().atZone(zid)).plusSeconds(accessToken.getExpiredTime() / 1000);
 		redisUtil.setDataExpire(String.valueOf(member.getId()), refreshToken.getValue(), refreshToken.getExpiredTime());
 		return MemberLoginResponseDto.builder()
 			.tokenType(BEARER_TYPE)
