@@ -134,5 +134,9 @@ public class CouponService {
 			).orElseThrow(() -> new AlreadySoldOutCouponException("쿠폰이 모두 소진 되었습니다."));
 		coupon.downloadCoupon(member);
 	}
+
+	public boolean availableCouponIsExist(Long spaceId) {
+		return couponRepository.existsBySpace_IdAndIsUsed(spaceId, false);
+	}
 }
 
