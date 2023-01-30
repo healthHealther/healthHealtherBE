@@ -35,17 +35,13 @@ public class ReviewService {
 
     private final MemberService memberService;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void createReview(ReviewCreateRequestDto request) {
-
-        Space space = spaceRepository.findById(request.getSpaceId())
-                .orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
         Member member = memberService.findUserFromToken();
 
-        if(memberRepository.findById(member.getId()).isEmpty()) {
-            throw new NotFoundMemberException("일치하는 회원 정보가 존재하지 않습니다.");
-        }
+        Space space = spaceRepository.findById(request.getSpaceId())
+                .orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
         reviewRepository.save(
                 Review.builder()
@@ -54,8 +50,7 @@ public class ReviewService {
                         .title(request.getTitle())
                         .content(request.getContent())
                         .grade(request.getGrade())
-                        .build()
-        );
+                        .build());
     }
 
     @Transactional
