@@ -26,6 +26,7 @@ import com.health.healther.domain.repository.SpaceKindRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.domain.repository.SpaceTimeRepository;
 import com.health.healther.dto.coupon.CouponReservationListResponseDto;
+import com.health.healther.dto.coupon.CouponCreateRequestDto;
 import com.health.healther.dto.space.CreateSpaceRequestDto;
 import com.health.healther.dto.space.SpaceDetailResponseDto;
 import com.health.healther.dto.space.SpaceListRequestDto;
@@ -90,6 +91,17 @@ public class SpaceService {
 								.imageUrl(url)
 								.build()
 						).collect(Collectors.toList())
+		);
+
+
+		couponService.addCoupon(
+				CouponCreateRequestDto.builder()
+						.spaceId(space.getId())
+						.discountAmount(createSpaceRequestDto.getDiscountAmount())
+						.openDate(createSpaceRequestDto.getOpenDate())
+						.expiredDate(createSpaceRequestDto.getExpiredDate())
+						.amount(createSpaceRequestDto.getAmount())
+						.build()
 		);
 
 		return space.getId();
