@@ -65,7 +65,7 @@ public class BoardController {
             @PathVariable("boardId") Long id
     ) {
         return new ResponseEntity<>(
-                boardService.registerComment(id,request), HttpStatus.OK
+                boardService.registerComment(id,request), HttpStatus.CREATED
         );
     }
 }
