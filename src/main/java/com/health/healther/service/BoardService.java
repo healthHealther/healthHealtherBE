@@ -156,13 +156,13 @@ public class BoardService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentListResponseDto> getCommentList(Long id, CommentListRequestDto request) {
+    public List<CommentListResponseDto> getCommentList(Long id, int page, int size) {
 
         Board board = boardRepository.findById(id)
                                      .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
                                      
         PageRequest pageRequest
-                = PageRequest.of(request.getPage(), request.getSize(), Sort.by("modifiedAt").descending());
+                = PageRequest.of(page, size, Sort.by("modifiedAt").descending());
 
         return commentRepository.findByBoard(board,pageRequest).stream()
                 .map(CommentListResponseDto::from)
