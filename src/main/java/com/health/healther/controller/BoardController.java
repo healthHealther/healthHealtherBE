@@ -29,9 +29,10 @@ public class BoardController {
 
     @GetMapping
     public ResponseEntity<List<GetBoardListResponseDto>> getBoardList(
-            @RequestBody @Valid GetBoardListRequestDto request
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
     ) {
-        return new ResponseEntity<>(boardService.getBoardList(request), HttpStatus.OK);
+        return new ResponseEntity<>(boardService.getBoardList(page,size), HttpStatus.OK);
     }
 
     @GetMapping("/{boardId}")
