@@ -12,6 +12,7 @@ import com.health.healther.exception.board.BoardLikeAlreadyExistException;
 import com.health.healther.dto.board.BoardCreateRequestDto;
 import com.health.healther.dto.board.BoardDetailResponseDto;
 import com.health.healther.exception.board.NotFoundBoardException;
+import com.health.healther.exception.board.NotFoundBoardLikeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
