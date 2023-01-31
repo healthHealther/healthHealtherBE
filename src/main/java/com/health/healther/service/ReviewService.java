@@ -2,18 +2,17 @@ package com.health.healther.service;
 
 
 import com.health.healther.domain.model.Member;
+import com.health.healther.domain.model.Review;
 import com.health.healther.domain.model.Space;
 import com.health.healther.domain.repository.MemberRepository;
+import com.health.healther.domain.repository.ReviewRepository;
 import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.review.ReviewCreateRequestDto;
 import com.health.healther.dto.review.ReviewDto;
 import com.health.healther.dto.review.ReviewRequestUpdateDto;
-import com.health.healther.domain.model.Review;
-import com.health.healther.domain.repository.ReviewRepository;
-import com.health.healther.exception.review.NotFoundMemberException;
+import com.health.healther.exception.review.AlreadyCreateReviewException;
 import com.health.healther.exception.review.NotFoundReviewException;
 import com.health.healther.exception.space.NotFoundSpaceException;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,37 +30,37 @@ public class ReviewService {
 
     private final SpaceRepository spaceRepository;
 
+
     private final MemberRepository memberRepository;
 
     private final MemberService memberService;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void createReview(ReviewCreateRequestDto request) {
-
-        Space space = spaceRepository.findById(request.getSpaceId())
-                .orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
         Member member = memberService.findUserFromToken();
 
-        if(memberRepository.findById(member.getId()).isEmpty()) {
-            throw new NotFoundMemberException("일치하는 회원 정보가 존재하지 않습니다.");
+        Space space = spaceRepository.findById(request.getSpaceId())
+                                     .orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
+
+        if(reviewRepository.findByMemberAndSpace(member,space).isPresent()) {
+            throw new AlreadyCreateReviewException("이미 후기 정보가 존재합니다.");
         }
 
         reviewRepository.save(
                 Review.builder()
-                        .member(member)
-                        .space(space)
-                        .title(request.getTitle())
-                        .content(request.getContent())
-                        .grade(request.getGrade())
-                        .build()
-        );
+                      .member(member)
+                      .space(space)
+                      .title(request.getTitle())
+                      .content(request.getContent())
+                      .grade(request.getGrade())
+                      .build());
     }
 
     @Transactional
     public void deleteReview(Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
-                    .orElseThrow(() -> new NotFoundReviewException("일치하는 후기 정보가 존재하지 않습니다."));
+                                        .orElseThrow(() -> new NotFoundReviewException("일치하는 후기 정보가 존재하지 않습니다."));
 
         reviewRepository.delete(review);
     }

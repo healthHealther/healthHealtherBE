@@ -39,4 +39,12 @@ public class ReviewExceptionHandler {
         return ResponseEntity.badRequest()
                              .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(AlreadyCreateReviewException.class)
+    public ResponseEntity<ErrorMessage> AlreadyCreateReviewException(
+            AlreadyCreateReviewException exception
+    ) {
+        return ResponseEntity.badRequest()
+                             .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
 }
