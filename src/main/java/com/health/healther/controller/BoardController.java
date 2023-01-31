@@ -30,9 +30,10 @@ public class BoardController {
 
     @GetMapping
     public ResponseEntity<List<GetBoardListResponseDto>> getBoardList(
-            @RequestBody @Valid GetBoardListRequestDto request
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
     ) {
-        return new ResponseEntity<>(boardService.getBoardList(request), HttpStatus.OK);
+        return new ResponseEntity<>(boardService.getBoardList(page,size), HttpStatus.OK);
     }
 
     @GetMapping("/{boardId}")
@@ -93,10 +94,11 @@ public class BoardController {
 
     @GetMapping("/{boardId}/comment")
     public ResponseEntity<List<CommentListResponseDto>> getCommentList(
-            @RequestBody @Valid CommentListRequestDto request,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
             @PathVariable("boardId") Long id
     ) {
-        return new ResponseEntity<>(boardService.getCommentList(id,request), HttpStatus.OK);
+        return new ResponseEntity<>(boardService.getCommentList(id,page,size), HttpStatus.OK);
     }
 
     @PutMapping("/comment/{commentId}")
