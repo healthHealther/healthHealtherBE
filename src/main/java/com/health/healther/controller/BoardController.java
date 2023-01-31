@@ -76,6 +76,14 @@ public class BoardController {
         return ResponseEntity.ok().build();
 
     }
+
+    @GetMapping("/{boardId}/likeCount")
+    public ResponseEntity<GetBoardLikeCountResponseDto> getLikeCount(
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(boardService.getLikeCount(id), HttpStatus.OK);
+    }
+
     @GetMapping("/like/{boardId}")
     public ResponseEntity boardIsLiked(
             @PathVariable("boardId") Long id
@@ -89,7 +97,6 @@ public class BoardController {
             @PathVariable("boardId") Long id
     ) {
         return new ResponseEntity<>(boardService.registerComment(id, request), HttpStatus.CREATED);
-
     }
 
     @GetMapping("/{boardId}/comment")
