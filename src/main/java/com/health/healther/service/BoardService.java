@@ -8,10 +8,7 @@ import com.health.healther.domain.repository.BoardLikeRepository;
 import com.health.healther.domain.repository.BoardRepository;
 import com.health.healther.domain.repository.CommentRepository;
 import com.health.healther.dto.board.*;
-import com.health.healther.exception.board.AlreadyBoardLikeException;
-import com.health.healther.exception.board.NotFoundBoardException;
-import com.health.healther.exception.board.NotFoundBoardLikeException;
-import com.health.healther.exception.board.NotFoundCommentException;
+import com.health.healther.exception.board.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -138,6 +135,10 @@ public class BoardService {
 
         BoardLike boardLike = boardLikeRepository.findByMemberAndBoard(member, board)
                                                  .orElseThrow(() -> new NotFoundBoardLikeException("추천 정보를 찾을 수 없습니다."));
+
+        if(!boardLike.isLiked()) {
+            throw new AlreadyDeleteBoardLikeException("추전 정보가 이미 취소 되었습니다.");
+        }
 
         deleteBoardLike(board, boardLike);
     }
