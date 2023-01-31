@@ -10,6 +10,7 @@ import com.health.healther.domain.repository.SpaceRepository;
 import com.health.healther.dto.review.ReviewCreateRequestDto;
 import com.health.healther.dto.review.ReviewDto;
 import com.health.healther.dto.review.ReviewRequestUpdateDto;
+import com.health.healther.exception.review.AlreadyCreateReviewException;
 import com.health.healther.exception.review.NotFoundReviewException;
 import com.health.healther.exception.space.NotFoundSpaceException;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,10 @@ public class ReviewService {
 
         Space space = spaceRepository.findById(request.getSpaceId())
                                      .orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
+
+        if(reviewRepository.findByMemberAndSpace(member,space).isPresent()) {
+            throw new AlreadyCreateReviewException("이미 후기 정보가 존재합니다.");
+        }
 
         reviewRepository.save(
                 Review.builder()
