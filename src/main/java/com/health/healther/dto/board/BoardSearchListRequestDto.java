@@ -17,5 +17,6 @@ public class BoardSearchListRequestDto {
 	@NotNull
 	private Integer size;
 
+	@NotNull
 	private String keyword;
 }
