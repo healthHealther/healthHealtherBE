@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.health.healther.domain.model.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
-    Page<Board> findAll(Pageable pageable);
+	Page<Board> findAll(Pageable pageable);
+
+	Page<Board> findByTitleContaining(String keyword, Pageable pageable);
 }
