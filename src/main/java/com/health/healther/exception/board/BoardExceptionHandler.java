@@ -29,8 +29,16 @@ public class BoardExceptionHandler {
     }
 
     @ExceptionHandler(AlreadyBoardLikeException.class)
-    public ResponseEntity<ErrorMessage> BoardLikeAlreadyExistException(
+    public ResponseEntity<ErrorMessage> AlreadyBoardLikeException(
             AlreadyBoardLikeException exception
+    ) {
+        return ResponseEntity.badRequest()
+                .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(AlreadyDeleteBoardLikeException.class)
+    public ResponseEntity<ErrorMessage> AlreadyDeleteBoardLikeException(
+            AlreadyDeleteBoardLikeException exception
     ) {
         return ResponseEntity.badRequest()
                 .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
