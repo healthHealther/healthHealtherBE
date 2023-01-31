@@ -156,7 +156,7 @@ public class BoardService {
         Member member = memberService.findUserFromToken();
 
         Board board = boardRepository.findById(id)
-                                     .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+                     .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
 
         commentRepository.save(Comment.builder()
                                       .member(member)
@@ -171,7 +171,7 @@ public class BoardService {
     public List<CommentListResponseDto> getCommentList(Long id, int page, int size) {
 
         Board board = boardRepository.findById(id)
-                                     .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+                     .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
                                      
         PageRequest pageRequest
                 = PageRequest.of(page, size, Sort.by("modifiedAt").descending());
@@ -188,6 +188,17 @@ public class BoardService {
                 .orElseThrow(()-> new NotFoundCommentException("댓글 정보를 찾을 수 없습니다."));
 
         comment.updateComment(request.getContent());
+    }
+
+    @Transactional(readOnly = true)
+    public GetBoardLikeCountResponseDto getLikeCount(Long id) {
+
+        Board board = boardRepository.findById(id)
+                 .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+        return GetBoardLikeCountResponseDto.builder()
+                .likeCount(board.getLikeCount())
+                .build();
     }
 }
 
