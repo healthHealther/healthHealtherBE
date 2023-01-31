@@ -5,6 +5,7 @@ import com.health.healther.dto.board.*;
 import com.health.healther.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -96,5 +97,14 @@ public class BoardController {
             @PathVariable("boardId") Long id
     ) {
         return new ResponseEntity<>(boardService.getCommentList(id,request), HttpStatus.OK);
+    }
+
+    @PutMapping("/comment/{commentId}")
+    public ResponseEntity updateComment(
+            @RequestBody @Valid CommentUpdateRequestDto request,
+            @PathVariable("commentId") Long id
+    ) {
+        boardService.updateComment(id,request);
+        return ResponseEntity.ok().build();
     }
 }

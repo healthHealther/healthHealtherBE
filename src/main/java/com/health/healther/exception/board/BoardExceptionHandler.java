@@ -35,4 +35,12 @@ public class BoardExceptionHandler {
         return ResponseEntity.badRequest()
                 .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(NotFoundCommentException.class)
+    public ResponseEntity<ErrorMessage> NotFoundCommentException(
+            NotFoundCommentException exception
+    ) {
+        return ResponseEntity.badRequest()
+                .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
 }

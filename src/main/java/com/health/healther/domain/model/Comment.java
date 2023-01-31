@@ -42,4 +42,8 @@ public class Comment extends BaseEntity {
 
 	@Column(name = "CONTEXT")
 	private String context;
+
+	public void updateComment(String context) {
+		this.context = context;
+	}
 }
