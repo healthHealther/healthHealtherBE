@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.health.healther.dto.board.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,15 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.health.healther.dto.board.BoardCreateRequestDto;
-import com.health.healther.dto.board.BoardSearchListRequestDto;
-import com.health.healther.dto.board.BoardSearchListResponseDto;
-import com.health.healther.dto.board.BoardUpdateRequestDto;
-import com.health.healther.dto.board.CommentListResponseDto;
-import com.health.healther.dto.board.CommentRegisterRequestDto;
-import com.health.healther.dto.board.CommentRegisterResponseDto;
-import com.health.healther.dto.board.CommentUpdateRequestDto;
-import com.health.healther.dto.board.GetBoardListResponseDto;
 import com.health.healther.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
