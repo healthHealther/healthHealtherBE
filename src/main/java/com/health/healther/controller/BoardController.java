@@ -35,103 +35,109 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RestController
 public class BoardController {
-	private final BoardService boardService;
+    private final BoardService boardService;
 
-	@PostMapping
-	public ResponseEntity createBoard(
-		@RequestBody @Valid BoardCreateRequestDto request) {
+    @PostMapping
+    public ResponseEntity createBoard(
+            @RequestBody @Valid BoardCreateRequestDto request) {
 
-		boardService.createBoard(request);
-		return new ResponseEntity<>(HttpStatus.CREATED);
-	}
+        boardService.createBoard(request);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
-	@GetMapping
-	public ResponseEntity<List<GetBoardListResponseDto>> getBoardList(
-		@RequestParam("page") int page,
-		@RequestParam("size") int size
-	) {
-		return new ResponseEntity<>(boardService.getBoardList(page, size), HttpStatus.OK);
-	}
+    @GetMapping
+    public ResponseEntity<List<GetBoardListResponseDto>> getBoardList(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
+    ) {
+        return new ResponseEntity<>(boardService.getBoardList(page,size), HttpStatus.OK);
+    }
 
-	@GetMapping("/{boardId}")
-	public ResponseEntity getBoardDetail(
-		@PathVariable("boardId") Long id
-	) {
-		return new ResponseEntity<>(boardService.getBoardDetail(id), HttpStatus.OK);
-	}
+    @GetMapping("/{boardId}")
+    public ResponseEntity getBoardDetail(
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(boardService.getBoardDetail(id), HttpStatus.OK);
+    }
 
-	@PutMapping("/{boardId}")
-	public ResponseEntity updateBoard(
-		@PathVariable("boardId") Long id,
-		@RequestBody @Valid BoardUpdateRequestDto request
-	) {
-		boardService.updateBoard(id, request);
-		return ResponseEntity.ok().build();
-	}
+    @PutMapping("/{boardId}")
+    public ResponseEntity updateBoard(
+            @PathVariable("boardId") Long id,
+            @RequestBody @Valid BoardUpdateRequestDto request
+    ) {
+        boardService.updateBoard(id, request);
+        return ResponseEntity.ok().build();
+    }
 
-	@DeleteMapping("{boardId}")
-	public ResponseEntity deleteBoard(
-		@PathVariable("boardId") Long id
-	) {
-		boardService.deleteBoard(id);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+    @DeleteMapping("{boardId}")
+    public ResponseEntity deleteBoard(
+            @PathVariable("boardId") Long id
+    ) {
+        boardService.deleteBoard(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-	@PostMapping("/like/{boardId}")
-	public ResponseEntity likeBoard(
-		@PathVariable("boardId") Long id
-	) {
-		boardService.likeBoard(id);
-		return ResponseEntity.ok().build();
-	}
+    @PostMapping("/like/{boardId}")
+    public ResponseEntity likeBoard(
+            @PathVariable("boardId") Long id
+    ) {
+        boardService.likeBoard(id);
+        return ResponseEntity.ok().build();
+    }
 
-	@DeleteMapping("/like/{boardId}")
-	public ResponseEntity deleteBoardLike(
-		@PathVariable("boardId") Long id
-	) {
-		boardService.deleteBoardLike(id);
-		return ResponseEntity.ok().build();
+    @DeleteMapping("/like/{boardId}")
+    public ResponseEntity deleteBoardLike(
+            @PathVariable("boardId") Long id
+    ) {
+        boardService.deleteBoardLike(id);
+        return ResponseEntity.ok().build();
 
-	}
+    }
 
-	@GetMapping("/like/{boardId}")
-	public ResponseEntity boardIsLiked(
-		@PathVariable("boardId") Long id
-	) {
-		return new ResponseEntity<>(boardService.boardIsLiked(id), HttpStatus.OK);
-	}
+    @GetMapping("/{boardId}/likeCount")
+    public ResponseEntity<GetBoardLikeCountResponseDto> getLikeCount(
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(boardService.getLikeCount(id), HttpStatus.OK);
+    }
 
-	@PostMapping("/{boardId}/comment")
-	public ResponseEntity<CommentRegisterResponseDto> registerComment(
-		@RequestBody @Valid CommentRegisterRequestDto request,
-		@PathVariable("boardId") Long id
-	) {
-		return new ResponseEntity<>(boardService.registerComment(id, request), HttpStatus.CREATED);
+    @GetMapping("/like/{boardId}")
+    public ResponseEntity boardIsLiked(
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(boardService.boardIsLiked(id), HttpStatus.OK);
+    }
 
-	}
+    @PostMapping("/{boardId}/comment")
+    public ResponseEntity<CommentRegisterResponseDto> registerComment(
+            @RequestBody @Valid CommentRegisterRequestDto request,
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(boardService.registerComment(id, request), HttpStatus.CREATED);
+    }
 
-	@GetMapping("/{boardId}/comment")
-	public ResponseEntity<List<CommentListResponseDto>> getCommentList(
-		@RequestParam("page") int page,
-		@RequestParam("size") int size,
-		@PathVariable("boardId") Long id
-	) {
-		return new ResponseEntity<>(boardService.getCommentList(id, page, size), HttpStatus.OK);
-	}
+    @GetMapping("/{boardId}/comment")
+    public ResponseEntity<List<CommentListResponseDto>> getCommentList(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @PathVariable("boardId") Long id
+    ) {
+        return new ResponseEntity<>(boardService.getCommentList(id,page,size), HttpStatus.OK);
+    }
 
-	@PutMapping("/comment/{commentId}")
-	public ResponseEntity updateComment(
-		@RequestBody @Valid CommentUpdateRequestDto request,
-		@PathVariable("commentId") Long id
-	) {
-		boardService.updateComment(id, request);
-		return ResponseEntity.ok().build();
-	}
-
-	@GetMapping("/search")
-	public ResponseEntity<List<BoardSearchListResponseDto>> searchBoardTitle(
-		@Valid BoardSearchListRequestDto request
-	) {
-		return new ResponseEntity<>(boardService.searchBoardTitle(request), HttpStatus.OK);
-	}
+    @PutMapping("/comment/{commentId}")
+    public ResponseEntity updateComment(
+            @RequestBody @Valid CommentUpdateRequestDto request,
+            @PathVariable("commentId") Long id
+    ) {
+        boardService.updateComment(id,request);
+        return ResponseEntity.ok().build();
+    }
+    
+   	@GetMapping("/search")
+    public ResponseEntity<List<BoardSearchListResponseDto>> searchBoardTitle(
+      @Valid BoardSearchListRequestDto request
+    ) {
+      return new ResponseEntity<>(boardService.searchBoardTitle(request), HttpStatus.OK);
+    }
 }

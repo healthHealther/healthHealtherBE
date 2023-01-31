@@ -174,10 +174,15 @@ public class SpaceService {
 			spaceTypes = new ArrayList<>(spaceListRequestDto.getSpaceType());
 		}
 
+		String searchText = "";
+		if (spaceListRequestDto.getSearchText() != null) {
+			searchText = spaceListRequestDto.getSearchText();
+		}
+
 		return spaceKindRepository.findAllBySpaceTypeIsInAndSpace_TitleContainingIgnoreCase(
 						spaceTypes,
 						pageRequest,
-						spaceListRequestDto.getSearchText()
+						searchText
 				).map(spaceKind ->
 					new SpaceListResponseDto(
 							spaceKind,

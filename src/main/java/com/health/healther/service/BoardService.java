@@ -182,6 +182,7 @@ public class BoardService {
 		Board board = boardRepository.findById(id)
 			.orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
 
+
 		PageRequest pageRequest
 			= PageRequest.of(page, size, Sort.by("modifiedAt").descending());
 
@@ -207,7 +208,16 @@ public class BoardService {
 		return boardRepository.findByTitleContaining(request.getKeyword(), pageRequest).stream()
 			.map(BoardSearchListResponseDto::from)
 			.collect(Collectors.toList());
-
 	}
+
+  @Transactional(readOnly = true)
+  public GetBoardLikeCountResponseDto getLikeCount(Long id) {
+    Board board = boardRepository.findById(id)
+             .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
+
+    return GetBoardLikeCountResponseDto.builder()
+            .likeCount(board.getLikeCount())
+            .build();
+  }
 }
 
