@@ -61,7 +61,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{boardId}")
+    @DeleteMapping("/{boardId}")
     public ResponseEntity deleteBoard(
             @PathVariable("boardId") Long id
     ) {
@@ -123,6 +123,14 @@ public class BoardController {
             @PathVariable("commentId") Long id
     ) {
         boardService.updateComment(id,request);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/comment/{commentId}")
+    public ResponseEntity deleteComment(
+            @PathVariable("commentId") Long id
+    ) {
+        boardService.deleteComment(id);
         return ResponseEntity.ok().build();
     }
     
