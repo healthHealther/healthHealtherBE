@@ -61,7 +61,7 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("{boardId}")
+    @DeleteMapping("/{boardId}")
     public ResponseEntity deleteBoard(
             @PathVariable("boardId") Long id
     ) {
@@ -125,6 +125,8 @@ public class BoardController {
         boardService.updateComment(id,request);
         return ResponseEntity.ok().build();
     }
+
+
     
    	@GetMapping("/search")
     public ResponseEntity<List<BoardSearchListResponseDto>> searchBoardTitle(
