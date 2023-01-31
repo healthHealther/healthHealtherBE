@@ -28,9 +28,9 @@ public class BoardExceptionHandler {
                              .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
 
-    @ExceptionHandler(BoardLikeAlreadyExistException.class)
+    @ExceptionHandler(AlreadyBoardLikeException.class)
     public ResponseEntity<ErrorMessage> BoardLikeAlreadyExistException(
-            BoardLikeAlreadyExistException exception
+            AlreadyBoardLikeException exception
     ) {
         return ResponseEntity.badRequest()
                 .body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));

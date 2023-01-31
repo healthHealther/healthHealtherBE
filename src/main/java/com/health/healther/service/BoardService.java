@@ -8,7 +8,7 @@ import com.health.healther.domain.repository.BoardLikeRepository;
 import com.health.healther.domain.repository.BoardRepository;
 import com.health.healther.domain.repository.CommentRepository;
 import com.health.healther.dto.board.*;
-import com.health.healther.exception.board.BoardLikeAlreadyExistException;
+import com.health.healther.exception.board.AlreadyBoardLikeException;
 import com.health.healther.exception.board.NotFoundBoardException;
 import com.health.healther.exception.board.NotFoundBoardLikeException;
 import com.health.healther.exception.board.NotFoundCommentException;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -110,16 +111,23 @@ public class BoardService {
         Board board = boardRepository.findById(id)
                                      .orElseThrow(() -> new NotFoundBoardException("게시판 정보를 찾을 수 없습니다."));
 
-        if (boardLikeRepository.findByMemberAndBoard(member, board).isPresent()) {
-            throw new BoardLikeAlreadyExistException("추천 정보가 이미 존재합니다.");
+        Optional<BoardLike> optionalBoardLike
+                = boardLikeRepository.findByMemberAndBoard(member,board);
+
+        if (optionalBoardLike.isPresent() && optionalBoardLike.get().isLiked()) {
+            throw new AlreadyBoardLikeException("추천 정보가 이미 존재합니다.");
         }
 
-        boardLikeRepository.save(BoardLike.builder()
-                                          .member(member)
-                                          .board(board)
-                                          .isLiked(true)
-                                          .build());
+        if (optionalBoardLike.isEmpty()) {
 
+            boardLikeRepository.save(BoardLike.builder()
+                                              .member(member)
+                                              .board(board)
+                                              .isLiked(true)
+                                              .build());
+        } else {
+            optionalBoardLike.get().likeBoard();
+        }
         board.likeBoard();
     }
 
@@ -134,8 +142,11 @@ public class BoardService {
         BoardLike boardLike = boardLikeRepository.findByMemberAndBoard(member, board)
                                                  .orElseThrow(() -> new NotFoundBoardLikeException("추천 정보를 찾을 수 없습니다."));
 
-        boardLikeRepository.delete(boardLike);
+        deleteBoardLike(board, boardLike);
+    }
 
+    private static void deleteBoardLike(Board board, BoardLike boardLike) {
+        boardLike.deleteBoardLike();
         board.deleteBoardLike();
     }
 
