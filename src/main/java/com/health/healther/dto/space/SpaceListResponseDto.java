@@ -53,7 +53,7 @@ public class SpaceListResponseDto {
 		this.title = space.getTitle();
 		this.price = space.getPrice();
 
-		if (space.getImages() != null) {
+		if (space.getImages() != null && space.getImages().size() > 0) {
 			imageUrl = space.getImages().get(0).getImageUrl();
 		}
 		this.images = imageUrl;
