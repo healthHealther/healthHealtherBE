@@ -1,6 +1,5 @@
 package com.health.healther.dto.space;
 
-import java.time.LocalDate;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -63,10 +62,10 @@ public class CreateSpaceRequestDto {
 	private int discountAmount;
 
 	@NotNull
-	private LocalDate openDate;
+	private String openDate;
 
 	@NotNull
-	private LocalDate expiredDate;
+	private String expiredDate;
 
 	@NotNull
 	private int amount;

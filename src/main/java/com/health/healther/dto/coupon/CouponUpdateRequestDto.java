@@ -1,7 +1,5 @@
 package com.health.healther.dto.coupon;
 
-import java.time.LocalDate;
-
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -16,9 +14,9 @@ public class CouponUpdateRequestDto {
 	private int discountAmount;
 
 	@NotNull
-	private LocalDate openDate;
+	private String openDate;
 
 	@NotNull
-	private LocalDate expiredDate;
+	private String expiredDate;
 
 }
