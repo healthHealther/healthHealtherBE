@@ -126,7 +126,13 @@ public class BoardController {
         return ResponseEntity.ok().build();
     }
 
-
+    @DeleteMapping("/comment/{commentId}")
+    public ResponseEntity deleteComment(
+            @PathVariable("commentId") Long id
+    ) {
+        boardService.deleteComment(id);
+        return ResponseEntity.ok().build();
+    }
     
    	@GetMapping("/search")
     public ResponseEntity<List<BoardSearchListResponseDto>> searchBoardTitle(
