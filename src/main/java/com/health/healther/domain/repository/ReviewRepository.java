@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findByMemberAndSpace(Member member, Space space);
 
-    List<Review> findBySpace(Space space);
+    List<Review> findBySpaceOrderByModifiedAtDesc(Space space);
 }
