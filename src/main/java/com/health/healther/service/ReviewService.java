@@ -74,7 +74,7 @@ public class ReviewService {
         return reviewRepository.findBySpaceOrderByModifiedAtDesc(space)
                 .stream()
                 .map(ReviewDto::fromEntity)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
     }
 
     @Transactional
