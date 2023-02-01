@@ -24,5 +24,5 @@ public class ReviewCreateRequestDto {
     private String content;
 
     @NotNull
-    private Integer grade;
+    private int grade;
 }

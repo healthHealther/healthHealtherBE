@@ -18,6 +18,6 @@ public class ReviewRequestUpdateDto {
     private String content;
 
     @NotNull
-    private int grade;
+    private Integer grade;
 
 }
