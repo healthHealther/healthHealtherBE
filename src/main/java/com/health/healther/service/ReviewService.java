@@ -43,7 +43,7 @@ public class ReviewService {
         Space space = spaceRepository.findById(request.getSpaceId())
                                      .orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
-        if(reviewRepository.findByMemberAndSpace(member,space).isPresent()) {
+        if (reviewRepository.findByMemberAndSpace(member, space).isPresent()) {
             throw new AlreadyCreateReviewException("이미 후기 정보가 존재합니다.");
         }
 
@@ -71,10 +71,11 @@ public class ReviewService {
         Space space = spaceRepository.findById(spaceId)
                                      .orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
-
-        return space.getReviews().stream()
-                    .map(ReviewDto::fromEntity)
-                    .collect(Collectors.toList());
+        return reviewRepository.findBySpace(space)
+                               .stream()
+                               .sorted((r1, r2) -> r2.getModifiedAt().toString().compareTo(r1.getModifiedAt().toString()))
+                               .map(ReviewDto::fromEntity)
+                               .collect(Collectors.toList());
     }
 
     @Transactional
