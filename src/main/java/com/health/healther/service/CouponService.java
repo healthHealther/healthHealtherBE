@@ -22,6 +22,7 @@ import com.health.healther.exception.coupon.AlreadySoldOutCouponException;
 import com.health.healther.exception.coupon.NotFoundCouponException;
 import com.health.healther.exception.coupon.NotUsedCouponException;
 import com.health.healther.exception.space.NotFoundSpaceException;
+import com.health.healther.util.DateTimeUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,8 +45,8 @@ public class CouponService {
 			Coupon coupon = Coupon.builder()
 				.space(space)
 				.discountAmount(couponCreateRequestDto.getDiscountAmount())
-				.openDate(couponCreateRequestDto.getOpenDate())
-				.expiredDate(couponCreateRequestDto.getExpiredDate())
+				.openDate(DateTimeUtil.getLocalDate(couponCreateRequestDto.getOpenDate()))
+				.expiredDate(DateTimeUtil.getLocalDate(couponCreateRequestDto.getExpiredDate()))
 				.couponNumber(UUID.randomUUID().toString())
 				.isUsed(false)
 				.build();

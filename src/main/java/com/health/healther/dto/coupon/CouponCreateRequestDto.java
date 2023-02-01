@@ -1,7 +1,5 @@
 package com.health.healther.dto.coupon;
 
-import java.time.LocalDate;
-
 import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
@@ -20,17 +18,17 @@ public class CouponCreateRequestDto {
 	private int discountAmount;
 
 	@NotNull
-	private LocalDate openDate;
+	private String openDate;
 
 	@NotNull
-	private LocalDate expiredDate;
+	private String expiredDate;
 
 	@NotNull
 	private int amount;
 
 	@Builder
-	public CouponCreateRequestDto(Long spaceId, int discountAmount, LocalDate openDate, LocalDate expiredDate,
-			int amount) {
+	public CouponCreateRequestDto(Long spaceId, int discountAmount, String openDate, String expiredDate,
+		int amount) {
 		this.spaceId = spaceId;
 		this.discountAmount = discountAmount;
 		this.openDate = openDate;

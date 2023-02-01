@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import com.health.healther.util.DateTimeUtil;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -57,10 +59,10 @@ public class Coupon extends BaseEntity {
 	@Column(name = "IS_USED")
 	private boolean isUsed;
 
-	public void updateCoupon(int discountAmount, LocalDate openDate, LocalDate expiredDate) {
+	public void updateCoupon(int discountAmount, String openDate, String expiredDate) {
 		this.discountAmount = discountAmount;
-		this.openDate = openDate;
-		this.expiredDate = expiredDate;
+		this.openDate = DateTimeUtil.getLocalDate(openDate);
+		this.expiredDate = DateTimeUtil.getLocalDate(expiredDate);
 	}
 
 	public void useCoupon(boolean isUsed) {
