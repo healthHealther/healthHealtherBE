@@ -24,3 +24,5 @@ spring:
   h2:
     console:
       enabled: true
+cors:
+  origin: ${CORS_ORIGIN_NAME:}
