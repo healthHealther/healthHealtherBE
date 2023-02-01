@@ -22,7 +22,6 @@ public class ReviewController {
     public ResponseEntity createReview(
             @RequestBody @Valid ReviewCreateRequestDto request
     ) {
-
         reviewService.createReview(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -31,7 +30,6 @@ public class ReviewController {
     public ResponseEntity<?> deleteReview(
             @PathVariable("reviewId") Long reviewId
     ) {
-
         reviewService.deleteReview(reviewId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -40,7 +38,6 @@ public class ReviewController {
     public ResponseEntity<?> getReviewList(
             @PathVariable("spaceId") Long spaceId
     ) {
-
         return new ResponseEntity<>(
                 reviewService.getReviewList(spaceId),HttpStatus.OK
         );
@@ -51,7 +48,6 @@ public class ReviewController {
             @RequestBody @Valid ReviewRequestUpdateDto request,
             @PathVariable("reviewId") Long reviewId
     ) {
-
         reviewService.updateReview(request, reviewId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
