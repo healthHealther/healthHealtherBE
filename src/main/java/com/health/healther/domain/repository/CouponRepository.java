@@ -22,4 +22,8 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
 	);
 
 	boolean existsBySpace_IdAndIsUsed(Long spaceId, Boolean isUsed);
+
+	Long countBySpace_IdAndMember_IdAndExpiredDateIsAfterAndOpenDateIsBeforeAndIsUsed(
+		Long spaceId, Long memberId, LocalDate expiredNow, LocalDate openNow, boolean isUsed
+	);
 }
