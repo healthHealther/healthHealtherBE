@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.health.healther.dto.coupon.CouponCreateRequestDto;
+import com.health.healther.dto.coupon.CouponDownLoadResponseDto;
 import com.health.healther.dto.coupon.CouponReservationListResponseDto;
 import com.health.healther.dto.coupon.CouponUpdateRequestDto;
 import com.health.healther.service.CouponService;
@@ -61,11 +62,10 @@ public class CouponController {
 	}
 
 	@PutMapping("download/{spaceId}")
-	public ResponseEntity downloadCoupon(
+	public ResponseEntity<CouponDownLoadResponseDto> downloadCoupon(
 		@PathVariable("spaceId") Long spaceId
 	) {
-		couponService.downloadCoupon(spaceId);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return ResponseEntity.ok(couponService.downloadCoupon(spaceId));
 	}
 
 }
