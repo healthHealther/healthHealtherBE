@@ -71,11 +71,10 @@ public class ReviewService {
         Space space = spaceRepository.findById(spaceId)
                                      .orElseThrow(() -> new NotFoundSpaceException("공간 정보를 찾을 수 없습니다."));
 
-        return reviewRepository.findBySpace(space)
-                               .stream()
-                               .sorted((r1, r2) -> r2.getModifiedAt().toString().compareTo(r1.getModifiedAt().toString()))
-                               .map(ReviewDto::fromEntity)
-                               .collect(Collectors.toList());
+        return reviewRepository.findBySpaceOrderByModifiedAtDesc(space)
+                .stream()
+                .map(ReviewDto::fromEntity)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Transactional
