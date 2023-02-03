@@ -12,3 +12,7 @@
 
 ###  👨‍💻 백엔드 기술 스택
 ![](https://velog.velcdn.com/images/choidongkuen/post/aff57d5a-7ca3-48de-88fb-62f47ed7a5c2/image.png)
+
+###  📀 시연 영상
+https://youtu.be/ZON_avdtfSE
+
