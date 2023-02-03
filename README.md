@@ -11,4 +11,4 @@
 
 
 ###  👨‍💻 백엔드 기술 스택
-![](https://velog.velcdn.com/images/choidongkuen/post/988fbf6c-fadd-44b6-a4e5-71ece2c4f871/image.png)
+![](https://velog.velcdn.com/images/choidongkuen/post/aff57d5a-7ca3-48de-88fb-62f47ed7a5c2/image.png)
