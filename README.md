@@ -1,7 +1,7 @@
 # healthHealtherBE
 
 ### 🙆🏻 프로젝트 기간
-2022 / 11 / 28 ~ 2023 / 02 / 03
+2022 / 12 / 28 ~ 2023 / 02 / 03
 
 ### 👨‍💻 프로젝트 기획배경
 ![](https://velog.velcdn.com/images/choidongkuen/post/5d974011-0352-4112-a4ec-536dcf7ef3a7/image.png)
